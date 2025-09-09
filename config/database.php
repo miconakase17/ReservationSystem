@@ -3,7 +3,7 @@ class Database {
     private static $host = "localhost";
     private static $db_name = "reservation_system";
     private static $username = "root";
-    private static $password = "";
+    private static $password = "admin123";
     private static $conn;
 
     public static function connect() {
