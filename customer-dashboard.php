@@ -83,7 +83,7 @@ session_start();
     <!-- Page Title -->
     <div class="page-title dark-background" data-aos="fade" style="background-image: url(assets/img/page-title-bg.webp);">
       <div class="container position-relative">
-        <h1>Welcome! <?php 
+        <h1>Welcome, <?php 
                     echo htmlspecialchars($_SESSION['firstname'] ?? 'Customer'); 
                     ?>!</h1>
         <p>Esse dolorum voluptatum ullam est sint nemo et est ipsa porro placeat quibusdam quia assumenda numquam molestias.</p>
