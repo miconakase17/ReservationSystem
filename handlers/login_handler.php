@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['firstname'] = $user['firstName'];
         $_SESSION['lastname']  = $user['lastName'];
 
-        header("Location: http://localhost/KevinsExpress/service-details.html?login=success");
+        header("Location: http://localhost/KevinsExpress/customer-dashboard.html?login=success");
         exit();
     } else {
         // Failed login

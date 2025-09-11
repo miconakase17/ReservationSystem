@@ -47,6 +47,18 @@
   }
 }
 
+.section-title h3 {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0;
+  line-height: 1px;
+  margin: 0;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--default-color), transparent 50%);
+  position: relative;
+}
+
 .login-section .login-form input[type=text],
 .login-section .login-form input[type=password],
 .login-section .login-form textarea {
