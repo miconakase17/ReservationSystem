@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         if ($user->create($data)) {
-            header("Location: http://localhost/KevinsExpress/login.html?signup=success");
+            header("Location: http://localhost/ReservationSystem/login.html?signup=success");
             exit();
         }
     } catch (Exception $e) {

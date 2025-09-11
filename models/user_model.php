@@ -46,12 +46,41 @@ class User {
     }
 
     // Create new user (signup)
-    public function create($username, $password) {
-        $hash = password_hash($password, PASSWORD_BCRYPT);
-        $sql = "INSERT INTO {$this->table} (username, password) VALUES (?, ?)";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ss", $username, $hash);
-        return $stmt->execute();
+    public function create($data) {
+    // Step 1: Insert into users
+    $sql = "INSERT INTO {$this->table} (username, password, createdAt, isActive) 
+            VALUES (?, ?, ?, 1)";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("sss", $data['username'], $data['password'], $data['createdAt']);
+
+    if (!$stmt->execute()) {
+        throw new Exception("Error inserting into users: " . $stmt->error);
     }
+
+    // Get new userID
+    $userID = $this->conn->insert_id;
+
+    // Step 2: Insert into user_details
+    $sql = "INSERT INTO user_details (userID, lastName, firstName, middleName, phoneNumber, email, lastUpdate)
+            VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param(
+        "issssss",
+        $userID,
+        $data['lastName'],
+        $data['firstName'],
+        $data['middleName'],
+        $data['phoneNumber'],
+        $data['email'],
+        $data['lastUpdate']
+    );
+
+    if (!$stmt->execute()) {
+        throw new Exception("Error inserting into user_details: " . $stmt->error);
+    }
+
+    return true;
+}
+
 }
 ?>

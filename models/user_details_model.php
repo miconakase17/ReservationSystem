@@ -1,5 +1,5 @@
 <?php
-class UserDetail {
+class UserDetails {
     private $conn;
     private $table = "user_details";
 
@@ -15,36 +15,53 @@ class UserDetail {
         $this->conn = $db;
     }
 
-    // Get user details
+    // Get user details by userID
     public function getByUserId($userID) {
-        $query = "SELECT * FROM {$this->table} WHERE userID = :userID";
+        $query = "SELECT * FROM {$this->table} WHERE userID = ?";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":userID", $userID, PDO::PARAM_INT);
+        $stmt->bind_param("i", $userID);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
     }
 
     // Create or update details
     public function save($data) {
         $existing = $this->getByUserId($data['userID']);
+
         if ($existing) {
+            // Update
             $sql = "UPDATE {$this->table} 
-                    SET lastName=:lastName, firstName=:firstName, middleName=:middleName, 
-                        phoneNumber=:phoneNumber, email=:email, lastUpdate=NOW()
-                    WHERE userID=:userID";
+                    SET lastName = ?, firstName = ?, middleName = ?, 
+                        phoneNumber = ?, email = ?, lastUpdate = NOW()
+                    WHERE userID = ?";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param(
+                "sssssi",
+                $data['lastName'],
+                $data['firstName'],
+                $data['middleName'],
+                $data['phoneNumber'],
+                $data['email'],
+                $data['userID']
+            );
         } else {
+            // Insert
             $sql = "INSERT INTO {$this->table} 
                     (userID, lastName, firstName, middleName, phoneNumber, email, lastUpdate) 
-                    VALUES (:userID, :lastName, :firstName, :middleName, :phoneNumber, :email, NOW())";
+                    VALUES (?, ?, ?, ?, ?, ?, NOW())";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param(
+                "isssss",
+                $data['userID'],
+                $data['lastName'],
+                $data['firstName'],
+                $data['middleName'],
+                $data['phoneNumber'],
+                $data['email']
+            );
         }
 
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bindParam(":userID", $data['userID'], PDO::PARAM_INT);
-        $stmt->bindParam(":lastName", $data['lastName']);
-        $stmt->bindParam(":firstName", $data['firstName']);
-        $stmt->bindParam(":middleName", $data['middleName']);
-        $stmt->bindParam(":phoneNumber", $data['phoneNumber']);
-        $stmt->bindParam(":email", $data['email']);
         return $stmt->execute();
     }
 }
