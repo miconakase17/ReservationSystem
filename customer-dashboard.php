@@ -52,7 +52,7 @@ session_start();
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-      <a class="cta-btn" href="reservation-dashboard.html">Reserve Now!</a>
+      <a class="cta-btn" href="reservation-dashboard.php">Reserve Now!</a>
 
     </div>
   </header>
