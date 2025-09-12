@@ -48,6 +48,19 @@
   }
 }
 
+.section-title h3 {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0;
+  line-height: 1px;
+  margin: 0;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--default-color), transparent 50%);
+  position: relative;
+}
+
+
 .signup-section .signup-form input[type=text],
 .signup-section .signup-form input[type=password],
 .signup-section .signup-form input[type=email],

@@ -1,85 +1,86 @@
 <?php
-
 class User {
     private $conn;
     private $table = "users";
 
     public $userID;
-    public $lastName;
-    public $firstName;
-    public $middleName;
     public $username;
-    public $phoneNumber;
-    public $email;
     public $password;
-    public $roleID;
-    public $statusID;
     public $createdAt;
-    public $lastUpdate;
     public $isActive;
 
     public function __construct($db) {
         $this->conn = $db;
     }
 
-    //  Get all users
+    // Get all users
     public function getAll() {
-        $query = "SELECT * FROM " . $this->table;
-        $stmt = $this->conn->prepare($query);
-        $stmt->execute();
-        return $stmt;
+        $sql = "SELECT * FROM {$this->table}";
+        $result = $this->conn->query($sql);
+        return $result->fetch_all(MYSQLI_ASSOC);
     }
 
     // Get single user by ID
     public function getById($id) {
-        $query = "SELECT * FROM " . $this->table . " WHERE userID = :id";
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":id", $id);
+        $sql = "SELECT * FROM {$this->table} WHERE userID = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $id);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
     }
 
+    // Find user by username (login)
+    public function findByUsername($username) {
+        $sql = "SELECT u.userID, u.username, u.password, d.firstName, d.lastName
+                FROM {$this->table} u
+                LEFT JOIN user_details d ON u.userID = d.userID
+                WHERE u.username = ?
+                LIMIT 1";
 
-    // LOGIN - Find user by username
-     public function findByUsername($username) {
-        $sql = "SELECT userID, firstName, lastName, password 
-                FROM " . $this->table . " 
-                WHERE username = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("s", $username);
         $stmt->execute();
-        return $stmt->get_result()->fetch_assoc();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
     }
 
-    // SIGN UP - Create new user
-     public function create($data) {
-        $sql = "INSERT INTO {$this->table} 
-            (lastName, firstName, middleName, username, phoneNumber, email, password, createdAt, lastUpdate) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    // Create new user (signup)
+    public function create($data) {
+    // Step 1: Insert into users
+    $sql = "INSERT INTO {$this->table} (username, password, createdAt, isActive) 
+            VALUES (?, ?, ?, 1)";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("sss", $data['username'], $data['password'], $data['createdAt']);
 
-        $stmt = $this->conn->prepare($sql);
-
-        $stmt->bind_param("sssssssss", 
-            $data['lastName'],
-            $data['firstName'],
-            $data['middleName'],
-            $data['username'],
-            $data['phoneNumber'],
-            $data['email'],
-            $data['password'],
-            $data['createdAt'],
-            $data['lastUpdate']
-        );
-
-        if ($stmt->execute()) {
-            return true;
-        } else {
-            if ($stmt->errno === 1062) {
-                throw new Exception("Username or email already exists.");
-            }
-            throw new Exception("Error: " . $stmt->error);
-        }
+    if (!$stmt->execute()) {
+        throw new Exception("Error inserting into users: " . $stmt->error);
     }
+
+    // Get new userID
+    $userID = $this->conn->insert_id;
+
+    // Step 2: Insert into user_details
+    $sql = "INSERT INTO user_details (userID, lastName, firstName, middleName, phoneNumber, email, lastUpdate)
+            VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param(
+        "issssss",
+        $userID,
+        $data['lastName'],
+        $data['firstName'],
+        $data['middleName'],
+        $data['phoneNumber'],
+        $data['email'],
+        $data['lastUpdate']
+    );
+
+    if (!$stmt->execute()) {
+        throw new Exception("Error inserting into user_details: " . $stmt->error);
+    }
+
+    return true;
 }
 
+}
 ?>
