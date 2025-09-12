@@ -28,6 +28,89 @@
 
 .reservation-section .container {
   position: relative;
-  max-width: 58%;
+  max-width: 78%;
   z-index: 3;
 }
+
+.reservation-section .reservation-form {
+  background-color: var(--surface-color);
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  height: auto;
+  padding: 50px 80px 30px 80px;
+  z-index: 2;
+}
+
+@media (max-width: 575px) {
+  .reservation-section .reservation-form {
+    padding: 20px;
+  }
+}
+
+.section-title h3 {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0;
+  line-height: 1px;
+  margin: 0;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--default-color), transparent 50%);
+  position: relative;
+}
+
+.reservation-section .reservation-form input[type=text],
+.reservation-section .reservation-form input[type=password],
+.reservation-section .reservation-form input[type=time],
+.reservation-section .reservation-form input[type=date],
+.reservation-section .reservation-form select.form-select,
+.reservation-section .reservation-form textarea {
+  font-size: 14px;
+  padding: 10px 20px;
+  box-shadow: none;
+  border-radius: 0;
+  color: var(--default-color);
+  background-color: var(--surface-color);
+  border-color: color-mix(in srgb, var(--default-color), transparent 50%);
+}
+
+.reservation-section .reservation-form input[type=text]:focus,
+.reservation-section .reservation-form input[type=password]:focus,
+.reservation-section .reservation-form input[type=time]:focus,
+.reservation-section .reservation-form input[type=date]:focus,
+.reservation-section .reservation-form select.form-select:focus,
+.reservation-section .reservation-form textarea:focus {
+  border-color: var(--contrast-color);
+  box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--accent-color), transparent 50%);
+}
+
+.reservation-section .reservation-form input[type=text]::placeholder,
+.reservation-section .reservation-form input[type=password]::placeholder,
+.reservation-section .reservation-form input[type=time]::placeholder,
+.reservation-section .reservation-form input[type=date]::placeholder,
+.reservation-section .reservation-form select.form-select::placeholder
+.reservation-section .reservation-form textarea::placeholder {
+  color: color-mix(in srgb, var(--default-color), transparent 50%);
+}
+
+.reservation-section .reservation-form #total-hours,
+.reservation-section .reservation-form #total-amount {
+  font-weight: 600;
+  background-color: color-mix(in srgb, var(--accent-color), transparent 90%);
+  border: none;
+  color: var(--default-color);
+}
+
+
+.reservation-section .reservation-form .btn-primary {
+  color: var(--contrast-color);
+  background: var(--accent-color);
+  border: 0;
+  margin-bottom: 30px;
+  padding: 10px 30px;
+  transition: 0.4s;
+  border-radius: 50px;
+}
+
+.reservation-section .reservation-form .btn-primary:hover {
+  background: color-mix(in srgb, var(--accent-color), transparent 20%);}
+

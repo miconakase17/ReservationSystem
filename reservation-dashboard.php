@@ -67,7 +67,7 @@ session_start();
             <form action="handlers/reservation_handler.php" method="post" class="reservation-form">
 
                 <div class="container section-title text-center">
-                    <h3>Make New Reservation</h3>
+                    <h3>New Reservation</h3>
                 </div>
                 <div class="row gy-4">
 
@@ -110,7 +110,7 @@ session_start();
                       <input type="time" id="end-time" name="end-time" class="form-control">
                     </div>
 
-                    <!-- ✅ Two Column Checkboxes -->
+                    <!-- Two Column Checkboxes -->
                     <div class="col-12 mt-3">
                       <div class="row">
                         
@@ -154,7 +154,21 @@ session_start();
                         </div>
 
                       </div>
-</div>
+                    </div>
+
+                    <!-- ✅ Total Hours & Total Amount -->
+                    <div class="col-12 mt-4">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label class="form-label fw-bold">Total Hours:</label>
+                          <input type="text" id="total-hours" name="total-hours" class="form-control" readonly>
+                        </div>
+                        <div class="col-md-6">
+                          <label class="form-label fw-bold">Total Amount (₱):</label>
+                          <input type="text" id="total-amount" name="total-amount" class="form-control" readonly>
+                        </div>
+                      </div>
+                    </div>
 
 
                   </div>
