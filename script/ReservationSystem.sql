@@ -210,6 +210,7 @@ CREATE TABLE `user_details` (
 
 LOCK TABLES `user_details` WRITE;
 /*!40000 ALTER TABLE `user_details` DISABLE KEYS */;
+INSERT INTO `user_details` VALUES (15,'Nakase','Mico','Libunao','09665270518','miconakaseyt@gmail.com','2025-09-11 05:41:00');
 /*!40000 ALTER TABLE `user_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -253,7 +254,7 @@ CREATE TABLE `users` (
   `createdAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `isActive` tinyint NOT NULL DEFAULT '1',
   PRIMARY KEY (`userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -262,7 +263,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (8,'miconakase17','$2y$10$3iZBCAVb.utS5WSjL2OrUu6QEQhtCXG45Csuo9rrtYsfqkTVqJwZK','2025-05-20 09:12:28',0),(9,'jepoy69','$2y$10$dJWhai6vP.kSTh2RyNC8M.8HCxqYTePxB2LMN5UfSzGKi1CiS0jqK','2025-05-20 09:13:52',0),(11,'Mhics25','$2y$10$SYKNe6Y81ZhN5Q6VBhHqneKcAAdPn94njXCJyLProet1WMdXRIf2a','2025-05-26 05:25:48',0),(12,'jim123','$2y$10$wtCbrHV9LpyJStlPfCVQtu6358OaiDJY3CuDJxt/p/X1MQQgFcBbe','2025-05-29 05:49:40',0),(13,'julieanncarpio','$2y$10$3XT7KUh8z3TwNc245EtZMOAAYEJARVV79X9U5nawS/J.Ify1aNozm','2025-08-26 08:15:28',0),(14,'sallymae','$2y$10$O3jcU9/JhpBJi00vqhBwueiZXxPICL1UGa/Elrc6kxV.Kdo0DiqKi','2025-09-03 11:40:36',0);
+INSERT INTO `users` VALUES (15,'miconakase17','$2y$10$DBsrkK9coVmhiJwlLe4une1aS.CXCO77OrWrDDairlpWnKv6IUVFK','2025-09-11 05:41:00',1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -275,4 +276,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-09-11 10:49:13
+-- Dump completed on 2025-09-13 18:08:59
