@@ -65,11 +65,11 @@ session_start();
         <h1>Welcome, <?php 
                     echo htmlspecialchars($_SESSION['firstname'] ?? 'Customer'); 
                     ?>!</h1>
-        <p>Esse dolorum voluptatum ullam est sint nemo et est ipsa porro placeat quibusdam quia assumenda numquam molestias.</p>
+        <p>Please enjoy</p>
         <nav class="breadcrumbs">
           <ol>
             <li><a href="index.html">Home</a></li>
-            <li class="current">Service Details</li>
+            <li class="current">Reserve Now</li>
           </ol>
         </nav>
       </div>
