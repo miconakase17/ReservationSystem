@@ -1,5 +1,10 @@
 <?php
-session_start();  
+session_start();
+require_once 'config/database.php';
+require_once 'models/additionals-model.php';
+$db = Database::connect();
+$additionalsModel = new Additionals($db);
+$additionals = $additionalsModel->readAll();
 ?>
 
 <!DOCTYPE html>
@@ -113,44 +118,22 @@ session_start();
                     <!-- Two Column Checkboxes -->
                     <div class="col-12 mt-3">
                       <div class="row">
-                        
-                        <!-- Instruments Column -->
-                        <div class="col-md-6">
-                          <label class="form-label fw-bold">Instruments:</label>
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="electric-guitar" name="options[]" value="Electric Guitar">
-                            <label class="form-check-label" for="electric-guitar">Electric Guitar</label>
-                          </div>
-      
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="bass-guitar" name="options[]" value="Bass Guitar">
-                            <label class="form-check-label" for="bass-guitar">Bass Guitar</label>
-                          </div>
-
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="drum-sticks" name="options[]" value="Drum Sticks">
-                            <label class="form-check-label" for="drum-sticks">Drum Sticks</label>
-                          </div>
-
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="guitar-pick" name="options[]" value="Guitar Pick">
-                            <label class="form-check-label" for="guitar-pick">Guitar Pick</label>
-                          </div>
-                        </div>
 
                         <!-- Additionals Column -->
                         <div class="col-md-6">
                           <label class="form-label fw-bold">Additionals:</label>
-                    
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="lights" name="options[]" value="Stage Lights">
-                            <label class="form-check-label" for="lights">Stage Lights</label>
-                          </div>
-
-                          <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="mic" name="options[]" value="Microphone">
-                            <label class="form-check-label" for="mic">Microphone</label>
-                          </div>
+                          <?php if ($additionals && $additionals->num_rows > 0): ?>
+                            <?php while ($row = $additionals->fetch_assoc()): ?>
+                              <div class="form-check">
+                                <input class="form-check-input additional-checkbox" type="checkbox" id="additional-<?php echo $row['addID']; ?>" name="additionals[]" value="<?php echo htmlspecialchars($row['addName']); ?>" data-price="<?php echo $row['price']; ?>">
+                                <label class="form-check-label" for="additional-<?php echo $row['addID']; ?>">
+                                  <?php echo htmlspecialchars($row['addName']); ?> (₱<?php echo number_format($row['price'], 2); ?>)
+                                </label>
+                              </div>
+                            <?php endwhile; ?>
+                          <?php else: ?>
+                            <p>No additionals available.</p>
+                          <?php endif; ?>
                         </div>
 
                       </div>
@@ -169,8 +152,56 @@ session_start();
                         </div>
                       </div>
                     </div>
+                  </div>
 
+                  <!-- Extra Fields: Only for Recording -->
+                  <div id="recording-fields" class="row gy-4" style="display: none;">
 
+                    <div class="col-12">
+                      <label class="form-label fw-bold">Recording Mode:</label><br>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="recording-mode" id="multitrack" value="MultiTrack" required>
+                        <label class="form-check-label" for="multitrack">Multi Track</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="recording-mode" id="livetrack" value="LiveTrack" required>
+                        <label class="form-check-label" for="livetrack">Live Track</label>
+                      </div>
+                    </div>
+
+                    <div class="col-12">
+                      <label class="form-label fw-bold">Option:</label><br>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" name="mix" id="mix" value="Mix">
+                        <label class="form-check-label" for="mix">Mix and Master</label>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-4">
+                      <label for="date" class="form-label">Select Date:</label>
+                      <input type="date" id="date" name="date" class="form-control">
+                    </div>
+
+                    <div class="col-sm-4">
+                      <label for="start-time" class="form-label">Start Time:</label>
+                      <input type="time" id="start-time" name="start-time" class="form-control">
+                    </div>
+
+                    <div class="col-sm-4">
+                      <label for="end-time" class="form-label">End Time:</label>
+                      <input type="time" id="end-time" name="end-time" class="form-control">
+                    </div>
+
+                    <div class="col-12">
+                      <label for="recording-notes" class="form-label">Notes:</label>
+                      <textarea id="recording-notes" name="recording-notes" class="form-control" rows="3" placeholder="Enter any notes or requirements..."></textarea>
+                    </div>
+
+                    <!-- Total Price for Recording -->
+                    <div class="col-12 mt-4">
+                      <label class="form-label fw-bold">Total Price (₱):</label>
+                      <input type="text" id="recording-total-price" name="recording-total-price" class="form-control" readonly>
+                    </div>
                   </div>
 
                   <!-- Submit Button -->

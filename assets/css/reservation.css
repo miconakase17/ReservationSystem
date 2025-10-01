@@ -114,3 +114,8 @@
 .reservation-section .reservation-form .btn-primary:hover {
   background: color-mix(in srgb, var(--accent-color), transparent 20%);}
 
+::placeholder {
+  font-size: 14px;
+  opacity: 1;
+  color: color-mix(in srgb, var(--default-color), transparent 50%);
+}
