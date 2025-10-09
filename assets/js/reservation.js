@@ -100,3 +100,49 @@
     checkbox.addEventListener('change', calculateTotal);
   });
 
+  // Image preview for rental image
+  const rentalImageInput = document.getElementById('rental-image');
+  const rentalImagePreview = document.getElementById('rental-image-preview');
+  if (rentalImageInput && rentalImagePreview) {
+    rentalImageInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (!file.type.startsWith('image/')) {
+        alert('Please select a valid image file.');
+        rentalImageInput.value = '';
+        rentalImagePreview.style.display = 'none';
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        rentalImagePreview.src = ev.target.result;
+        rentalImagePreview.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  // GCash QR is displayed inline in the form; no client-side handler required
+
+  // Image preview for recording image
+  const recordingImageInput = document.getElementById('recording-image');
+  const recordingImagePreview = document.getElementById('recording-image-preview');
+  if (recordingImageInput && recordingImagePreview) {
+    recordingImageInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (!file.type.startsWith('image/')) {
+        alert('Please select a valid image file.');
+        recordingImageInput.value = '';
+        recordingImagePreview.style.display = 'none';
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        recordingImagePreview.src = ev.target.result;
+        recordingImagePreview.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+

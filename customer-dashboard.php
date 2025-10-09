@@ -38,13 +38,13 @@ session_start();
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
-      <a href="index.html" class="logo d-flex align-items-center me-auto">
+      <a href="customer-dashboard.php" class="logo d-flex align-items-center me-auto">
         <h1 class="sitename">Kevin's Express Studio</h1>
       </a>
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="#hero">Home</a></li>
+          <li><a href="customer-dashboard.php">Home</a></li>
           <li><a href="#about">View Reservation</a></li>
           <li><a href="#services">Profile</a></li>
           <li><a href="#profile">Log Out</a></li>

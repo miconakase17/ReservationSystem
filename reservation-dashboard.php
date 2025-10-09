@@ -43,13 +43,13 @@ $additionals = $additionalsModel->readAll();
   <header id="header" class="header d-flex align-items-center fixed-top">
     <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
-      <a href="index.html" class="logo d-flex align-items-center me-auto">
+      <a href="customer-dashboard.php" class="logo d-flex align-items-center me-auto">
         <h1 class="sitename">Kevin's Express Studio</h1>
       </a>
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="#hero">Home</a></li>
+          <li><a href="customer-dashboard.php">Home</a></li>
           <li><a href="#about">View Reservation</a></li>
           <li><a href="#services">Profile</a></li>
           <li><a href="reservation-dashboard.html">Log Out</a></li>
@@ -69,7 +69,7 @@ $additionals = $additionalsModel->readAll();
       <div class="container">
         <div class="row justify-content-center"> 
           <div class="col-lg-6">
-            <form action="handlers/reservation_handler.php" method="post" class="reservation-form">
+            <form action="handlers/reservation_handler.php" method="post" class="reservation-form" enctype="multipart/form-data">
 
                 <div class="container section-title text-center">
                     <h3>New Reservation</h3>
@@ -134,24 +134,42 @@ $additionals = $additionalsModel->readAll();
                           <?php else: ?>
                             <p>No additionals available.</p>
                           <?php endif; ?>
+                        
+                          <!-- Totals under Additionals -->
+                          <div class="mt-3">
+                            <label class="form-label fw-bold">Total Hours:</label>
+                            <input type="text" id="total-hours" name="total-hours" class="form-control mb-2" readonly>
+
+                            <label class="form-label fw-bold">Total Amount (₱):</label>
+                            <input type="text" id="total-amount" name="total-amount" class="form-control" readonly>
+                          </div>
+
+                        </div>
+
+                        <!-- Upload Image Column (beside Additionals) -->
+                        <div class="col-md-6">
+                          <label class="form-label fw-bold">Upload Receipt:</label>
+                          <div class="mb-2">
+                            <input type="file" id="rental-image" name="rental-image" accept="image/*" class="form-control">
+                          </div>
+                          <div class="mb-2">
+                            <img id="rental-image-preview" src="" alt="Preview" style="max-width:100%; height:auto; display:none; border:1px solid #ddd; padding:6px;" />
+                          </div>
+
+                          <hr />
+                          <div class="text-center">
+                            <label class="form-label fw-bold">GCash (Down Payment):</label>
+                            <div class="mb-2">
+                              <img src="assets/img/QR_Payment.png" alt="GCash QR" style="max-width:200px; height:auto; border:1px solid #ddd; padding:6px;" />
+                            </div>
+                            <p class="small" style="color:#adb5bd;">Scan this QR code with GCash to pay at least half of total payment. After payment, you may upload the receipt above.</p>
+                          </div>
                         </div>
 
                       </div>
                     </div>
 
-                    <!-- ✅ Total Hours & Total Amount -->
-                    <div class="col-12 mt-4">
-                      <div class="row">
-                        <div class="col-md-6">
-                          <label class="form-label fw-bold">Total Hours:</label>
-                          <input type="text" id="total-hours" name="total-hours" class="form-control" readonly>
-                        </div>
-                        <div class="col-md-6">
-                          <label class="form-label fw-bold">Total Amount (₱):</label>
-                          <input type="text" id="total-amount" name="total-amount" class="form-control" readonly>
-                        </div>
-                      </div>
-                    </div>
+                    <!-- totals moved into upload column -->
                   </div>
 
                   <!-- Extra Fields: Only for Recording -->
@@ -197,11 +215,36 @@ $additionals = $additionalsModel->readAll();
                       <textarea id="recording-notes" name="recording-notes" class="form-control" rows="3" placeholder="Enter any notes or requirements..."></textarea>
                     </div>
 
-                    <!-- Total Price for Recording -->
-                    <div class="col-12 mt-4">
-                      <label class="form-label fw-bold">Total Price (₱):</label>
-                      <input type="text" id="recording-total-price" name="recording-total-price" class="form-control" readonly>
+                    <!-- Recording Receipt Upload & QR -->
+                    <div class="col-12">
+                      <div class="row">
+                        <div class="col-md-6">
+                          <label class="form-label fw-bold">Upload Receipt (Recording):</label>
+                          <div class="mb-2">
+                            <input type="file" id="recording-image" name="recording-image" accept="image/*" class="form-control">
+                          </div>
+                          <div class="mb-2">
+                            <img id="recording-image-preview" src="" alt="Preview" style="max-width:100%; height:auto; display:none; border:1px solid #ddd; padding:6px;" />
+                          </div>
+                          <small class="small" style="color:#adb5bd;" >Upload payment receipt here.</small>
+                          
+                          <!-- Total Price below upload (left of QR) -->
+                          <div class="mt-3">
+                            <label class="form-label fw-bold">Total Price (₱):</label>
+                            <input type="text" id="recording-total-price" name="recording-total-price" class="form-control" readonly>
+                          </div>
+                        </div>
+                        <div class="col-md-6 text-center">
+                          <label class="form-label fw-bold">GCash (Down Payment):</label>
+                          <div class="mb-2">
+                            <img src="assets/img/QR_Payment.png" alt="GCash QR" style="max-width:200px; height:auto; border:1px solid #ddd; padding:6px;" />
+                          </div>
+                          <p class="small" style="color:#adb5bd;">Scan this QR code with GCash to pay at least half of total payment.</p>
+                        </div>
+                      </div>
                     </div>
+
+                    <!-- Total Price moved into left column of recording upload row -->
                   </div>
 
                   <!-- Submit Button -->
