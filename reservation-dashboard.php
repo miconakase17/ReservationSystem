@@ -1,19 +1,7 @@
 <?php
 session_start();
-require_once 'config/database.php';
-require_once 'models/additionals-model.php';
-$db = Database::connect();
-$additionalsModel = new Additionals($db);
-$additionals = $additionalsModel->readAll();
-// Fetch studio pricing rules for JS
-$pricingSql = "SELECT sp.weekdayFrom, sp.weekdayTo, sp.hourlyRate FROM service_pricings sp JOIN services s ON sp.serviceID = s.serviceID WHERE s.serviceName = 'Studio Rental'";
-$pricingRes = $db->query($pricingSql);
-$studioPricings = [];
-if ($pricingRes) {
-  while ($r = $pricingRes->fetch_assoc()) {
-    $studioPricings[] = $r;
-  }
-}
+// Load reservation-related data (additionals + pricing) from an include
+require_once __DIR__ . '/includes/reservation-data.php';
 ?>
 
 <!DOCTYPE html>
@@ -70,7 +58,6 @@ if ($pricingRes) {
 
     </div>
   </header>
-  <body class="reservation-dashboard-page">
 
     <section id="reservation-section" class="reservation-section dark-background align-items-center justify-content-center min-vh-100">
       <video src="assets/video/mainvideo.mp4" autoplay muted loop playsinline></video>

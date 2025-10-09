@@ -13,9 +13,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $endTime = $_POST['end_time'];
     $service = $_POST['service'];
 
-    $conn = new mysqli('localhost', 'root', '', 'reservation_system');
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
+    // Use shared Database connector (config/database.php)
+    require_once __DIR__ . '/../config/database.php';
+    try {
+        $conn = Database::connect();
+    } catch (Exception $ex) {
+        // log and redirect back with failure
+        $logDir = __DIR__ . '/../uploads/logs/';
+        if (!is_dir($logDir)) mkdir($logDir, 0755, true);
+        file_put_contents($logDir . 'db_connect.log', '['.date('Y-m-d H:i:s').'] Handler DB connect exception: ' . $ex->getMessage() . "\n", FILE_APPEND);
+        header("Location: ../reservation-dashboard.php?reserved=0");
+        exit();
     }
 
     // Fetch user details (stored in user_details table)
