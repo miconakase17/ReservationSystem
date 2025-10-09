@@ -5,6 +5,15 @@ require_once 'models/additionals-model.php';
 $db = Database::connect();
 $additionalsModel = new Additionals($db);
 $additionals = $additionalsModel->readAll();
+// Fetch studio pricing rules for JS
+$pricingSql = "SELECT sp.weekdayFrom, sp.weekdayTo, sp.hourlyRate FROM service_pricings sp JOIN services s ON sp.serviceID = s.serviceID WHERE s.serviceName = 'Studio Rental'";
+$pricingRes = $db->query($pricingSql);
+$studioPricings = [];
+if ($pricingRes) {
+  while ($r = $pricingRes->fetch_assoc()) {
+    $studioPricings[] = $r;
+  }
+}
 ?>
 
 <!DOCTYPE html>
@@ -277,6 +286,70 @@ $additionals = $additionalsModel->readAll();
 
     <!-- Main JS File -->
     <script src="assets/js/main.js"></script>
+    <!-- Reservation confirmed modal -->
+    <div class="modal fade" id="reservedModal" tabindex="-1" aria-labelledby="reservedModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="reservedModalLabel">Reservation Confirmed</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Your reservation has been received. Thank you! We will contact you with details shortly.
+          </div>
+          <div class="modal-footer">
+            <a href="customer-dashboard.php" class="btn btn-primary">Go to Dashboard</a>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Reservation error modal -->
+    <div class="modal fade" id="reservedErrorModal" tabindex="-1" aria-labelledby="reservedErrorModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="reservedErrorModalLabel">Reservation Failed</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            We couldn't complete your reservation. Please try again or contact support.
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Try Again</button>
+            <a href="contact.php" class="btn btn-secondary">Contact Support</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // Pricing rules injected from server (service_pricings for Studio Rental)
+      window.studioPricings = <?php echo json_encode($studioPricings, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT); ?> || [];
+    </script>
+    <script>
+      // Show reservation confirmation modal when ?reserved=1 is present
+      (function(){
+        try {
+          const params = new URLSearchParams(window.location.search);
+          if (params.get('reserved') === '1') {
+                // show bootstrap modal success
+                var reservedModal = new bootstrap.Modal(document.getElementById('reservedModal'));
+                reservedModal.show();
+                params.delete('reserved');
+                const newUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+                window.history.replaceState({}, document.title, newUrl);
+              } else if (params.get('reserved') === '0') {
+                var errModal = new bootstrap.Modal(document.getElementById('reservedErrorModal'));
+                errModal.show();
+                params.delete('reserved');
+                const newUrl2 = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+                window.history.replaceState({}, document.title, newUrl2);
+              }
+        } catch (err) {
+          console.error(err);
+        }
+      })();
+    </script>
     <script src="assets/js/reservation.js"></script>
 </body>
 </html>

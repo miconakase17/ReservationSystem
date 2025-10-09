@@ -16,6 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `additionals`
+--
+
+DROP TABLE IF EXISTS `additionals`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `additionals` (
+  `addID` int unsigned NOT NULL AUTO_INCREMENT,
+  `addName` varchar(45) DEFAULT NULL,
+  `price` int DEFAULT NULL,
+  PRIMARY KEY (`addID`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `additionals`
+--
+
+LOCK TABLES `additionals` WRITE;
+/*!40000 ALTER TABLE `additionals` DISABLE KEYS */;
+INSERT INTO `additionals` VALUES (1,'Electric Guitar',20),(2,'Bass Guitar',20),(3,'Drum Sticks',30),(4,'Guitar Pick',10),(5,'Stage Lights',20),(6,'Microphone',20);
+/*!40000 ALTER TABLE `additionals` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `messages`
 --
 
@@ -75,6 +100,62 @@ CREATE TABLE `payments` (
 LOCK TABLES `payments` WRITE;
 /*!40000 ALTER TABLE `payments` DISABLE KEYS */;
 /*!40000 ALTER TABLE `payments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `recording_options`
+--
+
+DROP TABLE IF EXISTS `recording_options`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `recording_options` (
+  `recordingID` int NOT NULL AUTO_INCREMENT,
+  `reservationID` int NOT NULL,
+  `mode` enum('MultiTrack','LiveTrack') DEFAULT 'MultiTrack',
+  `mixAndMaster` tinyint(1) DEFAULT '0',
+  `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`recordingID`),
+  KEY `reservationID` (`reservationID`),
+  CONSTRAINT `recording_options_ibfk_1` FOREIGN KEY (`reservationID`) REFERENCES `reservations` (`reservationID`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `recording_options`
+--
+
+LOCK TABLES `recording_options` WRITE;
+/*!40000 ALTER TABLE `recording_options` DISABLE KEYS */;
+/*!40000 ALTER TABLE `recording_options` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `reservation_reciepts`
+--
+
+DROP TABLE IF EXISTS `reservation_reciepts`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `reservation_reciepts` (
+  `receiptID` int NOT NULL AUTO_INCREMENT,
+  `reservationID` int NOT NULL,
+  `upload_type` varchar(50) NOT NULL COMMENT 'e.g., receipt, recording_receipt',
+  `fileName` varchar(255) NOT NULL,
+  `uploadedAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`receiptID`),
+  KEY `reservationID` (`reservationID`),
+  CONSTRAINT `reservation_reciepts_ibfk_1` FOREIGN KEY (`reservationID`) REFERENCES `reservations` (`reservationID`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reservation_reciepts`
+--
+
+LOCK TABLES `reservation_reciepts` WRITE;
+/*!40000 ALTER TABLE `reservation_reciepts` DISABLE KEYS */;
+/*!40000 ALTER TABLE `reservation_reciepts` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -138,6 +219,36 @@ INSERT INTO `roles` VALUES (1,'0'),(2,'0');
 UNLOCK TABLES;
 
 --
+-- Table structure for table `service_pricings`
+--
+
+DROP TABLE IF EXISTS `service_pricings`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `service_pricings` (
+  `servicePriceID` int NOT NULL AUTO_INCREMENT,
+  `serviceID` int NOT NULL,
+  `weekdayFrom` tinyint unsigned NOT NULL COMMENT '1=Mon .. 7=Sun',
+  `weekdayTo` tinyint unsigned NOT NULL COMMENT '1=Mon .. 7=Sun',
+  `hourlyRate` int NOT NULL COMMENT 'amount in smallest currency unit e.g. PHP pesos (no decimals)',
+  `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`servicePriceID`),
+  KEY `serviceID` (`serviceID`),
+  CONSTRAINT `service_pricings_ibfk_1` FOREIGN KEY (`serviceID`) REFERENCES `services` (`serviceID`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `service_pricings`
+--
+
+LOCK TABLES `service_pricings` WRITE;
+/*!40000 ALTER TABLE `service_pricings` DISABLE KEYS */;
+INSERT INTO `service_pricings` VALUES (1,1,1,4,250,'2025-10-09 02:19:01'),(2,1,5,7,300,'2025-10-09 02:19:01');
+/*!40000 ALTER TABLE `service_pricings` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `services`
 --
 
@@ -157,6 +268,7 @@ CREATE TABLE `services` (
 
 LOCK TABLES `services` WRITE;
 /*!40000 ALTER TABLE `services` DISABLE KEYS */;
+INSERT INTO `services` VALUES (1,'Studio Rental'),(2,'Recording'),(3,'Drum Lesson');
 /*!40000 ALTER TABLE `services` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -276,4 +388,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-09-13 18:08:59
+-- Dump completed on 2025-10-09 13:47:57

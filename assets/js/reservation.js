@@ -43,7 +43,29 @@
   const totalHours = document.getElementById('total-hours');
   const totalAmount = document.getElementById('total-amount');
 
-  const ratePerHour = 250;
+  // Helper: determine hourly rate from server-injected pricing rules
+  function getHourlyRateForDate(date) {
+    const rules = window.studioPricings || [];
+    if (!date) return null;
+    // Convert JS getDay() (0=Sun..6=Sat) to 1=Mon..7=Sun
+    const jsDay = date.getDay();
+    const weekday = ((jsDay + 6) % 7) + 1;
+    for (let i = 0; i < rules.length; i++) {
+      const r = rules[i];
+      const from = parseInt(r.weekdayFrom, 10);
+      const to = parseInt(r.weekdayTo, 10);
+      const rate = parseInt(r.hourlyRate, 10);
+      if (!isNaN(from) && !isNaN(to) && !isNaN(rate)) {
+        if (from <= to) {
+          if (weekday >= from && weekday <= to) return rate;
+        } else {
+          // wrap-around ranges (e.g., Thu-Sun across week boundary)
+          if (weekday >= from || weekday <= to) return rate;
+        }
+      }
+    }
+    return null;
+  }
   function calculateTotal() {
     const dateInput = document.getElementById('date');
     if (startTime.value && endTime.value && dateInput && dateInput.value) {
@@ -64,10 +86,13 @@
         let hours = Math.ceil(diff); // round up to nearest full hour
         totalHours.value = hours + " hour" + (hours > 1 ? "s" : "");
 
-        // Get day of week from selected date
+        // Get day of week from selected date and determine rate from pricing rules
         let selectedDate = new Date(dateInput.value);
-        let day = selectedDate.getDay(); // 0=Sunday, 1=Monday, ..., 6=Saturday
-        let rate = (day >= 1 && day <= 4) ? 250 : 300; // Mon-Thu: 250, Fri-Sun: 300
+        let rate = getHourlyRateForDate(selectedDate);
+        if (rate === null) {
+          // fallback if no pricing rule found
+          rate = 0;
+        }
 
         let baseAmount = hours * rate;
 
