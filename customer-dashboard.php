@@ -1,5 +1,6 @@
 <?php
 session_start();
+require_once __DIR__ . '/includes/reservation-data.php';
 ?>
 
 <!DOCTYPE html>
@@ -30,6 +31,7 @@ session_start();
 
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
+  <link href="assets/css/reservation.css" rel="stylesheet"> 
 
 </head>
 
@@ -47,17 +49,223 @@ session_start();
           <li><a href="customer-dashboard.php">Home</a></li>
           <li><a href="#about">View Reservation</a></li>
           <li><a href="#services">Profile</a></li>
-          <li><a href="#profile">Log Out</a></li>
+          <li><a href="index.html">Log Out</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
 
-      <a class="cta-btn" href="reservation-dashboard.php">Reserve Now!</a>
+      <a class="cta-btn" data-bs-target="#reservationForm" data-bs-toggle="modal">Reserve Now!</a>
 
     </div>
   </header>
 
   <main class="main">
+
+    <!-- Modal -->
+    <div class="modal fade" id="reservationForm" tabindex="-1" aria-labelledby="reservationFormTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+
+          <!-- Header -->
+          <div class="modal-header">
+            <h5 class="modal-title" id="reservationFormTitle">Kevin's Express Music Studio</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <!-- Body -->
+          <div class="modal-body">
+            <form action="handlers/reservation_handler.php" method="post" class="reservation-form" enctype="multipart/form-data">
+
+              <div class="container section-title text-center">
+                <h3>New Reservation</h3>
+              </div>
+
+              <div class="row gy-4">
+                <div class="col-6">
+                  <input type="text" name="firstname" class="form-control"
+                    value="<?php echo htmlspecialchars($_SESSION['firstname'] ?? ''); ?>" readonly>
+                </div>
+
+                <div class="col-6">
+                  <input type="text" name="lastname" class="form-control"
+                    value="<?php echo htmlspecialchars($_SESSION['lastname'] ?? ''); ?>" readonly>
+                </div>
+
+                <div class="col-12">
+                  <select name="service" id="service" class="form-select" required>
+                    <option value="" disabled selected>Select Service</option>
+                    <option value="Studio Rental">Studio Rental</option>
+                    <option value="Recording">Recording</option>
+                    <option value="Drum Lesson">Drum Lesson</option>
+                  </select>
+                </div>
+
+                <!-- Studio Rental Fields -->
+                <div id="studio-fields" class="row gy-4" style="display: none;">
+                  <div class="col-12">
+                    <input type="text" name="bandname" class="form-control" placeholder="Band Name">
+                  </div>
+
+                  <div class="col-sm-4">
+                    <label for="date" class="form-label">Select Date:</label>
+                    <input type="date" id="date" name="date" class="form-control">
+                  </div>
+
+                  <div class="col-sm-4">
+                    <label for="start-time" class="form-label">Start Time:</label>
+                    <input type="time" id="start-time" name="start-time" class="form-control">
+                  </div>
+
+                  <div class="col-sm-4">
+                    <label for="end-time" class="form-label">End Time:</label>
+                    <input type="time" id="end-time" name="end-time" class="form-control">
+                  </div>
+
+                  <div class="col-12 mt-3">
+                    <div class="row">
+
+                      <div class="col-md-6">
+                        <label class="form-label fw-bold">Additionals:</label>
+                        <?php if ($additionals && $additionals->num_rows > 0): ?>
+                          <?php while ($row = $additionals->fetch_assoc()): ?>
+                            <div class="form-check">
+                              <input class="form-check-input additional-checkbox" type="checkbox"
+                                id="additional-<?php echo $row['addID']; ?>" name="additionals[]"
+                                value="<?php echo htmlspecialchars($row['addName']); ?>"
+                                data-price="<?php echo $row['price']; ?>">
+                              <label class="form-check-label" for="additional-<?php echo $row['addID']; ?>">
+                                <?php echo htmlspecialchars($row['addName']); ?> (₱<?php echo number_format($row['price'], 2); ?>)
+                              </label>
+                            </div>
+                          <?php endwhile; ?>
+                        <?php else: ?>
+                          <p>No additionals available.</p>
+                        <?php endif; ?>
+
+                        <div class="mt-3">
+                          <label class="form-label fw-bold">Total Hours:</label>
+                          <input type="text" id="total-hours" name="total-hours" class="form-control mb-2" readonly>
+
+                          <label class="form-label fw-bold">Total Amount (₱):</label>
+                          <input type="text" id="total-amount" name="total-amount" class="form-control" readonly>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <label class="form-label fw-bold">Upload Receipt:</label>
+                        <div class="mb-2">
+                          <input type="file" id="rental-image" name="rental-image" accept="image/*" class="form-control">
+                        </div>
+                        <div class="mb-2">
+                          <img id="rental-image-preview" src="" alt="Preview"
+                            style="max-width:100%; height:auto; display:none; border:1px solid #ddd; padding:6px;" />
+                        </div>
+
+                        <hr>
+                        <div class="text-center">
+                          <label class="form-label fw-bold">GCash (Down Payment):</label>
+                          <div class="mb-2">
+                            <img src="assets/img/QR_Payment.png" alt="GCash QR"
+                              style="max-width:200px; height:auto; border:1px solid #ddd; padding:6px;" />
+                          </div>
+                          <p class="small text-muted">Scan this QR code with GCash to pay at least half of total payment.
+                            After payment, you may upload the receipt above.</p>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Recording Fields -->
+                <div id="recording-fields" class="row gy-4" style="display: none;">
+                  <div class="col-12">
+                    <label class="form-label fw-bold">Recording Mode:</label><br>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="recording-mode" id="multitrack"
+                        value="MultiTrack" required>
+                      <label class="form-check-label" for="multitrack">Multi Track</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="radio" name="recording-mode" id="livetrack"
+                        value="LiveTrack" required>
+                      <label class="form-check-label" for="livetrack">Live Track</label>
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <label class="form-label fw-bold">Option:</label><br>
+                    <div class="form-check form-check-inline">
+                      <input class="form-check-input" type="checkbox" name="mix" id="mix" value="Mix">
+                      <label class="form-check-label" for="mix">Mix and Master</label>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <label for="date" class="form-label">Select Date:</label>
+                    <input type="date" id="recording-date" name="date" class="form-control">
+                  </div>
+
+                  <div class="col-sm-4">
+                    <label for="start-time" class="form-label">Start Time:</label>
+                    <input type="time" id="recording-start-time" name="start-time" class="form-control">
+                  </div>
+
+                  <div class="col-sm-4">
+                    <label for="end-time" class="form-label">End Time:</label>
+                    <input type="time" id="recording-end-time" name="end-time" class="form-control">
+                  </div>
+
+                  <div class="col-12">
+                    <label for="recording-notes" class="form-label">Notes:</label>
+                    <textarea id="recording-notes" name="recording-notes" class="form-control" rows="3"
+                      placeholder="Enter any notes or requirements..."></textarea>
+                  </div>
+
+                  <div class="col-12">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <label class="form-label fw-bold">Upload Receipt (Recording):</label>
+                        <div class="mb-2">
+                          <input type="file" id="recording-image" name="recording-image" accept="image/*"
+                            class="form-control">
+                        </div>
+                        <div class="mb-2">
+                          <img id="recording-image-preview" src="" alt="Preview"
+                            style="max-width:100%; height:auto; display:none; border:1px solid #ddd; padding:6px;" />
+                        </div>
+                        <small class="text-muted">Upload payment receipt here.</small>
+
+                        <div class="mt-3">
+                          <label class="form-label fw-bold">Total Price (₱):</label>
+                          <input type="text" id="recording-total-price" name="recording-total-price" class="form-control"
+                            readonly>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6 text-center">
+                        <label class="form-label fw-bold">GCash (Down Payment):</label>
+                        <div class="mb-2">
+                          <img src="assets/img/QR_Payment.png" alt="GCash QR"
+                            style="max-width:200px; height:auto; border:1px solid #ddd; padding:6px;" />
+                        </div>
+                        <p class="small text-muted">Scan this QR code with GCash to pay at least half of total payment.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-12 text-center">
+                  <button type="submit" class="btn btn-primary mt-3">Submit Reservation</button>
+                </div>
+
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
 
     <!-- Page Title -->
     <div class="page-title dark-background" data-aos="fade" style="background-image: url(assets/img/page-title-bg.webp);">
@@ -209,6 +417,35 @@ session_start();
   <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
 
+  <script>
+      // Pricing rules injected from server (service_pricings for Studio Rental)
+      window.studioPricings = <?php echo json_encode($studioPricings, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT); ?> || [];
+    </script>
+    <script>
+      // Show reservation confirmation modal when ?reserved=1 is present
+      (function(){
+        try {
+          const params = new URLSearchParams(window.location.search);
+          if (params.get('reserved') === '1') {
+                // show bootstrap modal success
+                var reservedModal = new bootstrap.Modal(document.getElementById('reservedModal'));
+                reservedModal.show();
+                params.delete('reserved');
+                const newUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+                window.history.replaceState({}, document.title, newUrl);
+              } else if (params.get('reserved') === '0') {
+                var errModal = new bootstrap.Modal(document.getElementById('reservedErrorModal'));
+                errModal.show();
+                params.delete('reserved');
+                const newUrl2 = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+                window.history.replaceState({}, document.title, newUrl2);
+              }
+        } catch (err) {
+          console.error(err);
+        }
+      })();
+    </script>
+    <script src="assets/js/reservation.js"></script>
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
 

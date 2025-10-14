@@ -171,3 +171,14 @@
     });
   }
 
+document.addEventListener('DOMContentLoaded', function () {
+  const serviceSelect = document.getElementById('service');
+  const studioFields = document.getElementById('studio-fields');
+  const recordingFields = document.getElementById('recording-fields');
+
+  serviceSelect.addEventListener('change', function () {
+    const value = this.value;
+    studioFields.style.display = (value === 'Studio Rental') ? 'block' : 'none';
+    recordingFields.style.display = (value === 'Recording') ? 'block' : 'none';
+  });
+});
