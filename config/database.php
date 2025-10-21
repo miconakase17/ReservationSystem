@@ -6,7 +6,7 @@ class Database {
     private static $password = "admin123";
     private static $conn;
 
-    public static function connect() {
+    public static function getConnection() {
         if (!self::$conn) {
             self::$conn = new mysqli(self::$host, self::$username, self::$password, self::$db_name);
             if (self::$conn->connect_error) {

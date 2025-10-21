@@ -1,5 +1,5 @@
 <?php
-class Additionals {
+class AdditionalsModel {
     private $conn;
     private $table = "additionals";
 

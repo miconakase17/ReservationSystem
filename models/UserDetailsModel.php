@@ -1,5 +1,5 @@
 <?php
-class UserDetails {
+class UserDetailsModel {
     private $conn;
     private $table = "user_details";
 
@@ -26,7 +26,7 @@ class UserDetails {
     }
 
     // Create or update details
-    public function save($data) {
+    public function createDetails($data) {
         $existing = $this->getByUserId($data['userID']);
 
         if ($existing) {

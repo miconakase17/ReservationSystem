@@ -1,17 +1,13 @@
 <?php
-// includes/reservation-data.php
-// Responsible for preparing $additionals and $studioPricings for reservation pages.
-// Does NOT start the session.
-
-require_once __DIR__ . '/../config/database.php';
-require_once __DIR__ . '/../models/additionals-model.php';
+require_once __DIR__ . '/../config/Database.php';
+require_once __DIR__ . '/../models/AdditionalsModel.php';
 
 $additionals = null;
 $studioPricings = [];
 $db = null;
 try {
-    $db = Database::connect();
-    $additionalsModel = new Additionals($db);
+    $db = Database::getConnection();
+    $additionalsModel = new AdditionalsModel($db);
     $additionals = $additionalsModel->readAll();
 
     $pricingSql = "SELECT sp.weekdayFrom, sp.weekdayTo, sp.hourlyRate FROM service_pricings sp JOIN services s ON sp.serviceID = s.serviceID WHERE s.serviceName = 'Studio Rental'";
