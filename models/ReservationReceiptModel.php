@@ -1,0 +1,41 @@
+<?php
+class ReservationReceiptModel {
+    private $conn;
+    private $table = "reservation_receipts";
+
+    public $receiptID;
+    public $reservationID;
+    public $uploadType;
+    public $fileName;
+
+    public function __construct($db) {
+        $this->conn = $db;
+    }
+
+    // ✅ Upload new receipt record
+    public function create($data) {
+        $sql = "INSERT INTO {$this->table} (reservationID, upload_type, fileName)
+                VALUES (?, ?, ?)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("iss", $data['reservationID'], $data['upload_type'], $data['fileName']);
+        return $stmt->execute();
+    }
+
+    // ✅ Get all receipts for a reservation
+    public function getByReservation($reservationID) {
+        $sql = "SELECT * FROM {$this->table} WHERE reservationID = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $reservationID);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    // ✅ Delete a specific uploaded file record
+    public function delete($receiptID) {
+        $sql = "DELETE FROM {$this->table} WHERE receiptID = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $receiptID);
+        return $stmt->execute();
+    }
+}

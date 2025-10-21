@@ -65,7 +65,7 @@ require_once __DIR__ . '/includes/reservation-data.php';
       <div class="container">
         <div class="row justify-content-center"> 
           <div class="col-lg-6">
-            <form action="handlers/reservation_handler.php" method="post" class="reservation-form" enctype="multipart/form-data">
+            <form action="process/ReservationProcess.php" method="post" class="reservation-form" enctype="multipart/form-data">
 
                 <div class="container section-title text-center">
                     <h3>New Reservation</h3>

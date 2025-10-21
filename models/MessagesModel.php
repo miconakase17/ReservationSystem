@@ -1,7 +1,6 @@
 <?php
-require_once __DIR__ . '/../config/Database.php';
 
-class Messages {
+class MessagesModel {
     private $conn;
     private $table = "messages";
 
