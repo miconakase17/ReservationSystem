@@ -8245,9 +8245,8 @@ h1, h2, h3, h4, h5,
 /*  Calendar wrapper */
 .calendar-container {
   position: relative;
-  margin: 0 auto;
+  margin: 0;
   height: 100%;
-  width: 50%;
   background: #fff;
   font: 13px Helvetica, Arial, san-serif;
   display: inline-block;

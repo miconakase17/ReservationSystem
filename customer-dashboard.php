@@ -13,6 +13,8 @@ require_once __DIR__ . '/includes/reservation-data.php';
   <meta name="description" content="">
   <meta name="keywords" content="">
 
+  <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+
   <!-- Favicons -->
   <link href="assets/img/favicon.png" rel="icon">
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -106,19 +108,21 @@ require_once __DIR__ . '/includes/reservation-data.php';
                     <input type="text" name="bandname" class="form-control" placeholder="Band Name">
                   </div>
 
-                  <div class="col-sm-4">
-                    <label for="date" class="form-label">Select Date:</label>
-                    <input type="date" id="date" name="date" class="form-control">
-                  </div>
+                  <div class="row gy-4">
+                    <div class="col-sm-4">
+                      <label for="date" class="form-label">Select Date:</label>
+                      <input type="date" id="date" name="date" class="form-control">
+                    </div>
 
-                  <div class="col-sm-4">
-                    <label for="start-time" class="form-label">Start Time:</label>
-                    <input type="time" id="start-time" name="start-time" class="form-control">
-                  </div>
+                    <div class="col-sm-4">
+                      <label for="start-time" class="form-label">Start Time:</label>
+                      <input type="time" id="start-time" name="start-time" class="form-control">
+                    </div>
 
-                  <div class="col-sm-4">
-                    <label for="end-time" class="form-label">End Time:</label>
-                    <input type="time" id="end-time" name="end-time" class="form-control">
+                    <div class="col-sm-4">
+                      <label for="end-time" class="form-label">End Time:</label>
+                      <input type="time" id="end-time" name="end-time" class="form-control">
+                    </div>
                   </div>
 
                   <div class="col-12 mt-3">
@@ -201,19 +205,21 @@ require_once __DIR__ . '/includes/reservation-data.php';
                     </div>
                   </div>
 
-                  <div class="col-sm-4">
-                    <label for="date" class="form-label">Select Date:</label>
-                    <input type="date" id="recording-date" name="date" class="form-control">
-                  </div>
+                  <div class="row gy-4">
+                    <div class="col-sm-4">
+                      <label for="date" class="form-label">Select Date:</label>
+                      <input type="date" id="date" name="date" class="form-control">
+                    </div>
 
-                  <div class="col-sm-4">
-                    <label for="start-time" class="form-label">Start Time:</label>
-                    <input type="time" id="recording-start-time" name="start-time" class="form-control">
-                  </div>
+                    <div class="col-sm-4">
+                      <label for="start-time" class="form-label">Start Time:</label>
+                      <input type="time" id="start-time" name="start-time" class="form-control">
+                    </div>
 
-                  <div class="col-sm-4">
-                    <label for="end-time" class="form-label">End Time:</label>
-                    <input type="time" id="recording-end-time" name="end-time" class="form-control">
+                    <div class="col-sm-4">
+                      <label for="end-time" class="form-label">End Time:</label>
+                      <input type="time" id="end-time" name="end-time" class="form-control">
+                    </div>
                   </div>
 
                   <div class="col-12">

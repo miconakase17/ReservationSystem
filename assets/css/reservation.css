@@ -70,7 +70,7 @@
   border-radius: 0;
   color: var(--default-color);
   background-color: var(--surface-color);
-  border-color: color-mix(in srgb, var(--default-color), transparent 50%);
+  border-color: color-mix(in srgb, var(--default-color), transparent 0%);
 }
 
 .reservation-section .reservation-form input[type=text]:focus,
