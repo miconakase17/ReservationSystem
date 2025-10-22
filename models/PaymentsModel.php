@@ -19,23 +19,24 @@ class PaymentsModel {
     }
 
     // ✅ Create a new payment record
-    public function createPayments($data) {
-        $sql = "INSERT INTO {$this->table} 
-                (userID, reservationID, amount, paymentDate, paymentMethod, paymentStatus, transactionReference)
-                VALUES (?, ?, ?, ?, ?, ?, ?)";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param(
-            "iisssss",
-            $data['userID'],
-            $data['reservationID'],
-            $data['amount'],
-            $data['paymentDate'],
-            $data['paymentMethod'],
-            $data['paymentStatus'],
-            $data['transactionReference']
-        );
-        return $stmt->execute();
-    }
+    public function createPayments() {
+    $sql = "INSERT INTO {$this->table} 
+            (userID, reservationID, amount, paymentDate, paymentMethod, paymentStatus, transactionReference)
+            VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param(
+        "iisssss",
+        $this->userID,
+        $this->reservationID,
+        $this->amount,
+        $this->paymentDate,
+        $this->paymentMethod,
+        $this->paymentStatus,
+        $this->transactionReference
+    );
+    return $stmt->execute();
+}
+
 
     // ✅ Get all payments by user
     public function getPaymentsByUserId($userID) {

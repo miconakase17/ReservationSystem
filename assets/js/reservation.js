@@ -17,8 +17,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const startTime = document.getElementById('studio-start-time');
   const endTime = document.getElementById('studio-end-time');
   const dateInput = document.getElementById('studio-date');
-  const totalHours = document.getElementById('total-hours');
-  const totalAmount = document.getElementById('total-amount');
+  const totalHours = document.getElementById('totalHours');
+  const totalAmount = document.getElementById('totalCost');
 
   const rentalImageInput = document.getElementById('rental-image');
   const rentalImagePreview = document.getElementById('rental-image-preview');
@@ -152,4 +152,29 @@ toggleSection(drumlessonFields, serviceSelect.value === '3');
 
   setupImagePreview(rentalImageInput, rentalImagePreview);
   setupImagePreview(recordingImageInput, recordingImagePreview);
+
+    // --- Recording Service Price Calculation ---
+  const recordingTotal = document.getElementById('recording-total-price');
+  const multitrackRadio = document.getElementById('multitrack');
+  const livetrackRadio = document.getElementById('livetrack');
+  const mixCheckbox = document.getElementById('mix');
+
+  function calculateRecordingPrice() {
+    let total = 0;
+
+    if (multitrackRadio.checked) total += 500;
+    if (livetrackRadio.checked) total += 800;
+    if (mixCheckbox.checked) total += 1500;
+
+    recordingTotal.value = `₱${total.toLocaleString()}`;
+  }
+
+  // Attach event listeners
+  [multitrackRadio, livetrackRadio, mixCheckbox].forEach(el => {
+    el.addEventListener('change', calculateRecordingPrice);
+  });
+
+  // Initial calculation on page load
+  calculateRecordingPrice();
+
 });

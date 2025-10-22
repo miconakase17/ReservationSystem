@@ -19,7 +19,7 @@ class ReservationsModel {
     }
 
     // Create a new reservation
-    public function create() {
+    public function createReservation() {
         $sql = "INSERT INTO {$this->table} 
                   (userID, bandName, serviceID, date, startTime, endTime, totalCost, statusID, createdAt) 
                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())";
@@ -37,11 +37,17 @@ class ReservationsModel {
             $this->statusID
         );
 
-        return $stmt->execute();
+        if ($stmt->execute()) {
+        // ✅ Return the inserted reservation ID
+        return $this->conn->insert_id;
+    }
+
+    return false;
+
     }
 
     // Get all reservations
-    public function readAll() {
+    public function readAllReservations() {
         $sql = "SELECT * FROM {$this->table} ORDER BY createdAt DESC";
         return $this->conn->query($sql);
     }
@@ -56,7 +62,7 @@ class ReservationsModel {
     }
 
     // Update reservation
-    public function update() {
+    public function updateReservations() {
         $sql = "UPDATE {$this->table}
                   SET serviceID = ?, date = ?, startTime = ?, endTime = ?, totalCost = ?, statusID = ?
                   WHERE reservationID = ?";
@@ -75,7 +81,7 @@ class ReservationsModel {
     }
 
     // Delete reservation
-    public function delete($id) {
+    public function deleteReservations($id) {
         $sql = "DELETE FROM {$this->table} WHERE reservationID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $id);
@@ -83,7 +89,7 @@ class ReservationsModel {
     }
 
     // Get reservations by user ID
-    public function readByUser($userID) {
+    public function readReservationsByUserID($userID) {
         $sql = "SELECT * FROM {$this->table} WHERE userID = ? ORDER BY date DESC";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $userID);

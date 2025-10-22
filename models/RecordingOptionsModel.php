@@ -14,13 +14,14 @@ class RecordingOptionsModel {
     }
 
     // ✅ Create recording option
-    public function createRecordingOptions($data) {
-        $sql = "INSERT INTO {$this->table} (reservationID, mode, mixAndMaster)
-                VALUES (?, ?, ?)";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("isi", $data['reservationID'], $data['mode'], $data['mixAndMaster']);
-        return $stmt->execute();
-    }
+   public function createRecordingOptions() {
+    $sql = "INSERT INTO {$this->table} (reservationID, mode, mixAndMaster)
+            VALUES (?, ?, ?)";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("isi", $this->reservationID, $this->mode, $this->mixAndMaster);
+    return $stmt->execute();
+}
+
 
     // ✅ Get recording options by reservation
     public function getRecordingOptionsByReservationId($reservationID) {

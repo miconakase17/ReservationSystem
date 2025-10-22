@@ -13,11 +13,11 @@ class ReservationReceiptModel {
     }
 
     // ✅ Upload new receipt record
-    public function createReceipt($data) {
-        $sql = "INSERT INTO {$this->table} (reservationID, uploadType, fileName)
-                VALUES (?, ?, ?)";
+    public function createReceipt($data = []) {
+        $sql = "INSERT INTO {$this->table} (reservationID, uploadType, fileName, uploadedAt)
+                VALUES (?, ?, ?, NOW())";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("iss", $data['reservationID'], $data['uploadType'], $data['fileName']);
+        $stmt->bind_param("iss", $this->reservationID, $this->uploadType, $this->fileName);
         return $stmt->execute();
     }
 

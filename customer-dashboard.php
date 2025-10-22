@@ -146,19 +146,20 @@ require_once __DIR__ . '/includes/ReservationData.php';
                           <p>No additionals available.</p>
                         <?php endif; ?>
 
-                        <div class="mt-3">
+                        <div class="mt-5">
                           <label class="form-label fw-bold">Total Hours:</label>
-                          <input type="text" id="total-hours" name="totalHours" class="form-control mb-2" readonly>
+                          <input type="text" id="totalHours" name="totalHours" class="form-control mb-2" readonly>
 
                           <label class="form-label fw-bold">Total Amount (₱):</label>
-                          <input type="text" id="total-amount" name="totalCost" class="form-control" readonly>
+                          <input type="text" id="totalCost" name="totalCost" class="form-control" readonly>
+
                         </div>
                       </div>
-
+          
                       <div class="col-md-6">
                         <label class="form-label fw-bold">Upload Receipt:</label>
                         <div class="mb-2">
-                          <input type="file" id="rental-image" name="receipt" accept="image/*" class="form-control">
+                          <input type="file" id="rentalImage" name="receipt" accept="image/*" class="form-control">
                         </div>
                         <div class="mb-2">
                           <img id="rental-image-preview" src="" alt="Preview"
@@ -174,6 +175,9 @@ require_once __DIR__ . '/includes/ReservationData.php';
                           </div>
                           <p class="small text-muted">Scan this QR code with GCash to pay at least half of total payment.
                             After payment, you may upload the receipt above.</p>
+
+                            <label class="form-label fw-bold">Amount Paid (₱):</label>
+                            <input type="text" name="amountPaid" id="amountPaid" required>
                         </div>
                       </div>
 
@@ -186,7 +190,7 @@ require_once __DIR__ . '/includes/ReservationData.php';
                   <div class="col-12">
                     <label class="form-label fw-bold">Recording Mode:</label><br>
                     <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="recording-mode" id="multitrack"
+                      <input class="form-check-input" type="radio" name="recordingMode" id="multitrack"
                         value="MultiTrack" required>
                       <label class="form-check-label" for="multitrack">Multi Track</label>
                     </div>
