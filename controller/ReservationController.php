@@ -48,7 +48,7 @@ class ReservationController {
             $recordingOptions->reservationID = $reservationID;
             $recordingOptions->mode = $data['recordingMode'] ?? 'MultiTrack';
             $recordingOptions->mixAndMaster = isset($data['mix']) ? 1 : 0;
-            $recordingOptions->create();
+            $recordingOptions->createRecordingOptions($data);
         }
 
         // 3️⃣ If Studio Rental, store additionals
@@ -68,7 +68,7 @@ class ReservationController {
                 $receiptModel->reservationID = $reservationID;
                 $receiptModel->uploadType = $data['upload_type'] ?? 'receipt';
                 $receiptModel->fileName = $fileName;
-                $receiptModel->create();
+                $receiptModel->createReceipt($data);
             }
         }
 
@@ -81,7 +81,7 @@ class ReservationController {
             $paymentModel->paymentMethod = 'GCash';
             $paymentModel->paymentStatus = 'Pending';
             $paymentModel->paymentDate = date('Y-m-d H:i:s');
-            $paymentModel->create();
+            $paymentModel->createPayments($data);
         }
 
         return ['success' => true, 'message' => 'Reservation created successfully.'];

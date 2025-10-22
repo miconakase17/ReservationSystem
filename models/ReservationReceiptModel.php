@@ -13,7 +13,7 @@ class ReservationReceiptModel {
     }
 
     // ✅ Upload new receipt record
-    public function create($data) {
+    public function createReceipt($data) {
         $sql = "INSERT INTO {$this->table} (reservationID, upload_type, fileName)
                 VALUES (?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
@@ -22,7 +22,7 @@ class ReservationReceiptModel {
     }
 
     // ✅ Get all receipts for a reservation
-    public function getByReservation($reservationID) {
+    public function getReceiptByReservationId($reservationID) {
         $sql = "SELECT * FROM {$this->table} WHERE reservationID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $reservationID);
@@ -32,7 +32,7 @@ class ReservationReceiptModel {
     }
 
     // ✅ Delete a specific uploaded file record
-    public function delete($receiptID) {
+    public function deleteReceipt($receiptID) {
         $sql = "DELETE FROM {$this->table} WHERE receiptID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $receiptID);

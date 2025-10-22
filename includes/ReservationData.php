@@ -8,7 +8,7 @@ $db = null;
 try {
     $db = Database::getConnection();
     $additionalsModel = new AdditionalsModel($db);
-    $additionals = $additionalsModel->readAll();
+    $additionals = $additionalsModel->readAllAdditionals();
 
     $pricingSql = "SELECT sp.weekdayFrom, sp.weekdayTo, sp.hourlyRate FROM service_pricings sp JOIN services s ON sp.serviceID = s.serviceID WHERE s.serviceName = 'Studio Rental'";
     $pricingRes = $db->query($pricingSql);

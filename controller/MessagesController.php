@@ -14,7 +14,7 @@ class MessagesController {
     public function login($name, $email, $message) {
         session_start();
 
-        $success = $this->messagesModel->create([
+        $success = $this->messagesModel->createMessages([
             'name' => $name,
             'email' => $email,
             'message' => $message

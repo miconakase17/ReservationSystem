@@ -26,9 +26,9 @@ class SignUpController {
             'lastUpdate' => date('Y-m-d H:i:s'),
         ];
         // Step 1: Create the user
-        if ($this->userModel->create($data)) {
+        if ($this->userModel->createUsers($data)) {
             // Step 2: Retrieve the new user ID
-            $user = $this->userModel->findByUsername($username);
+            $user = $this->userModel->findUsersByUsername($username);
             $userID = $user['userID'];
 
             // Step 3: Insert user details

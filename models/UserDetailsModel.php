@@ -16,7 +16,7 @@ class UserDetailsModel {
     }
 
     // Get user details by userID
-    public function getByUserId($userID) {
+    public function getUserDetailsByUserId($userID) {
         $query = "SELECT * FROM {$this->table} WHERE userID = ?";
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param("i", $userID);
@@ -27,7 +27,7 @@ class UserDetailsModel {
 
     // Create or update details
     public function createDetails($data) {
-        $existing = $this->getByUserId($data['userID']);
+        $existing = $this->getUserDetailsByUserId($data['userID']);
 
         if ($existing) {
             // Update

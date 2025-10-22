@@ -32,11 +32,11 @@ class LoginController {
             exit();
         }
 
-        $user = $this->userModel->findByUsername($username);
+        $user = $this->userModel->findUsersByUsername($username);
 
         if ($user && password_verify($password, $user['password'])) {
         // Fetch user details from user_details table
-        $details = $this->userDetailsModel->getByUserId($user['userID']);
+        $details = $this->userDetailsModel->getUserDetailsByUserId($user['userID']);
 
         // Successful login
         $_SESSION['login_attempts'] = 0;

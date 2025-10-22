@@ -14,14 +14,14 @@ class UserModel {
     }
 
     // ✅ Get all users
-    public function getAll() {
+    public function getAllUsers() {
         $sql = "SELECT * FROM {$this->table}";
         $result = $this->conn->query($sql);
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
     // ✅ Get single user by ID
-    public function getById($id) {
+    public function getUsersById($id) {
         $sql = "SELECT * FROM {$this->table} WHERE userID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $id);
@@ -31,7 +31,7 @@ class UserModel {
     }
 
     // ✅ Find user by username (used for login and signup verification)
-    public function findByUsername($username) {
+    public function findUsersByUsername($username) {
         $sql = "SELECT u.userID, u.username, u.password, d.firstName, d.lastName
                 FROM {$this->table} u
                 LEFT JOIN user_details d ON u.userID = d.userID
@@ -46,7 +46,7 @@ class UserModel {
     }
 
     // ✅ Create new user (signup)
-    public function create($data) {
+    public function createUsers($data) {
         $sql = "INSERT INTO {$this->table} (username, password, createdAt, isActive)
                 VALUES (?, ?, ?, 1)";
         $stmt = $this->conn->prepare($sql);

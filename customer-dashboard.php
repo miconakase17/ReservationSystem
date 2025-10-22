@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once __DIR__ . '/includes/reservation-data.php';
+require_once __DIR__ . '/includes/ReservationData.php';
 ?>
 
 <!DOCTYPE html>
@@ -76,7 +76,7 @@ require_once __DIR__ . '/includes/reservation-data.php';
 
           <!-- Body -->
           <div class="modal-body">
-            <form action="handlers/reservation_handler.php" method="post" class="reservation-form" enctype="multipart/form-data">
+            <form action="process/ReservationProcess.php" method="post" class="reservation-form" enctype="multipart/form-data">
 
               <div class="container section-title text-center">
                 <h3>New Reservation</h3>
@@ -94,34 +94,34 @@ require_once __DIR__ . '/includes/reservation-data.php';
                 </div>
 
                 <div class="col-12">
-                  <select name="service" id="service" class="form-select" required>
+                  <select name="serviceID" id="service" class="form-select" required>
                     <option value="" disabled selected>Select Service</option>
-                    <option value="Studio Rental">Studio Rental</option>
-                    <option value="Recording">Recording</option>
-                    <option value="Drum Lesson">Drum Lesson</option>
+                    <option value="1">Studio Rental</option>
+                    <option value="2">Recording</option>
+                    <option value="3">Drum Lesson</option>
                   </select>
-                </div>
+                </div> 
 
                 <!-- Studio Rental Fields -->
                 <div id="studio-fields" class="row gy-4" style="display: none;">
                   <div class="col-12">
-                    <input type="text" name="bandname" class="form-control" placeholder="Band Name">
+                    <input type="text" name="bandName" class="form-control" placeholder="Band Name">
                   </div>
 
                   <div class="row gy-4">
                     <div class="col-sm-4">
                       <label for="date" class="form-label">Select Date:</label>
-                      <input type="date" id="date" name="date" class="form-control">
+                      <input type="date" id="studio-date" name="date" class="form-control">
                     </div>
 
                     <div class="col-sm-4">
                       <label for="start-time" class="form-label">Start Time:</label>
-                      <input type="time" id="start-time" name="start-time" class="form-control">
+                      <input type="time" id="studio-start-time" name="startTime" class="form-control">
                     </div>
 
                     <div class="col-sm-4">
                       <label for="end-time" class="form-label">End Time:</label>
-                      <input type="time" id="end-time" name="end-time" class="form-control">
+                      <input type="time" id="studio-end-time" name="endTime" class="form-control">
                     </div>
                   </div>
 
@@ -135,7 +135,7 @@ require_once __DIR__ . '/includes/reservation-data.php';
                             <div class="form-check">
                               <input class="form-check-input additional-checkbox" type="checkbox"
                                 id="additional-<?php echo $row['addID']; ?>" name="additionals[]"
-                                value="<?php echo htmlspecialchars($row['addName']); ?>"
+                                value="<?php echo $row['addID']; ?>"
                                 data-price="<?php echo $row['price']; ?>">
                               <label class="form-check-label" for="additional-<?php echo $row['addID']; ?>">
                                 <?php echo htmlspecialchars($row['addName']); ?> (₱<?php echo number_format($row['price'], 2); ?>)
@@ -148,17 +148,17 @@ require_once __DIR__ . '/includes/reservation-data.php';
 
                         <div class="mt-3">
                           <label class="form-label fw-bold">Total Hours:</label>
-                          <input type="text" id="total-hours" name="total-hours" class="form-control mb-2" readonly>
+                          <input type="text" id="total-hours" name="totalHours" class="form-control mb-2" readonly>
 
                           <label class="form-label fw-bold">Total Amount (₱):</label>
-                          <input type="text" id="total-amount" name="total-amount" class="form-control" readonly>
+                          <input type="text" id="total-amount" name="totalCost" class="form-control" readonly>
                         </div>
                       </div>
 
                       <div class="col-md-6">
                         <label class="form-label fw-bold">Upload Receipt:</label>
                         <div class="mb-2">
-                          <input type="file" id="rental-image" name="rental-image" accept="image/*" class="form-control">
+                          <input type="file" id="rental-image" name="receipt" accept="image/*" class="form-control">
                         </div>
                         <div class="mb-2">
                           <img id="rental-image-preview" src="" alt="Preview"
@@ -191,7 +191,7 @@ require_once __DIR__ . '/includes/reservation-data.php';
                       <label class="form-check-label" for="multitrack">Multi Track</label>
                     </div>
                     <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="recording-mode" id="livetrack"
+                      <input class="form-check-input" type="radio" name="recordingMode" id="livetrack"
                         value="LiveTrack" required>
                       <label class="form-check-label" for="livetrack">Live Track</label>
                     </div>
@@ -208,17 +208,17 @@ require_once __DIR__ . '/includes/reservation-data.php';
                   <div class="row gy-4">
                     <div class="col-sm-4">
                       <label for="date" class="form-label">Select Date:</label>
-                      <input type="date" id="date" name="date" class="form-control">
+                      <input type="date" id="recording-date" name="date" class="form-control">
                     </div>
 
                     <div class="col-sm-4">
                       <label for="start-time" class="form-label">Start Time:</label>
-                      <input type="time" id="start-time" name="start-time" class="form-control">
+                      <input type="time" id="recording-start-time" name="start-time" class="form-control">
                     </div>
 
                     <div class="col-sm-4">
                       <label for="end-time" class="form-label">End Time:</label>
-                      <input type="time" id="end-time" name="end-time" class="form-control">
+                      <input type="time" id="recording-end-time" name="end-time" class="form-control">
                     </div>
                   </div>
 
@@ -260,6 +260,8 @@ require_once __DIR__ . '/includes/reservation-data.php';
                     </div>
                   </div>
                 </div>
+
+                <div id="drumlesson-fields" style="display: none;"></div>
 
                 <div class="col-12 text-center">
                   <button type="submit" class="btn btn-primary mt-3">Submit Reservation</button>

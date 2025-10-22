@@ -15,7 +15,7 @@ class MessagesModel {
     }
 
     // Create a new message
-    public function create($data) {
+    public function createMessages($data) {
         $sql = "INSERT INTO $this->table (name, email, message) VALUES (?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("sss", $data['name'], $data['email'], $data['message']);
@@ -23,7 +23,7 @@ class MessagesModel {
     }
 
     // Retrieve all messages
-    public function getAll() {
+    public function getAllMessages() {
         $sql = "SELECT * FROM $this->table ORDER BY createdAt DESC";
         $result = $this->conn->query($sql);
         return $result->fetch_all(MYSQLI_ASSOC);

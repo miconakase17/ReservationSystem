@@ -1,5 +1,5 @@
 <?php
-class RecordingOptionModel {
+class RecordingOptionsModel {
     private $conn;
     private $table = "recording_options";
 
@@ -14,7 +14,7 @@ class RecordingOptionModel {
     }
 
     // ✅ Create recording option
-    public function create($data) {
+    public function createRecordingOptions($data) {
         $sql = "INSERT INTO {$this->table} (reservationID, mode, mixAndMaster)
                 VALUES (?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
@@ -23,7 +23,7 @@ class RecordingOptionModel {
     }
 
     // ✅ Get recording options by reservation
-    public function getByReservation($reservationID) {
+    public function getRecordingOptionsByReservationId($reservationID) {
         $sql = "SELECT * FROM {$this->table} WHERE reservationID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $reservationID);
@@ -33,7 +33,7 @@ class RecordingOptionModel {
     }
 
     // ✅ Update recording options
-    public function update($data) {
+    public function updateRecordingOptions($data) {
         $sql = "UPDATE {$this->table}
                 SET mode = ?, mixAndMaster = ?
                 WHERE reservationID = ?";
@@ -43,7 +43,7 @@ class RecordingOptionModel {
     }
 
     // ✅ Delete recording option (if needed)
-    public function delete($reservationID) {
+    public function deleteRecordingOptions($reservationID) {
         $sql = "DELETE FROM {$this->table} WHERE reservationID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $reservationID);

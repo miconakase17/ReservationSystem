@@ -19,7 +19,7 @@ class PaymentsModel {
     }
 
     // ✅ Create a new payment record
-    public function create($data) {
+    public function createPayments($data) {
         $sql = "INSERT INTO {$this->table} 
                 (userID, reservationID, amount, paymentDate, paymentMethod, paymentStatus, transactionReference)
                 VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -38,7 +38,7 @@ class PaymentsModel {
     }
 
     // ✅ Get all payments by user
-    public function getByUser($userID) {
+    public function getPaymentsByUserId($userID) {
         $sql = "SELECT * FROM {$this->table} WHERE userID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $userID);
@@ -48,7 +48,7 @@ class PaymentsModel {
     }
 
     // ✅ Get payments by reservation
-    public function getByReservation($reservationID) {
+    public function getPaymentsByReservationId($reservationID) {
         $sql = "SELECT * FROM {$this->table} WHERE reservationID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $reservationID);
@@ -58,7 +58,7 @@ class PaymentsModel {
     }
 
     // ✅ Update payment status (e.g. from "Pending" → "Completed")
-    public function updateStatus($paymentID, $status) {
+    public function updatePaymentStatus($paymentID, $status) {
         $sql = "UPDATE {$this->table} SET paymentStatus = ?, lastUpdate = NOW() WHERE paymentID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("si", $status, $paymentID);
@@ -66,7 +66,7 @@ class PaymentsModel {
     }
 
     // ✅ Delete a payment record (if needed)
-    public function delete($paymentID) {
+    public function deletePayments($paymentID) {
         $sql = "DELETE FROM {$this->table} WHERE paymentID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $paymentID);
