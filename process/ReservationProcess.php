@@ -1,9 +1,18 @@
 <?php
+session_start();
 require_once __DIR__ . '/../controller/ReservationController.php';
+
+// Make sure user is logged in
+if (!isset($_SESSION['user']['userID'])) {
+    die(json_encode(['success' => false, 'message' => 'User not logged in.']));
+}
+
+// Get userID directly from session (not from form)
+$userID = $_SESSION['user']['userID'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = [
-        'userID' => $_POST['userID'] ?? '',
+        'userID' => (int)$userID, // ✅ always valid and from session
         'serviceID' => $_POST['serviceID'] ?? '',
         'bandName' => $_POST['bandName'] ?? '',
         'date' => $_POST['date'] ?? '',
@@ -22,6 +31,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $controller = new ReservationController();
     $result = $controller->createReservation($data, $files);
 
-    // Optional: return JSON response
     echo json_encode($result);
 }
+?>

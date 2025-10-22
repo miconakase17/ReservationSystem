@@ -14,10 +14,10 @@ class ReservationReceiptModel {
 
     // ✅ Upload new receipt record
     public function createReceipt($data) {
-        $sql = "INSERT INTO {$this->table} (reservationID, upload_type, fileName)
+        $sql = "INSERT INTO {$this->table} (reservationID, uploadType, fileName)
                 VALUES (?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("iss", $data['reservationID'], $data['upload_type'], $data['fileName']);
+        $stmt->bind_param("iss", $data['reservationID'], $data['uploadType'], $data['fileName']);
         return $stmt->execute();
     }
 

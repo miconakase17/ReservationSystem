@@ -40,9 +40,12 @@ class LoginController {
 
         // Successful login
         $_SESSION['login_attempts'] = 0;
-        $_SESSION['userID'] = $user['userID'];
-        $_SESSION['firstname'] = $details['firstName'] ?? '';
-        $_SESSION['lastname']  = $details['lastName'] ?? '';
+        $_SESSION['user'] = [
+            'userID' => $user['userID'],
+            'firstName' => $details['firstName'] ?? '',
+            'lastName' => $details['lastName'] ?? '',
+            'username' => $user['username']
+        ];
 
         header("Location: http://localhost/ReservationSystem/customer-dashboard.php?login=success");
         exit();
