@@ -5,6 +5,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const recordingFields = document.getElementById('recording-fields');
   const drumlessonFields = document.getElementById('drumlesson-fields');
 
+  function toggleSection(section, show) {
+  if (!section) return;
+  section.style.display = show ? 'block' : 'none';
+  section.querySelectorAll('input, select, textarea').forEach(input => {
+    input.disabled = !show;
+    if (!show) input.removeAttribute('required');
+  });
+}
+
   const startTime = document.getElementById('studio-start-time');
   const endTime = document.getElementById('studio-end-time');
   const dateInput = document.getElementById('studio-date');
@@ -36,18 +45,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 serviceSelect.addEventListener('change', function() {
   const value = this.value;
-  const showStudio = value === '1';
-  const showRecording = value === '2';
-  const showDrum = value === '3';
 
-  studioFields.style.display = showStudio ? 'block' : 'none';
-  recordingFields.style.display = showRecording ? 'block' : 'none';
-  if (drumlessonFields) drumlessonFields.style.display = showDrum ? 'block' : 'none';
-
-  toggleRequired(studioFields, showStudio);
-  toggleRequired(recordingFields, showRecording);
-  if (drumlessonFields) toggleRequired(drumlessonFields, showDrum);
+  toggleSection(studioFields, value === '1');    // Studio Rental
+  toggleSection(recordingFields, value === '2'); // Recording
+  toggleSection(drumlessonFields, value === '3'); // Drum Lesson
 });
+
+// Run once on page load
+toggleSection(studioFields, serviceSelect.value === '1');
+toggleSection(recordingFields, serviceSelect.value === '2');
+toggleSection(drumlessonFields, serviceSelect.value === '3');
+
 
   serviceSelect.addEventListener('change', toggleServiceFields);
   toggleServiceFields(); // Initial check

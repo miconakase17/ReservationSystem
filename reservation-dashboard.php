@@ -72,6 +72,8 @@ require_once __DIR__ . '/includes/reservation-data.php';
                 </div>
                 <div class="row gy-4">
 
+                  <input type="hidden" name="userID" value="<?php echo htmlspecialchars($_SESSION['userID'] ?? ''); ?>">
+                  
                   <div class="col-6">
                     <input type="text" name="firstname" class="form-control" value="<?php echo htmlspecialchars($_SESSION['firstname'] ?? ''); ?>" readonly>
                   </div>
@@ -98,7 +100,7 @@ require_once __DIR__ . '/includes/reservation-data.php';
 
                     <div class="col-sm-4">
                       <label for="date" class="form-label">Select Date:</label>
-                      <input type="date" id="date" name="date" class="form-control">
+                      <input type="date" id="studio-date" name="date" class="form-control" required>
                     </div>
 
                     <div class="col-sm-4">
