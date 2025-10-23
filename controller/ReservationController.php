@@ -103,6 +103,7 @@ class ReservationController {
                 $paymentModel->paymentMethod = 'GCash';
                 $paymentModel->paymentStatus = 'Pending';
                 $paymentModel->paymentDate = date('Y-m-d H:i:s');
+                $paymentModel->transactionReference = $data['referenceNumber'] ?? '';
                 $paymentModel->createPayments(); // ✅ removed ($data)
             }
 

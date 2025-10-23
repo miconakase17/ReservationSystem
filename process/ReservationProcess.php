@@ -23,6 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'mix' => $_POST['mix'] ?? null,
         'additionals' => $_POST['additionals'] ?? [],
         'amountPaid' => $_POST['amountPaid'] ?? null,
+        'referenceNumber' => $_POST['referenceNumber'] ?? '',
         'upload_type' => $_POST['upload_type'] ?? 'receipt'
     ];
 

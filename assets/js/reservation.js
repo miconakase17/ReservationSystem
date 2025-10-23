@@ -8,9 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
   function toggleSection(section, show) {
   if (!section) return;
   section.style.display = show ? 'block' : 'none';
-  section.querySelectorAll('input, select, textarea').forEach(input => {
-    input.disabled = !show;
-    if (!show) input.removeAttribute('required');
+    section.querySelectorAll('input, select, textarea').forEach(input => {
+    if (show && input.hasAttribute('data-required-when-visible')) {
+      input.setAttribute('required', 'required');
+    } else {
+      input.removeAttribute('required');
+    }
   });
 }
 

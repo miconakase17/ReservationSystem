@@ -85,13 +85,13 @@ require_once __DIR__ . '/includes/ReservationData.php';
               <div class="row gy-4">
                 <div class="col-6">
                   <input type="text" name="firstname" class="form-control"
-                    value="<?php echo htmlspecialchars($_SESSION['firstname'] ?? ''); ?>" readonly>
+                  value="<?php echo htmlspecialchars($_SESSION['user']['firstName'] ?? ''); ?>" readonly>
                 </div>
-
                 <div class="col-6">
                   <input type="text" name="lastname" class="form-control"
-                    value="<?php echo htmlspecialchars($_SESSION['lastname'] ?? ''); ?>" readonly>
+                  value="<?php echo htmlspecialchars($_SESSION['user']['lastName'] ?? ''); ?>" readonly>
                 </div>
+
 
                 <div class="col-12">
                   <select name="serviceID" id="service" class="form-select" required>
@@ -164,7 +164,7 @@ require_once __DIR__ . '/includes/ReservationData.php';
                         <div class="mb-2">
                           <img id="rental-image-preview" src="" alt="Preview"
                             style="max-width:100%; height:auto; display:none; border:1px solid #ddd; padding:6px;" />
-                        </div>
+                      </div>
 
                         <hr>
                         <div class="text-center">
@@ -174,11 +174,17 @@ require_once __DIR__ . '/includes/ReservationData.php';
                               style="max-width:200px; height:auto; border:1px solid #ddd; padding:6px;" />
                           </div>
                           <p class="small text-muted">Scan this QR code with GCash to pay at least half of total payment.
-                            After payment, you may upload the receipt above.</p>
-
-                            <label class="form-label fw-bold">Amount Paid (₱):</label>
-                            <input type="text" name="amountPaid" id="amountPaid" required>
+                            After payment, you may upload the receipt above.
+                          </p>
                         </div>
+
+                         <div class ="mt-5">
+                            <label class="form-label fw-bold">Amount Paid (₱):</label>
+                            <input type="text" name="amountPaid" id="amountPaid" class="form-control mb-2" required>
+                        <br>
+                            <label class="form-label fw-bold">Reference No.</label>
+                            <input type="text" name="referenceNumber" id="referenceNumber" class="form-control" required>
+                          </div>
                       </div>
 
                     </div>
@@ -217,12 +223,12 @@ require_once __DIR__ . '/includes/ReservationData.php';
 
                     <div class="col-sm-4">
                       <label for="start-time" class="form-label">Start Time:</label>
-                      <input type="time" id="recording-start-time" name="start-time" class="form-control">
+                      <input type="time" id="recording-start-time" name="startTime" class="form-control">
                     </div>
 
                     <div class="col-sm-4">
                       <label for="end-time" class="form-label">End Time:</label>
-                      <input type="time" id="recording-end-time" name="end-time" class="form-control">
+                      <input type="time" id="recording-end-time" name="endTime" class="form-control">
                     </div>
                   </div>
 
@@ -283,7 +289,7 @@ require_once __DIR__ . '/includes/ReservationData.php';
     <div class="page-title dark-background" data-aos="fade" style="background-image: url(assets/img/page-title-bg.webp);">
       <div class="container position-relative">
         <h1>Welcome, <?php 
-                    echo htmlspecialchars($_SESSION['firstname'] ?? 'Customer'); 
+                    echo htmlspecialchars($_SESSION['user']['firstName'] ?? 'Customer');
                     ?>!</h1>
         <p>Please enjoy</p>
         <nav class="breadcrumbs">
