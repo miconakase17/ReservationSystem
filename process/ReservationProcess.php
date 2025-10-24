@@ -11,13 +11,12 @@ if (!isset($_SESSION['user']['userID'])) {
 $userID = $_SESSION['user']['userID'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    // Base data
     $data = [
         'userID' => (int)$userID, // ✅ always valid and from session
         'serviceID' => $_POST['serviceID'] ?? '',
         'bandName' => $_POST['bandName'] ?? '',
-        'date' => $_POST['date'] ?? '',
-        'startTime' => $_POST['startTime'] ?? '',
-        'endTime' => $_POST['endTime'] ?? '',
         'totalCost' => $_POST['totalCost'] ?? '',
         'recordingMode' => $_POST['recordingMode'] ?? null,
         'mix' => $_POST['mix'] ?? null,
@@ -26,6 +25,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'referenceNumber' => $_POST['referenceNumber'] ?? '',
         'upload_type' => $_POST['upload_type'] ?? 'receipt'
     ];
+
+    // Handle date/time depending on selected service
+    switch ($_POST['serviceID']) {
+        case '1': // Studio Rental
+            $data['date'] = $_POST['studioDate'] ?? '';
+            $data['startTime'] = $_POST['studioStartTime'] ?? '';
+            $data['endTime'] = $_POST['studioEndTime'] ?? '';
+            break;
+
+        case '2': // Recording
+            $data['date'] = $_POST['recordingDate'] ?? '';
+            $data['startTime'] = $_POST['recordingStartTime'] ?? '';
+            $data['endTime'] = $_POST['recordingEndTime'] ?? '';
+            break;
+
+        case '3': // Drum Lesson
+            $data['date'] = $_POST['drumDate'] ?? '';
+            $data['startTime'] = $_POST['drumStartTime'] ?? '';
+            $data['endTime'] = $_POST['drumEndTime'] ?? '';
+            break;
+
+        default:
+            $data['date'] = '';
+            $data['startTime'] = '';
+            $data['endTime'] = '';
+    }
 
     $files = $_FILES ?? null;
 

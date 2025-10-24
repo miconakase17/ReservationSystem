@@ -111,17 +111,17 @@ require_once __DIR__ . '/includes/ReservationData.php';
                   <div class="row gy-4">
                     <div class="col-sm-4">
                       <label for="date" class="form-label">Select Date:</label>
-                      <input type="date" id="studio-date" name="date" class="form-control">
+                      <input type="date" id="studio-date" name="studioDate" class="form-control">
                     </div>
 
                     <div class="col-sm-4">
                       <label for="start-time" class="form-label">Start Time:</label>
-                      <input type="time" id="studio-start-time" name="startTime" class="form-control">
+                      <input type="time" id="studio-start-time" name="studioStartTime" class="form-control">
                     </div>
 
                     <div class="col-sm-4">
                       <label for="end-time" class="form-label">End Time:</label>
-                      <input type="time" id="studio-end-time" name="endTime" class="form-control">
+                      <input type="time" id="studio-end-time" name="studioEndTime" class="form-control">
                     </div>
                   </div>
 
@@ -218,17 +218,17 @@ require_once __DIR__ . '/includes/ReservationData.php';
                   <div class="row gy-4">
                     <div class="col-sm-4">
                       <label for="date" class="form-label">Select Date:</label>
-                      <input type="date" id="recording-date" name="date" class="form-control">
+                      <input type="date" id="recording-date" name="recordingDate" class="form-control">
                     </div>
 
                     <div class="col-sm-4">
                       <label for="start-time" class="form-label">Start Time:</label>
-                      <input type="time" id="recording-start-time" name="startTime" class="form-control">
+                      <input type="time" id="recording-start-time" name="recordingStartTime" class="form-control">
                     </div>
 
                     <div class="col-sm-4">
                       <label for="end-time" class="form-label">End Time:</label>
-                      <input type="time" id="recording-end-time" name="endTime" class="form-control">
+                      <input type="time" id="recording-end-time" name="recordingEndTime" class="form-control">
                     </div>
                   </div>
 
