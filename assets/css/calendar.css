@@ -1,0 +1,43 @@
+.days-table th {
+  text-align: center;
+  font-weight: 600;
+  padding: 8px 0;
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+/* Make the calendar modal almost full width */
+#calendarModal .modal-dialog {
+  max-width: 100vw !important;  /* take up 95% of the viewport width */
+  width: 95vw !important;
+  margin: 1rem auto;           /* center horizontally */
+}
+
+#calendarModal .modal-content {
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* Make the table inside fill the modal nicely */
+#calendarModal .table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+#calendarModal th, #calendarModal td {
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px 8px;
+}
+
+/* Optional: make headers stand out */
+#calendarModal th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  border-bottom: 2px solid #dee2e6;
+}

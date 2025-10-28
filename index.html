@@ -28,6 +28,7 @@
 
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
+  <link href="assests/css/calendar.css" rel="stylesheet">
 
 </head>
 
@@ -80,14 +81,6 @@
     <!-- CALENDAR MODAL -->
     <div class="modal fade" id="calendarModal" tabindex="-1" aria-labelledby="calendarModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-body">
-
-          <!-- Calendar Header -->
-          <div class="modal-header">
-            <h5 class="modal-title fw-bold" id="calendarModalLabel">Kevin's Express Music Studio</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-
           <!-- Calendar Body -->
           <div class="modal-body">
             <div class="modal-content w-100 p-0 rounded bg-light">
@@ -115,9 +108,17 @@
                       </select>
                     </div>
 
-                    <div class="d-flex align-items-center gap-2 ms-0">
-                      <span class="year fw-bold fs-5" id="label">2025</span>
+                    <div class="d-flex align-items-center gap-2">
+                      <!-- Left arrow -->
+                      <span class="bi bi-chevron-left fs-5" id="prevYear" style="cursor:pointer;"></span>
+
+                      <!-- Dynamic year label -->
+                      <span class="year fw-bold fs-5 mb-0" id="yearLabel"></span>
+
+                      <!-- Right arrow -->
+                      <span class="bi bi-chevron-right fs-5" id="nextYear" style="cursor:pointer;"></span>
                     </div>
+
 
                     <!-- Right side: navigation arrows -->
                     <div class="me-0">
@@ -127,53 +128,33 @@
                   </div>
                 </div>
 
-                <table class="days-table w-100"> 
-                  <td class="day"></td>
-				          <td class="day">Sun</td> 
-				          <td class="day">Mon</td> 
-				          <td class="day">Tue</td> 
-			            <td class="day">Wed</td> 
-			            <td class="day">Thu</td> 
-			            <td class="day">Fri</td> 
-			            <td class="day">Sat</td>
-				        </table> 
-                    
-                <!-- Calendar Dates Frame -->
-                <div class="frame text-center mb-4">
-                  <table class="dates-table w-100">
-                    <tbody class="tbody">
-                      <!-- Calendar dates dynamically generated here -->
-                    </tbody>
-                  </table>
-                </div>
-            
                 <div class="table-responsive">
-                  <table class="table col-md-3">
-                    <tbody>
-                    <!-- Times from 9:00AM to 12:00MN -->
-                      <!-- 9AM–12NN -->
-                      <tr><td>9:00 AM</td></tr>
-                      <tr><td>10:00 AM</td></tr>
-                      <tr><td>11:00 AM</td></tr>
-                      <tr><td>12:00 NN</td></tr>
-                      <!-- 1PM–11PM -->
-                      <tr><td>1:00 PM</td></tr>
-                      <tr><td>2:00 PM</td></tr>
-                      <tr><td>3:00 PM</td></tr>
-                      <tr><td>4:00 PM</td></tr>
-                      <tr><td>5:00 PM</td></tr>
-                      <tr><td>6:00 PM</td></tr>
-                      <tr><td>7:00 PM</td></tr>
-                      <tr><td>8:00 PM</td></tr>
-                      <tr><td>9:00 PM</td></tr>
-                      <tr><td>10:00 PM</td></tr>
-                      <tr><td>11:00 PM</td></tr>
-                      <!-- 12MN -->
-                      <tr><td>12:00 MN</td></tr>
-                    </tbody>
+                  <table class="table text-center align-middle" id="week-calendar">
+                    <thead>
+                      <tr>
+                        <th style="width: 100px;">Time</th>
+                        <th>Sun</th>
+                        <th>Mon</th>
+                        <th>Tue</th>
+                        <th>Wed</th>
+                        <th>Thu</th>
+                        <th>Fri</th>
+                        <th>Sat</th>
+                      </tr>
+                      <tr id="weekDatesRow">
+                        <th></th>
+                        <td id="sun"></td>
+                        <td id="mon"></td>
+                        <td id="tue"></td>
+                        <td id="wed"></td>
+                        <td id="thu"></td>
+                        <td id="fri"></td>
+                        <td id="sat"></td>
+                      </tr>
+                    </thead>
+                    <tbody id="calendar-body"></tbody>
                   </table>
                 </div>
-              </div>
             </div>
           </div>
         </div>
@@ -663,8 +644,10 @@
   <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
 
+
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/calendar.js"></script>
 
 </body>
 
