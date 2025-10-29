@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-require_once 'config/database.php';
+require_once __DIR__ . '/../config/database.php';
 
 // ✅ Get connection from Database class
 $conn = Database::getConnection();
@@ -15,17 +15,20 @@ if (!$start || !$end) {
 
 $sql = "
     SELECT 
-        reservationID,
-        bandName,
-        serviceID,
-        date,
-        startTime,
-        endTime,
-        totalCost,
-        statusID
-    FROM reservations
-    WHERE date BETWEEN ? AND ?
+        r.reservationID,
+        r.serviceID,
+        s.serviceName,
+        r.date,
+        r.startTime,
+        r.endTime,
+        r.totalCost,
+        st.statusName
+    FROM reservations r
+    LEFT JOIN services s ON r.serviceID = s.serviceID
+    LEFT JOIN status st ON r.statusID = st.statusID
+    WHERE r.date BETWEEN ? AND ?
 ";
+
 
 $stmt = $conn->prepare($sql);
 

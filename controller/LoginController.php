@@ -28,7 +28,7 @@ class LoginController {
         // Lockout logic
         if (isset($_SESSION['lockout_time']) && time() < $_SESSION['lockout_time']) {
             $_SESSION['popup_message'] = "Too many login attempts. Try again later.";
-            header("Location: ../login.html");
+            header("Location: ../login.php");
             exit();
         }
 
@@ -60,9 +60,57 @@ class LoginController {
             $_SESSION['popup_message'] = "Invalid username or password. You have $remaining attempt(s) left.";
         }
 
-        header("Location: ../login.html");
+        header("Location: ../login.php");
         exit();
     }
+
+     // Find user by username
+        $user = $this->userModel->findUsersByUsername($username);
+
+        // 🔹 CASE 1: Wrong username
+        if (!$user) {
+            $_SESSION['login_attempts']++;
+            if ($_SESSION['login_attempts'] >= $maxAttempts) {
+                $_SESSION['lockout_time'] = time() + $lockoutTime;
+                $_SESSION['popup_message'] = "Too many login attempts. Please try again in 5 minutes.";
+            } else {
+                $remaining = $maxAttempts - $_SESSION['login_attempts'];
+                $_SESSION['popup_message'] = "Wrong username. You have $remaining attempt(s) left.";
+            }
+            header("Location: ../login.php");
+            exit();
+        }
+
+        // 🔹 CASE 2: Wrong password
+        if (!password_verify($password, $user['password'])) {
+            $_SESSION['login_attempts']++;
+            if ($_SESSION['login_attempts'] >= $maxAttempts) {
+                $_SESSION['lockout_time'] = time() + $lockoutTime;
+                $_SESSION['popup_message'] = "Too many login attempts. Please try again in 5 minutes.";
+            } else {
+                $remaining = $maxAttempts - $_SESSION['login_attempts'];
+                $_SESSION['popup_message'] = "Wrong password. You have $remaining attempt(s) left.";
+            }
+            header("Location: ../login.php");
+            exit();
+        }
+
+        // 🔹 CASE 3: Successful login
+        $_SESSION['login_attempts'] = 0;
+
+        // Fetch details from user_details
+        $details = $this->userDetailsModel->getUserDetailsByUserId($user['userID']);
+
+        $_SESSION['user'] = [
+            'userID' => $user['userID'],
+            'firstName' => $details['firstName'] ?? '',
+            'lastName' => $details['lastName'] ?? '',
+            'username' => $user['username']
+        ];
+
+        header("Location: http://localhost/ReservationSystem/customer-dashboard.php?login=success");
+        exit();
     }
+    
 }
 ?>

@@ -72,16 +72,18 @@ document.addEventListener("DOMContentLoaded", function () {
     const endDate = weekDates[6].toISOString().split("T")[0];
 
     try {
-      const response = await fetch(`fetch_reservations.php?start=${startDate}&end=${endDate}`);
+      const response = await fetch(`process/FetchReservationProcess.php?start=${startDate}&end=${endDate}`);
       const result = await response.json();
       const reservations = result.data || result;
 
-      reservations.forEach(res => {
-        const { date, startTime, endTime, bandName } = res;
+      console.log("Fetched reservations:", reservations); // ✅ Add this line
 
-        const startHour = parseInt(startTime.split(":")[0]);
-        const endHour = parseInt(endTime.split(":")[0]);
-        const duration = endHour - startHour; // hours between start & end
+      reservations.forEach(res => {
+        const { date, startTime, endTime, serviceName, statusName} = res;
+
+        const start = new Date(`1970-01-01T${startTime}`);
+        const end = new Date(`1970-01-01T${endTime}`);
+        const duration = Math.ceil((end - start) / (1000 * 60 * 60)); // in hours
 
         // Find start cell
         const startCell = calendarBody.querySelector(
@@ -92,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
         // Create reservation block
         const block = document.createElement("div");
         block.classList.add("reservation", "bg-primary", "text-white", "rounded", "p-1", "small");
-        block.textContent = `${bandName} (${startTime.slice(0,5)}-${endTime.slice(0,5)})`;
+        block.textContent = `${serviceName}  (${statusName})`;
 
         // Merge vertically by spanning multiple hours
         startCell.appendChild(block);
