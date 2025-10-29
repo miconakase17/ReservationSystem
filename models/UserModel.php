@@ -6,6 +6,7 @@ class UserModel {
     public $userID;
     public $username;
     public $password;
+    public $roleID;
     public $createdAt;
     public $isActive;
 
@@ -32,7 +33,7 @@ class UserModel {
 
     // ✅ Find user by username (used for login and signup verification)
     public function findUsersByUsername($username) {
-        $sql = "SELECT u.userID, u.username, u.password, d.firstName, d.lastName
+        $sql = "SELECT u.userID, u.username, u.password, u.roleID, d.firstName, d.lastName
                 FROM {$this->table} u
                 LEFT JOIN user_details d ON u.userID = d.userID
                 WHERE u.username = ?
@@ -47,10 +48,10 @@ class UserModel {
 
     // ✅ Create new user (signup)
     public function createUsers($data) {
-        $sql = "INSERT INTO {$this->table} (username, password, createdAt, isActive)
-                VALUES (?, ?, ?, 1)";
+        $sql = "INSERT INTO {$this->table} (username, password, roleID, createdAt, isActive)
+                VALUES (?, ?, ?, ?, 1)";
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("sss", $data['username'], $data['password'], $data['createdAt']);
+        $stmt->bind_param("ssis", $data['username'], $data['password'], $data['roleID'], $data['createdAt']);
         
         if (!$stmt->execute()) {
             throw new Exception("Error inserting into users: " . $stmt->error);

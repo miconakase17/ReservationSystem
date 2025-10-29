@@ -19,9 +19,11 @@ class SignUpController {
 
         // Hash password
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+        $roleID = 2;
         $data = [
             'username' => $username,
             'password' => $hashedPassword,
+            'roleID'   => $roleID,
             'createdAt' => date('Y-m-d H:i:s'),
             'lastUpdate' => date('Y-m-d H:i:s'),
         ];
