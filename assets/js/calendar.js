@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", function () {
   const monthSelect = document.getElementById("monthSelect");
   const yearLabel = document.getElementById("yearLabel");
@@ -11,74 +10,116 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let currentDate = new Date();
 
-  function renderWeek() {
+  async function renderWeek() {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
     yearLabel.textContent = year;
     monthSelect.value = month.toString();
 
-    // Find Sunday of the current week
+    // Find Sunday of current week
     const startOfWeek = new Date(currentDate);
     startOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
 
-    // Fill the week date headers (Sun–Sat)
+    const weekDates = [];
     for (let i = 1; i < 8; i++) {
       const cell = weekDatesRow[i];
       const dayDate = new Date(startOfWeek);
       dayDate.setDate(startOfWeek.getDate() + (i - 1));
-
       cell.textContent = dayDate.getDate();
+      weekDates.push(dayDate);
 
-      // Highlight today
       const today = new Date();
-      if (
-        dayDate.getDate() === today.getDate() &&
-        dayDate.getMonth() === today.getMonth() &&
-        dayDate.getFullYear() === today.getFullYear()
-      ) {
-        cell.classList.add("active-date");
-      } else {
-        cell.classList.remove("active-date");
-      }
-
-      // Dim other months
-      if (dayDate.getMonth() !== month) {
-        cell.classList.add("text-muted");
-      } else {
-        cell.classList.remove("text-muted");
-      }
+      cell.classList.toggle(
+        "active-date",
+        dayDate.toDateString() === today.toDateString()
+      );
+      cell.classList.toggle(
+        "text-muted",
+        dayDate.getMonth() !== month
+      );
     }
 
-    // Time slots for the week
-    const times = [
-      "9:00 AM","10:00 AM","11:00 AM","12:00 NN",
-      "1:00 PM","2:00 PM","3:00 PM","4:00 PM",
-      "5:00 PM","6:00 PM","7:00 PM","8:00 PM",
-      "9:00 PM","10:00 PM","11:00 PM","12:00 MN"
-    ];
+    // Define exact hourly slots
+    const times = [];
+    for (let hour = 9; hour <= 23; hour++) {
+      const h = hour.toString().padStart(2, "0");
+      times.push(`${h}:00:00`);
+    }
 
     calendarBody.innerHTML = "";
 
     times.forEach(time => {
       const row = document.createElement("tr");
 
-      // First cell = time
       const timeCell = document.createElement("th");
-      timeCell.textContent = time;
+      timeCell.textContent = new Date(`1970-01-01T${time}`)
+        .toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
       row.appendChild(timeCell);
 
-      // 7 days = Sun–Sat
       for (let i = 0; i < 7; i++) {
         const cell = document.createElement("td");
         cell.classList.add("time-slot");
+        cell.dataset.date = weekDates[i].toISOString().split("T")[0];
+        cell.dataset.time = time;
         row.appendChild(cell);
       }
 
       calendarBody.appendChild(row);
     });
+
+    // Fetch reservations
+    const startDate = weekDates[0].toISOString().split("T")[0];
+    const endDate = weekDates[6].toISOString().split("T")[0];
+
+    try {
+      const response = await fetch(`fetch_reservations.php?start=${startDate}&end=${endDate}`);
+      const result = await response.json();
+      const reservations = result.data || result;
+
+      reservations.forEach(res => {
+        const { date, startTime, endTime, bandName } = res;
+
+        const startHour = parseInt(startTime.split(":")[0]);
+        const endHour = parseInt(endTime.split(":")[0]);
+        const duration = endHour - startHour; // hours between start & end
+
+        // Find start cell
+        const startCell = calendarBody.querySelector(
+          `td[data-date='${date}'][data-time='${startTime}']`
+        );
+        if (!startCell) return;
+
+        // Create reservation block
+        const block = document.createElement("div");
+        block.classList.add("reservation", "bg-primary", "text-white", "rounded", "p-1", "small");
+        block.textContent = `${bandName} (${startTime.slice(0,5)}-${endTime.slice(0,5)})`;
+
+        // Merge vertically by spanning multiple hours
+        startCell.appendChild(block);
+        startCell.style.position = "relative";
+        block.style.position = "absolute";
+        block.style.top = "0";
+        block.style.left = "0";
+        block.style.right = "0";
+        block.style.height = `${duration * 100}%`; // each slot = 1 unit height
+        block.style.zIndex = "5";
+
+        // Hide subsequent time cells in same column (merge effect)
+        for (let h = 1; h < duration; h++) {
+          const nextHour = (startHour + h).toString().padStart(2, "0") + ":00:00";
+          const nextCell = calendarBody.querySelector(
+            `td[data-date='${date}'][data-time='${nextHour}']`
+          );
+          if (nextCell) nextCell.style.visibility = "hidden";
+        }
+      });
+
+    } catch (error) {
+      console.error("Error fetching reservations:", error);
+    }
   }
 
-  // Year navigation
+  // Navigation
   prevYear.addEventListener("click", () => {
     currentDate.setFullYear(currentDate.getFullYear() - 1);
     renderWeek();
@@ -87,8 +128,6 @@ document.addEventListener("DOMContentLoaded", function () {
     currentDate.setFullYear(currentDate.getFullYear() + 1);
     renderWeek();
   });
-
-  // Week navigation
   prevWeek.addEventListener("click", () => {
     currentDate.setDate(currentDate.getDate() - 7);
     renderWeek();
@@ -97,8 +136,6 @@ document.addEventListener("DOMContentLoaded", function () {
     currentDate.setDate(currentDate.getDate() + 7);
     renderWeek();
   });
-
-  // Month selection
   monthSelect.addEventListener("change", () => {
     currentDate.setMonth(parseInt(monthSelect.value, 10));
     renderWeek();
