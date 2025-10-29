@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-require_once 'config/database.php'; // make sure this path is correct
+require_once 'config/database.php';
 
 // ✅ Get connection from Database class
 $conn = Database::getConnection();
