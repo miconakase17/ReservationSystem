@@ -49,7 +49,7 @@ require_once __DIR__ . '/includes/reservation-data.php';
           <li><a href="customer-dashboard.php">Home</a></li>
           <li><a href="#about">View Reservation</a></li>
           <li><a href="#services">Profile</a></li>
-          <li><a href="reservation-dashboard.html">Log Out</a></li>
+          <li><a href="#" id="logout-link" class="logout-btn">Log Out</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
@@ -258,7 +258,6 @@ require_once __DIR__ . '/includes/reservation-data.php';
       
     </section>
 
-  </body>
 
     <!-- Preloader -->
     <div id="preloader"></div>
@@ -340,5 +339,6 @@ require_once __DIR__ . '/includes/reservation-data.php';
       })();
     </script>
     <script src="assets/js/reservation.js"></script>
+    <script src="assets/js/logout.js"></script>
 </body>
 </html>

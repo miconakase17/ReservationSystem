@@ -35,36 +35,46 @@ class LoginController {
         $user = $this->userModel->findUsersByUsername($username);
 
         if ($user && password_verify($password, $user['password'])) {
-        // Fetch user details from user_details table
-        $details = $this->userDetailsModel->getUserDetailsByUserId($user['userID']);
+            // Fetch user details from user_details table
+            $details = $this->userDetailsModel->getUserDetailsByUserId($user['userID']);
 
-        // Successful login
-        $_SESSION['login_attempts'] = 0;
-        $_SESSION['user'] = [
-            'userID' => $user['userID'],
-            'firstName' => $details['firstName'] ?? '',
-            'lastName' => $details['lastName'] ?? '',
-            'username' => $user['username']
-        ];
+            // Successful login
+            $_SESSION['login_attempts'] = 0;
+            $_SESSION['user'] = [
+                'userID' => $user['userID'],
+                'firstName' => $details['firstName'] ?? '',
+                'lastName' => $details['lastName'] ?? '',
+                'username' => $user['username'],
+                'roleID' => $user['roleID'] ?? 2 // default to customer if not set
+            ];
 
-        header("Location: http://localhost/ReservationSystem/customer-dashboard.php?login=success");
-        exit();
-    } else {
-        // Failed login
-        $_SESSION['login_attempts']++;
-        if ($_SESSION['login_attempts'] >= $maxAttempts) {
-            $_SESSION['lockout_time'] = time() + $lockoutTime;
-            $_SESSION['popup_message'] = "Too many login attempts. Please try again in 5 minutes.";
+            // ✅ Redirect based on roleID
+            if ($user['roleID'] == 1) {
+                header("Location: http://localhost/ReservationSystem/admin/index.html?login=success");
+            } elseif ($user['roleID'] == 2) {
+                header("Location: http://localhost/ReservationSystem/customer-dashboard.php?login=success");
+            } else {
+                $_SESSION['popup_message'] = "Unknown role. Please contact administrator.";
+                header("Location: ../login.php");
+            }
+
+            exit();
         } else {
-            $remaining = $maxAttempts - $_SESSION['login_attempts'];
-            $_SESSION['popup_message'] = "Invalid username or password. You have $remaining attempt(s) left.";
+            // Failed login
+            $_SESSION['login_attempts']++;
+            if ($_SESSION['login_attempts'] >= $maxAttempts) {
+                $_SESSION['lockout_time'] = time() + $lockoutTime;
+                $_SESSION['popup_message'] = "Too many login attempts. Please try again in 5 minutes.";
+            } else {
+                $remaining = $maxAttempts - $_SESSION['login_attempts'];
+                $_SESSION['popup_message'] = "Invalid username or password. You have $remaining attempt(s) left.";
+            }
+
+            header("Location: ../login.php");
+            exit();
         }
 
-        header("Location: ../login.php");
-        exit();
-    }
-
-     // Find user by username
+        // Find user by username
         $user = $this->userModel->findUsersByUsername($username);
 
         // 🔹 CASE 1: Wrong username
@@ -105,12 +115,21 @@ class LoginController {
             'userID' => $user['userID'],
             'firstName' => $details['firstName'] ?? '',
             'lastName' => $details['lastName'] ?? '',
-            'username' => $user['username']
+            'username' => $user['username'],
+            'roleID' => $user['roleID'] ?? 2
         ];
 
-        header("Location: http://localhost/ReservationSystem/customer-dashboard.php?login=success");
+        // ✅ Redirect again based on roleID
+        if ($user['roleID'] == 1) {
+            header("Location: http://localhost/ReservationSystem/admin/index.html?login=success");
+        } elseif ($user['roleID'] == 2) {
+            header("Location: http://localhost/ReservationSystem/customer-dashboard.php?login=success");
+        } else {
+            $_SESSION['popup_message'] = "Unknown role. Please contact administrator.";
+            header("Location: ../login.php");
+        }
+
         exit();
     }
-    
 }
 ?>

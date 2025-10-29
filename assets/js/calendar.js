@@ -106,6 +106,8 @@ document.addEventListener("DOMContentLoaded", function () {
         block.style.height = `${duration * 100}%`; // each slot = 1 unit height
         block.style.zIndex = "5";
 
+        const startHour = parseInt(startTime.split(":")[0], 10);
+
         // Hide subsequent time cells in same column (merge effect)
         for (let h = 1; h < duration; h++) {
           const nextHour = (startHour + h).toString().padStart(2, "0") + ":00:00";
