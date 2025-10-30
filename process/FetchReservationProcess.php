@@ -7,7 +7,6 @@ $conn = Database::getConnection();
 
 $start = $_GET['start'] ?? null;
 $end = $_GET['end'] ?? null;
-
 if (!$start || !$end) {
     echo json_encode(['error' => 'Missing date range parameters']);
     exit;

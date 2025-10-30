@@ -50,18 +50,41 @@
 
 .reservation {
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  border-radius: 6px;
-  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.5);
+  border-radius: 4px;
+  box-sizing: border-box;
+  overflow: visible;           /* important: allow all text to show */
+  z-index: 5;
+
+  display: flex;
+  justify-content: center;     /* horizontal center */
+  align-items: center;         /* vertical center */
   text-align: center;
-  z-index: 2;
 }
 
-.reservation .bg-primary {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+.reservation .text-container {
+  white-space: normal;         /* allow wrapping */
+  word-break: break-word;      /* break long words */
+  overflow-wrap: break-word;   /* extra safety */
+  padding: 2px 4px;            /* avoid text touching borders */
+  font-size: 0.75rem;          /* slightly smaller to fit text */
+  box-sizing: border-box;
+}
+
+/* Ensure table uses auto layout so widths are respected */
+#week-calendar {
+  table-layout: auto;  /* allow columns to size according to width */
+  width: 100%;
+}
+
+/* Time column stays narrow */
+#week-calendar th:first-child,
+#week-calendar td:first-child {
+  width: 100px;  /* adjust as needed */
+}
+
+/* Make day columns slightly wider */
+#week-calendar th:nth-child(n+2),
+#week-calendar td:nth-child(n+2) {
+  width: 140px;   /* adjust as needed */
 }

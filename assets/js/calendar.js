@@ -10,6 +10,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let currentDate = new Date();
 
+  function formatLocalDate(d) {
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  }
+
   async function renderWeek() {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
@@ -28,22 +32,17 @@ document.addEventListener("DOMContentLoaded", function () {
       cell.textContent = dayDate.getDate();
       weekDates.push(dayDate);
 
+      cell.textContent = dayDate.getDate();
+
       const today = new Date();
-      cell.classList.toggle(
-        "active-date",
-        dayDate.toDateString() === today.toDateString()
-      );
-      cell.classList.toggle(
-        "text-muted",
-        dayDate.getMonth() !== month
-      );
+      cell.classList.toggle("active-date", dayDate.toDateString() === today.toDateString());
+      cell.classList.toggle("text-muted", dayDate.getMonth() !== month);
     }
 
-    // Define exact hourly slots
+    // Time slots (00:00–23:00)
     const times = [];
     for (let hour = 9; hour <= 23; hour++) {
-      const h = hour.toString().padStart(2, "0");
-      times.push(`${h}:00:00`);
+      times.push(`${String(hour).padStart(2,'0')}:00:00`);
     }
 
     calendarBody.innerHTML = "";
@@ -52,14 +51,13 @@ document.addEventListener("DOMContentLoaded", function () {
       const row = document.createElement("tr");
 
       const timeCell = document.createElement("th");
-      timeCell.textContent = new Date(`1970-01-01T${time}`)
-        .toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+      timeCell.textContent = time.slice(0,5); // display HH:MM
       row.appendChild(timeCell);
 
       for (let i = 0; i < 7; i++) {
         const cell = document.createElement("td");
         cell.classList.add("time-slot");
-        cell.dataset.date = weekDates[i].toISOString().split("T")[0];
+        cell.dataset.date = formatLocalDate(weekDates[i]);
         cell.dataset.time = time;
         row.appendChild(cell);
       }
@@ -68,49 +66,66 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Fetch reservations
-    const startDate = weekDates[0].toISOString().split("T")[0];
-    const endDate = weekDates[6].toISOString().split("T")[0];
+    const startDate = formatLocalDate(weekDates[0]);
+    const endDate = formatLocalDate(weekDates[6]);
 
     try {
       const response = await fetch(`process/FetchReservationProcess.php?start=${startDate}&end=${endDate}`);
       const result = await response.json();
       const reservations = result.data || result;
 
-      console.log("Fetched reservations:", reservations); // ✅ Add this line
-
       reservations.forEach(res => {
-        const { date, startTime, endTime, serviceName, statusName} = res;
+        const { date, startTime, endTime, serviceName, statusName } = res;
 
-        const start = new Date(`1970-01-01T${startTime}`);
-        const end = new Date(`1970-01-01T${endTime}`);
-        const duration = Math.ceil((end - start) / (1000 * 60 * 60)); // in hours
+        const start = new Date(`${date}T${startTime}`);
+        const end = new Date(`${date}T${endTime}`);
+        const duration = Math.ceil((end - start) / (1000 * 60 * 60));
 
-        // Find start cell
         const startCell = calendarBody.querySelector(
           `td[data-date='${date}'][data-time='${startTime}']`
         );
         if (!startCell) return;
 
-        // Create reservation block
         const block = document.createElement("div");
         block.classList.add("reservation", "bg-primary", "text-white", "rounded", "p-1", "small");
-        block.textContent = `${serviceName}  (${statusName})`;
+        const textDiv = document.createElement("div");
+        textDiv.classList.add("text-container");
+        textDiv.textContent = `${serviceName} (${statusName})`;
 
-        // Merge vertically by spanning multiple hours
+        block.appendChild(textDiv);
+
+
+
+                // Assign color based on status
+        switch(statusName.toLowerCase()) {
+            case "confirmed":
+                block.classList.add("bg-success", "text-white"); // green
+                break;
+            case "pending":
+                block.classList.add("bg-warning", "text-dark"); // yellow
+                break;
+            case "cancelled":
+                block.classList.add("bg-danger", "text-white"); // red
+                break;
+            default:
+                block.classList.add("bg-primary", "text-white"); // blue as default
+                break;
+        }
+
+
         startCell.appendChild(block);
         startCell.style.position = "relative";
         block.style.position = "absolute";
-        block.style.top = "0";
-        block.style.left = "0";
-        block.style.right = "0";
-        block.style.height = `${duration * 100}%`; // each slot = 1 unit height
+        block.style.top = "2px";
+        block.style.left = "2px";
+        block.style.right = "2px";
+        block.style.bottom = "2px";
+        block.style.height = `${duration * 100}%`;
         block.style.zIndex = "5";
 
         const startHour = parseInt(startTime.split(":")[0], 10);
-
-        // Hide subsequent time cells in same column (merge effect)
         for (let h = 1; h < duration; h++) {
-          const nextHour = (startHour + h).toString().padStart(2, "0") + ":00:00";
+          const nextHour = `${String(startHour + h).padStart(2,'0')}:00:00`;
           const nextCell = calendarBody.querySelector(
             `td[data-date='${date}'][data-time='${nextHour}']`
           );
@@ -124,26 +139,11 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Navigation
-  prevYear.addEventListener("click", () => {
-    currentDate.setFullYear(currentDate.getFullYear() - 1);
-    renderWeek();
-  });
-  nextYear.addEventListener("click", () => {
-    currentDate.setFullYear(currentDate.getFullYear() + 1);
-    renderWeek();
-  });
-  prevWeek.addEventListener("click", () => {
-    currentDate.setDate(currentDate.getDate() - 7);
-    renderWeek();
-  });
-  nextWeek.addEventListener("click", () => {
-    currentDate.setDate(currentDate.getDate() + 7);
-    renderWeek();
-  });
-  monthSelect.addEventListener("change", () => {
-    currentDate.setMonth(parseInt(monthSelect.value, 10));
-    renderWeek();
-  });
+  prevYear.addEventListener("click", () => { currentDate.setFullYear(currentDate.getFullYear() - 1); renderWeek(); });
+  nextYear.addEventListener("click", () => { currentDate.setFullYear(currentDate.getFullYear() + 1); renderWeek(); });
+  prevWeek.addEventListener("click", () => { currentDate.setDate(currentDate.getDate() - 7); renderWeek(); });
+  nextWeek.addEventListener("click", () => { currentDate.setDate(currentDate.getDate() + 7); renderWeek(); });
+  monthSelect.addEventListener("change", () => { currentDate.setMonth(parseInt(monthSelect.value, 10)); renderWeek(); });
 
   renderWeek();
 });
