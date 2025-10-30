@@ -59,5 +59,31 @@ class UserModel {
 
         return true;
     }
+
+    // Fetch latest 5 users with details
+    public function getLatestUsers($limit = 5) {
+        $sql = "SELECT u.userID, u.username, u.roleID, u.createdAt, u.isActive,
+                    d.firstName, d.lastName
+                FROM {$this->table} u
+                LEFT JOIN user_details d ON u.userID = d.userID
+                ORDER BY u.createdAt DESC
+                LIMIT ?";
+        
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $limit);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        return $result->fetch_all(MYSQLI_ASSOC);
+    }
+
+    // Count all users
+    public function getUserCount() {
+        $sql = "SELECT COUNT(*) AS totalUsers FROM {$this->table}";
+        $result = $this->conn->query($sql);
+        $row = $result->fetch_assoc();
+        return $row['totalUsers'] ?? 0;
+    }
+
 }
 ?>

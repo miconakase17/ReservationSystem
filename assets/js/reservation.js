@@ -6,16 +6,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const drumlessonFields = document.getElementById('drumlesson-fields');
 
   function toggleSection(section, show) {
-  if (!section) return;
-  section.style.display = show ? 'block' : 'none';
+    if (!section) return;
+    section.style.display = show ? 'block' : 'none';
     section.querySelectorAll('input, select, textarea').forEach(input => {
-    if (show && input.hasAttribute('data-required-when-visible')) {
-      input.setAttribute('required', 'required');
-    } else {
-      input.removeAttribute('required');
-    }
-  });
-}
+      if (show && input.hasAttribute('data-required-when-visible')) {
+        input.setAttribute('required', 'required');
+      } else {
+        input.removeAttribute('required');
+      }
+    });
+  }
 
   const startTime = document.getElementById('studio-start-time');
   const endTime = document.getElementById('studio-end-time');
@@ -35,29 +35,29 @@ document.addEventListener('DOMContentLoaded', () => {
     recordingFields.style.display = value === '2' ? 'block' : 'none';
     if (drumlessonFields) drumlessonFields.style.display = value === '3' ? 'block' : 'none';
   };
-  
+
   function toggleRequired(container, isRequired) {
-  container.querySelectorAll('input, select, textarea').forEach(input => {
-    if (isRequired) {
-      input.setAttribute('required', 'required');
-    } else {
-      input.removeAttribute('required');
-    }
+    container.querySelectorAll('input, select, textarea').forEach(input => {
+      if (isRequired) {
+        input.setAttribute('required', 'required');
+      } else {
+        input.removeAttribute('required');
+      }
+    });
+  }
+
+  serviceSelect.addEventListener('change', function () {
+    const value = this.value;
+
+    toggleSection(studioFields, value === '1');    // Studio Rental
+    toggleSection(recordingFields, value === '2'); // Recording
+    toggleSection(drumlessonFields, value === '3'); // Drum Lesson
   });
-}
 
-serviceSelect.addEventListener('change', function() {
-  const value = this.value;
-
-  toggleSection(studioFields, value === '1');    // Studio Rental
-  toggleSection(recordingFields, value === '2'); // Recording
-  toggleSection(drumlessonFields, value === '3'); // Drum Lesson
-});
-
-// Run once on page load
-toggleSection(studioFields, serviceSelect.value === '1');
-toggleSection(recordingFields, serviceSelect.value === '2');
-toggleSection(drumlessonFields, serviceSelect.value === '3');
+  // Run once on page load
+  toggleSection(studioFields, serviceSelect.value === '1');
+  toggleSection(recordingFields, serviceSelect.value === '2');
+  toggleSection(drumlessonFields, serviceSelect.value === '3');
 
 
   serviceSelect.addEventListener('change', toggleServiceFields);
@@ -80,7 +80,7 @@ toggleSection(drumlessonFields, serviceSelect.value === '3');
 
       if (!isNaN(from) && !isNaN(to) && !isNaN(rate)) {
         if ((from <= to && weekday >= from && weekday <= to) ||
-            (from > to && (weekday >= from || weekday <= to))) {
+          (from > to && (weekday >= from || weekday <= to))) {
           return rate;
         }
       }
@@ -88,11 +88,13 @@ toggleSection(drumlessonFields, serviceSelect.value === '3');
     return 0;
   };
 
-  // --- Calculate Total ---
+  const downPaymentInput = document.getElementById('amountPaid');
+
   const calculateTotal = () => {
     if (!startTime.value || !endTime.value || !dateInput.value) {
       totalHours.value = '';
       totalAmount.value = '';
+      if (downPaymentInput) downPaymentInput.value = '';
       return;
     }
 
@@ -100,6 +102,7 @@ toggleSection(drumlessonFields, serviceSelect.value === '3');
       alert('Operating hours are 9:00 AM to 12:00 midnight.');
       totalHours.value = '';
       totalAmount.value = '';
+      if (downPaymentInput) downPaymentInput.value = '';
       return;
     }
 
@@ -110,6 +113,7 @@ toggleSection(drumlessonFields, serviceSelect.value === '3');
     if (diff <= 0) {
       totalHours.value = '';
       totalAmount.value = '';
+      if (downPaymentInput) downPaymentInput.value = '';
       return;
     }
 
@@ -124,7 +128,15 @@ toggleSection(drumlessonFields, serviceSelect.value === '3');
       additionalsTotal += parseInt(cb.dataset.price) || 0;
     });
 
-    totalAmount.value = `₱${(baseAmount + additionalsTotal).toLocaleString()}`;
+    const total = baseAmount + additionalsTotal;
+    totalAmount.value = `₱${total.toLocaleString()}`;
+
+    // Automatically set down payment to half
+    if (downPaymentInput) {
+      const downPayment = Math.round(total / 2); // round to nearest peso
+      downPaymentInput.value = `₱${downPayment.toLocaleString()}`;
+    }
+
   };
 
   [startTime, endTime, dateInput].forEach(el => el?.addEventListener('change', calculateTotal));
@@ -156,21 +168,29 @@ toggleSection(drumlessonFields, serviceSelect.value === '3');
   setupImagePreview(rentalImageInput, rentalImagePreview);
   setupImagePreview(recordingImageInput, recordingImagePreview);
 
-    // --- Recording Service Price Calculation ---
+  // --- Recording Service Price Calculation ---
   const recordingTotal = document.getElementById('recording-total-price');
   const multitrackRadio = document.getElementById('multitrack');
   const livetrackRadio = document.getElementById('livetrack');
   const mixCheckbox = document.getElementById('mix');
 
   function calculateRecordingPrice() {
-    let total = 0;
+  let total = 0;
 
-    if (multitrackRadio.checked) total += 500;
-    if (livetrackRadio.checked) total += 800;
-    if (mixCheckbox.checked) total += 1500;
+  if (multitrackRadio.checked) total += 500;
+  if (livetrackRadio.checked) total += 800;
+  if (mixCheckbox.checked) total += 1500;
 
-    recordingTotal.value = `₱${total.toLocaleString()}`;
+  recordingTotal.value = `₱${total.toLocaleString()}`;
+
+  // Automatically set down payment to half
+  const recordingDownPaymentInput = document.getElementById('recording-amountPaid');
+  if (recordingDownPaymentInput) {
+    const downPayment = Math.round(total / 2); // half of total
+    recordingDownPaymentInput.value = `₱${downPayment.toLocaleString()}`;
   }
+}
+
 
   // Attach event listeners
   [multitrackRadio, livetrackRadio, mixCheckbox].forEach(el => {
@@ -181,3 +201,23 @@ toggleSection(drumlessonFields, serviceSelect.value === '3');
   calculateRecordingPrice();
 
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const drumStart = document.getElementById('drumlesson-start-time');
+  const drumEnd = document.getElementById('drumlesson-end-time');
+
+  if (drumStart) {
+    drumStart.addEventListener('input', () => {
+      if (drumStart.value) {
+        let [hours, minutes] = drumStart.value.split(':').map(Number);
+        hours += 2; // add 2 hours
+        if (hours >= 24) hours -= 24; // handle next day
+        drumEnd.value = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+      } else {
+        drumEnd.value = '';
+      }
+    });
+  }
+});
+
+

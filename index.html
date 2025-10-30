@@ -17,7 +17,9 @@
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -28,7 +30,7 @@
 
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
-  <link href="assests/css/calendar.css" rel="stylesheet">
+  <link href="assets/css/calendar.css" rel="stylesheet">
 
 </head>
 
@@ -67,10 +69,13 @@
 
       <div class="container d-flex flex-column align-items-center">
         <h2 data-aos="fade-up" data-aos-delay="100">MUSIC. STUDIO. READY.</h2>
-        <p data-aos="fade-up" data-aos-delay="200">Your studio, your ideas, your sound - everything you need to bring your music to life.</p>
+        <p data-aos="fade-up" data-aos-delay="200">Your studio, your ideas, your sound - everything you need to bring
+          your music to life.</p>
         <div class="d-flex mt-4" data-aos="fade-up" data-aos-delay="300">
           <a href="signup.html" class="btn-reserve-now">Reserve Now</a>
-          <a href="https://youtu.be/LZxQvpntzWg?si=wdSHFDHEifedlKpu" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
+          <a href="https://youtu.be/LZxQvpntzWg?si=wdSHFDHEifedlKpu"
+            class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch
+              Video</span></a>
           <a data-bs-target="#calendarModal" data-bs-toggle="modal" class="btn-view-calendar">View Calendar</a>
         </div>
       </div>
@@ -81,80 +86,80 @@
     <!-- CALENDAR MODAL -->
     <div class="modal fade" id="calendarModal" tabindex="-1" aria-labelledby="calendarModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg modal-dialog-centered">
-          <!-- Calendar Body -->
-          <div class="modal-body">
-            <div class="modal-content w-100 p-0 rounded bg-light">
-              <div class="calendar-container p-4">
-                <div class="calendar">
+        <!-- Calendar Body -->
+        <div class="modal-body">
+          <div class="modal-content w-100 p-0 rounded bg-light">
+            <div class="calendar-container p-4">
+              <div class="calendar">
 
-                  <!-- Header Row -->
-                  <div class="d-flex justify-content-between align-items-center mb-3">
-                        
-                    <!-- Left side: month dropdown + year -->
-                    <div class="gap-2 ms-0">
-                      <select id="monthSelect" class="form-select form-select-sm w-auto" style="margin-left: 0;">
-                        <option value="0">January</option>
-                        <option value="1">February</option>
-                        <option value="2">March</option>
-                        <option value="3">April</option>
-                        <option value="4">May</option>
-                        <option value="5">June</option>
-                        <option value="6">July</option>
-                        <option value="7">August</option>
-                        <option value="8">September</option>
-                        <option value="9">October</option>
-                        <option value="10">November</option>
-                        <option value="11">December</option>
-                      </select>
-                    </div>
+                <!-- Header Row -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
 
-                    <div class="d-flex align-items-center gap-2">
-                      <!-- Left arrow -->
-                      <span class="bi bi-chevron-left fs-5" id="prevYear" style="cursor:pointer;"></span>
+                  <!-- Left side: month dropdown + year -->
+                  <div class="gap-2 ms-0">
+                    <select id="monthSelect" class="form-select form-select-sm w-auto" style="margin-left: 0;">
+                      <option value="0">January</option>
+                      <option value="1">February</option>
+                      <option value="2">March</option>
+                      <option value="3">April</option>
+                      <option value="4">May</option>
+                      <option value="5">June</option>
+                      <option value="6">July</option>
+                      <option value="7">August</option>
+                      <option value="8">September</option>
+                      <option value="9">October</option>
+                      <option value="10">November</option>
+                      <option value="11">December</option>
+                    </select>
+                  </div>
 
-                      <!-- Dynamic year label -->
-                      <span class="year fw-bold fs-5 mb-0" id="yearLabel"></span>
+                  <div class="d-flex align-items-center gap-2">
+                    <!-- Left arrow -->
+                    <span class="bi bi-chevron-left fs-5" id="prevYear" style="cursor:pointer;"></span>
 
-                      <!-- Right arrow -->
-                      <span class="bi bi-chevron-right fs-5" id="nextYear" style="cursor:pointer;"></span>
-                    </div>
+                    <!-- Dynamic year label -->
+                    <span class="year fw-bold fs-5 mb-0" id="yearLabel"></span>
+
+                    <!-- Right arrow -->
+                    <span class="bi bi-chevron-right fs-5" id="nextYear" style="cursor:pointer;"></span>
+                  </div>
 
 
-                    <!-- Right side: navigation arrows -->
-                    <div class="me-0">
-                      <span class="bi bi-chevron-left me-3" id="prev" style="cursor:pointer;"></span>
-                      <span class="bi bi-chevron-right" id="next" style="cursor:pointer;"></span>
-                    </div>
+                  <!-- Right side: navigation arrows -->
+                  <div class="me-0">
+                    <span class="bi bi-chevron-left me-3" id="prev" style="cursor:pointer;"></span>
+                    <span class="bi bi-chevron-right" id="next" style="cursor:pointer;"></span>
                   </div>
                 </div>
+              </div>
 
-                <div class="table-responsive">
-                  <table class="table text-center align-middle" id="week-calendar">
-                    <thead>
-                      <tr>
-                        <th style="width: 100px;">Time</th>
-                        <th>Sun</th>
-                        <th>Mon</th>
-                        <th>Tue</th>
-                        <th>Wed</th>
-                        <th>Thu</th>
-                        <th>Fri</th>
-                        <th>Sat</th>
-                      </tr>
-                      <tr id="weekDatesRow">
-                        <th></th>
-                        <td id="sun"></td>
-                        <td id="mon"></td>
-                        <td id="tue"></td>
-                        <td id="wed"></td>
-                        <td id="thu"></td>
-                        <td id="fri"></td>
-                        <td id="sat"></td>
-                      </tr>
-                    </thead>
-                    <tbody id="calendar-body"></tbody>
-                  </table>
-                </div>
+              <div class="table-responsive">
+                <table class="table text-center align-middle" id="week-calendar">
+                  <thead>
+                    <tr>
+                      <th style="width: 100px;">Time</th>
+                      <th>Sun</th>
+                      <th>Mon</th>
+                      <th>Tue</th>
+                      <th>Wed</th>
+                      <th>Thu</th>
+                      <th>Fri</th>
+                      <th>Sat</th>
+                    </tr>
+                    <tr id="weekDatesRow">
+                      <th></th>
+                      <td id="sun"></td>
+                      <td id="mon"></td>
+                      <td id="tue"></td>
+                      <td id="wed"></td>
+                      <td id="thu"></td>
+                      <td id="fri"></td>
+                      <td id="sat"></td>
+                    </tr>
+                  </thead>
+                  <tbody id="calendar-body"></tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
@@ -170,16 +175,20 @@
           <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
             <h3>Location of Kevin's Express Studio</h3>
             <iframe class="w-100 rounded shadow" height="400"
-                    src="https://maps.google.com/maps?width=500&amp;height=385&amp;hl=en&amp;q=kevin%27s%20expres&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
-                    style="border:0;" allowfullscreen="" loading="lazy">
-              </iframe>
-            <p>Founded in 2015 by Mr. Anton Alonte, Kevin's Express Studio is a dedicated music studio located at 89 A. Bonifacio St., Barangay Canlalay, City of Biñan, Laguna, Philippines.</p>
-            <p>Its founder, Mr. Anton Alonte, is the brother of Ronnie Alonte, a well-known Filipino celebrity, bringing both inspiration and recognition to the studio's identity. Over the years, Kevin's Express Studio has become more than just a space — it's a platform where talents are nurtured and music is celebrated.</p>
+              src="https://maps.google.com/maps?width=500&amp;height=385&amp;hl=en&amp;q=kevin%27s%20expres&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
+              style="border:0;" allowfullscreen="" loading="lazy">
+            </iframe>
+            <p>Founded in 2015 by Mr. Anton Alonte, Kevin's Express Studio is a dedicated music studio located at 89 A.
+              Bonifacio St., Barangay Canlalay, City of Biñan, Laguna, Philippines.</p>
+            <p>Its founder, Mr. Anton Alonte, is the brother of Ronnie Alonte, a well-known Filipino celebrity, bringing
+              both inspiration and recognition to the studio's identity. Over the years, Kevin's Express Studio has
+              become more than just a space — it's a platform where talents are nurtured and music is celebrated.</p>
           </div>
           <div class="col-lg-6" data-aos="fade-up" data-aos-delay="250">
             <div class="content ps-0 ps-lg-5">
               <p class="fst-italic">
-                What started as a small passion project has grown into a trusted space for musicians, aspiring artists, and music enthusiasts in Laguna. The studio offers a range of services including:
+                What started as a small passion project has grown into a trusted space for musicians, aspiring artists,
+                and music enthusiasts in Laguna. The studio offers a range of services including:
               </p>
               <ul>
                 <li><i class="bi bi-check-circle-fill"></i> <span>Studio Rental</span></li>
@@ -187,7 +196,8 @@
                 <li><i class="bi bi-check-circle-fill"></i> <span>Drum Lesson</span></li>
               </ul>
               <p>
-                Beyond being a music hub, Kevin's Express Studio is also known for its welcoming community atmosphere, where passion for music and creativity thrives.
+                Beyond being a music hub, Kevin's Express Studio is also known for its welcoming community atmosphere,
+                where passion for music and creativity thrives.
               </p>
 
               <div class="position-relative mt-4">
@@ -213,7 +223,8 @@
             <div class="stats-item d-flex align-items-center w-100 h-100">
               <i class="bi bi-calendar-week color-blue flex-shrink-0"></i>
               <div>
-                <span data-purecounter-start="0" data-purecounter-end="10" data-purecounter-duration="1" class="purecounter"></span>
+                <span data-purecounter-start="0" data-purecounter-end="10" data-purecounter-duration="1"
+                  class="purecounter"></span>
                 <p>Years of Service</p>
               </div>
             </div>
@@ -223,7 +234,8 @@
             <div class="stats-item d-flex align-items-center w-100 h-100">
               <i class="bi bi-bookmark-check color-orange flex-shrink-0"></i>
               <div>
-                <span data-purecounter-start="0" data-purecounter-end="2000" data-purecounter-duration="1" class="purecounter"></span>
+                <span data-purecounter-start="0" data-purecounter-end="2000" data-purecounter-duration="1"
+                  class="purecounter"></span>
                 <p> + Reservations</p>
               </div>
             </div>
@@ -233,7 +245,8 @@
             <div class="stats-item d-flex align-items-center w-100 h-100">
               <i class="bi bi-file-earmark-person flex-shrink-0"></i>
               <div>
-                <span data-purecounter-start="0" data-purecounter-end="10000" data-purecounter-duration="1" class="purecounter"></span>
+                <span data-purecounter-start="0" data-purecounter-end="10000" data-purecounter-duration="1"
+                  class="purecounter"></span>
                 <p>Customers</p>
               </div>
             </div>
@@ -269,7 +282,8 @@
                 <a href="service-details.html" class="stretched-link">
                   <h3>Recording</h3>
                 </a>
-                <p>Bring your songs to life with our recording services. We provide quality equipment and a supportive space to capture your sound.</p>
+                <p>Bring your songs to life with our recording services. We provide quality equipment and a supportive
+                  space to capture your sound.</p>
               </div>
             </div>
           </div><!-- End Service Item -->
@@ -286,7 +300,8 @@
                 <a href="service-details.html" class="stretched-link">
                   <h3>Studio Rental</h3>
                 </a>
-                <p>Need a place to jam, rehearse, or just make noise with your band? Our fully equipped studio is available for rent at affordable rates.</p>
+                <p>Need a place to jam, rehearse, or just make noise with your band? Our fully equipped studio is
+                  available for rent at affordable rates.</p>
               </div>
             </div>
           </div><!-- End Service Item -->
@@ -303,7 +318,8 @@
                 <a href="service-details.html" class="stretched-link">
                   <h3>Drum Lesson</h3>
                 </a>
-                <p>We offer fun and easy-to-follow lessons for beginners and advanced learners. Learn at your own pace and feel the rhythm!</p>
+                <p>We offer fun and easy-to-follow lessons for beginners and advanced learners. Learn at your own pace
+                  and feel the rhythm!</p>
               </div>
             </div>
           </div><!-- End Service Item -->
@@ -350,10 +366,10 @@
                   <li><i class="bi bi-check2-all"></i>
                     <span>Multitrack <strong>(P500)</strong></span>
                   </li>
-                  <li><i class="bi bi-check2-all"></i> 
+                  <li><i class="bi bi-check2-all"></i>
                     <span>Live Track <strong>(P800/song in 1 hour)</strong></span>.
                   </li>
-                  <li><i class="bi bi-check2-all"></i> 
+                  <li><i class="bi bi-check2-all"></i>
                     <span>Mix & Master <strong>(P1,500/hour)</strong></span>
                   </li>
                 </ul>
@@ -372,15 +388,15 @@
                 <h3>Need a space to make some noise? Rent our studio and play without limits.</h3>
                 <ul>
                   <li>
-                    <i class="bi bi-check2-all"></i> 
+                    <i class="bi bi-check2-all"></i>
                     <span>Operating Hours <strong>(9 AM - 12MN)</strong></span>
                   </li>
                   <li>
-                    <i class="bi bi-check2-all"></i> 
+                    <i class="bi bi-check2-all"></i>
                     <span>Monday to Thursday <strong>(P250/hour)</strong></span>
                   </li>
                   <li>
-                    <i class="bi bi-check2-all"></i> 
+                    <i class="bi bi-check2-all"></i>
                     <span>Friday to Sunday <strong>(P300/hour)</strong></span>
                   </li>
                 </ul>
@@ -389,19 +405,19 @@
                 </p>
                 <ul>
                   <li>
-                    <i class="bi bi-check2-all"></i> 
+                    <i class="bi bi-check2-all"></i>
                     <span>Electric Guitar <strong>(P20)</strong></span>
                   </li>
                   <li>
-                    <i class="bi bi-check2-all"></i> 
+                    <i class="bi bi-check2-all"></i>
                     <span>Bass Guitar <strong>(P20)</strong></span>
                   </li>
                   <li>
-                    <i class="bi bi-check2-all"></i> 
+                    <i class="bi bi-check2-all"></i>
                     <span>Drumsticks <strong>(P30)</strong></span>
                   </li>
                   <li>
-                    <i class="bi bi-check2-all"></i> 
+                    <i class="bi bi-check2-all"></i>
                     <span>Lights <strong>(P20/hour)</strong></span>
                   </li>
                 </ul>
@@ -418,7 +434,7 @@
                 <h3>Always wanted to play the drums? Now’s your chance to learn and enjoy every beat.</h3>
                 <ul>
                   <li>
-                    <i class="bi bi-check2-all"></i> 
+                    <i class="bi bi-check2-all"></i>
                     <span>1 Hour Session <strong>(P500)</strong></span>
                   </li>
               </div>
@@ -444,7 +460,7 @@
           <a href=""><i class="bi bi-facebook"></i></a>
           <a href=""><i class="bi bi-youtube"></i></a>
           <a href=""><i class="bi bi-instagram"></i></a>
-          
+
         </div>
       </div><!-- End Section Title -->
 
@@ -519,7 +535,8 @@
             <div class="row gy-4">
 
               <div class="col-lg-12">
-                <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="200">
+                <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up"
+                  data-aos-delay="200">
                   <i class="bi bi-geo-alt"></i>
                   <h3>Address</h3>
                   <p>89 A. Bonifacio St., Brgy. Canlalay, City of Biñan, Laguna, PH.</p>
@@ -527,7 +544,8 @@
               </div><!-- End Info Item -->
 
               <div class="col-md-6">
-                <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="300">
+                <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up"
+                  data-aos-delay="300">
                   <i class="bi bi-telephone"></i>
                   <h3>Call Us</h3>
                   <p>+63 926 937 8332</p>
@@ -535,7 +553,8 @@
               </div><!-- End Info Item -->
 
               <div class="col-md-6">
-                <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="400">
+                <div class="info-item d-flex flex-column justify-content-center align-items-center" data-aos="fade-up"
+                  data-aos-delay="400">
                   <i class="bi bi-envelope"></i>
                   <h3>Email Us</h3>
                   <p>alonte003@gmail.com</p>
@@ -546,7 +565,8 @@
           </div>
 
           <div class="col-lg-6">
-            <form action="process/MessagesProcess.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="500">
+            <form action="process/MessagesProcess.php" method="post" class="php-email-form" data-aos="fade-up"
+              data-aos-delay="500">
               <div class="row gy-4">
 
                 <div class="col-md-6">
@@ -624,12 +644,14 @@
     </div>
 
     <div class="container copyright text-center mt-4">
-      <p>© <span>Copyright</span> <strong class="px-1 sitename">Kevin's Express Studio</strong> <span>All Rights Reserved</span> <strong>2025</strong></p>
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">Kevin's Express Studio</strong> <span>All Rights
+          Reserved</span> <strong>2025</strong></p>
     </div>
   </footer>
 
   <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
   <!-- Preloader -->
   <div id="preloader"></div>

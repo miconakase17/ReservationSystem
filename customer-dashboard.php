@@ -22,7 +22,9 @@ require_once __DIR__ . '/includes/ReservationData.php';
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -33,7 +35,7 @@ require_once __DIR__ . '/includes/ReservationData.php';
 
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
-  <link href="assets/css/reservation.css" rel="stylesheet"> 
+  <link href="assets/css/reservation.css" rel="stylesheet">
 
 </head>
 
@@ -64,7 +66,8 @@ require_once __DIR__ . '/includes/ReservationData.php';
   <main class="main">
 
     <!-- Modal -->
-    <div class="modal fade" id="reservationForm" tabindex="-1" aria-labelledby="reservationFormTitle" aria-hidden="true">
+    <div class="modal fade" id="reservationForm" tabindex="-1" aria-labelledby="reservationFormTitle"
+      aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
 
@@ -76,7 +79,8 @@ require_once __DIR__ . '/includes/ReservationData.php';
 
           <!-- Body -->
           <div class="modal-body">
-            <form action="process/ReservationProcess.php" method="post" class="reservation-form" enctype="multipart/form-data">
+            <form action="process/ReservationProcess.php" method="post" class="reservation-form"
+              enctype="multipart/form-data">
 
               <div class="container section-title text-center">
                 <h3>New Reservation</h3>
@@ -85,11 +89,11 @@ require_once __DIR__ . '/includes/ReservationData.php';
               <div class="row gy-4">
                 <div class="col-6">
                   <input type="text" name="firstname" class="form-control"
-                  value="<?php echo htmlspecialchars($_SESSION['user']['firstName'] ?? ''); ?>" readonly>
+                    value="<?php echo htmlspecialchars($_SESSION['user']['firstName'] ?? ''); ?>" readonly>
                 </div>
                 <div class="col-6">
                   <input type="text" name="lastname" class="form-control"
-                  value="<?php echo htmlspecialchars($_SESSION['user']['lastName'] ?? ''); ?>" readonly>
+                    value="<?php echo htmlspecialchars($_SESSION['user']['lastName'] ?? ''); ?>" readonly>
                 </div>
 
 
@@ -100,7 +104,7 @@ require_once __DIR__ . '/includes/ReservationData.php';
                     <option value="2">Recording</option>
                     <option value="3">Drum Lesson</option>
                   </select>
-                </div> 
+                </div>
 
                 <!-- Studio Rental Fields -->
                 <div id="studio-fields" class="row gy-4" style="display: none;">
@@ -135,10 +139,10 @@ require_once __DIR__ . '/includes/ReservationData.php';
                             <div class="form-check">
                               <input class="form-check-input additional-checkbox" type="checkbox"
                                 id="additional-<?php echo $row['addID']; ?>" name="additionals[]"
-                                value="<?php echo $row['addID']; ?>"
-                                data-price="<?php echo $row['price']; ?>">
+                                value="<?php echo $row['addID']; ?>" data-price="<?php echo $row['price']; ?>">
                               <label class="form-check-label" for="additional-<?php echo $row['addID']; ?>">
-                                <?php echo htmlspecialchars($row['addName']); ?> (₱<?php echo number_format($row['price'], 2); ?>)
+                                <?php echo htmlspecialchars($row['addName']); ?>
+                                (₱<?php echo number_format($row['price'], 2); ?>)
                               </label>
                             </div>
                           <?php endwhile; ?>
@@ -151,11 +155,13 @@ require_once __DIR__ . '/includes/ReservationData.php';
                           <input type="text" id="totalHours" name="totalHours" class="form-control mb-2" readonly>
 
                           <label class="form-label fw-bold">Total Amount (₱):</label>
-                          <input type="text" id="totalCost" name="totalCost" class="form-control" readonly>
+                          <input type="text" id="totalCost" name="totalCost" class="form-control mb-2" readonly>
 
+                          <label class="form-label fw-bold">Down Payment (₱):</label>
+                          <input type="text" name="amountPaid" id="amountPaid" class="form-control" readonly>
                         </div>
                       </div>
-          
+
                       <div class="col-md-6">
                         <label class="form-label fw-bold">Upload Receipt:</label>
                         <div class="mb-2">
@@ -164,28 +170,23 @@ require_once __DIR__ . '/includes/ReservationData.php';
                         <div class="mb-2">
                           <img id="rental-image-preview" src="" alt="Preview"
                             style="max-width:100%; height:auto; display:none; border:1px solid #ddd; padding:6px;" />
-                      </div>
+                        </div>
 
                         <hr>
                         <div class="text-center">
-                          <label class="form-label fw-bold">GCash (Down Payment):</label>
+                          <label class="form-label fw-bold mb-2">GCash (Down Payment):</label>
                           <div class="mb-2">
                             <img src="assets/img/QR_Payment.png" alt="GCash QR"
                               style="max-width:200px; height:auto; border:1px solid #ddd; padding:6px;" />
                           </div>
-                          <p class="small text-muted">Scan this QR code with GCash to pay at least half of total payment.
-                            After payment, you may upload the receipt above.
+                          <p class="small text-muted">Scan this QR code with GCash to pay half of total
+                            payment.
                           </p>
                         </div>
-
-                         <div class ="mt-5">
-                            <label class="form-label fw-bold">Amount Paid (₱):</label>
-                            <input type="text" name="amountPaid" id="amountPaid" class="form-control mb-2" required>
-                        <br>
-                            <label class="form-label fw-bold">Reference No.</label>
-                            <input type="text" name="referenceNumber" id="referenceNumber" class="form-control" required>
-                          </div>
+                        <label class="form-label fw-bold">Reference No.</label>
+                        <input type="text" name="referenceNumber" id="referenceNumber" class="form-control" required>
                       </div>
+
 
                     </div>
                   </div>
@@ -201,8 +202,8 @@ require_once __DIR__ . '/includes/ReservationData.php';
                       <label class="form-check-label" for="multitrack">Multi Track</label>
                     </div>
                     <div class="form-check form-check-inline">
-                      <input class="form-check-input" type="radio" name="recordingMode" id="livetrack"
-                        value="LiveTrack" required>
+                      <input class="form-check-input" type="radio" name="recordingMode" id="livetrack" value="LiveTrack"
+                        required>
                       <label class="form-check-label" for="livetrack">Live Track</label>
                     </div>
                   </div>
@@ -231,13 +232,6 @@ require_once __DIR__ . '/includes/ReservationData.php';
                       <input type="time" id="recording-end-time" name="recordingEndTime" class="form-control">
                     </div>
                   </div>
-
-                  <div class="col-12">
-                    <label for="recording-notes" class="form-label">Notes:</label>
-                    <textarea id="recording-notes" name="recording-notes" class="form-control" rows="3"
-                      placeholder="Enter any notes or requirements..."></textarea>
-                  </div>
-
                   <div class="col-12">
                     <div class="row">
                       <div class="col-md-6">
@@ -254,8 +248,12 @@ require_once __DIR__ . '/includes/ReservationData.php';
 
                         <div class="mt-3">
                           <label class="form-label fw-bold">Total Price (₱):</label>
-                          <input type="text" id="recording-total-price" name="recording-total-price" class="form-control"
-                            readonly>
+                          <input type="text" id="recording-total-price" name="recording-total-price"
+                            class="form-control mb-2" readonly>
+                          <label class="form-label fw-bold">Down Payment (₱):</label>
+                          <input type="text" name="recordingAmountPaid" id="recording-amountPaid" class="form-control mb-2" readonly>
+                          <label class="form-label fw-bold">Reference No.</label>
+                        <input type="text" name="referenceNumber" id="referenceNumber" class="form-control" required>
                         </div>
                       </div>
 
@@ -265,15 +263,36 @@ require_once __DIR__ . '/includes/ReservationData.php';
                           <img src="assets/img/QR_Payment.png" alt="GCash QR"
                             style="max-width:200px; height:auto; border:1px solid #ddd; padding:6px;" />
                         </div>
-                        <p class="small text-muted">Scan this QR code with GCash to pay at least half of total payment.</p>
+                        <p class="small text-muted">Scan this QR code with GCash to pay half of total payment.
+                        </p>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div id="drumlesson-fields" style="display: none;"></div>
+                <div id="drumlesson-fields" class="row gy-4" style="display: none;">
+                  <div class="row gy-4">
+                    <div class="col-sm-4">
+                      <label for="drumlesson-date" class="form-label">Select Date:</label>
+                      <input type="date" id="drumlesson-date" name="drumlessonDate" class="form-control">
+                    </div>
 
-                <div class="col-12 text-center">
+                    <div class="col-sm-4">
+                      <label for="drumlesson-start-time" class="form-label">Start Time:</label>
+                      <input type="time" id="drumlesson-start-time" name="drumlessonStartTime" class="form-control">
+                    </div>
+
+                    <div class="col-sm-4">
+                      <label for="drumlesson-end-time" class="form-label">End Time:</label>
+                      <input type="time" id="drumlesson-end-time" name="drumlessonEndTime" class="form-control"
+                        readonly>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class=" col-12 text-center">
                   <button type="submit" class="btn btn-primary mt-3">Submit Reservation</button>
                 </div>
 
@@ -286,11 +305,12 @@ require_once __DIR__ . '/includes/ReservationData.php';
     </div>
 
     <!-- Page Title -->
-    <div class="page-title dark-background" data-aos="fade" style="background-image: url(assets/img/page-title-bg.webp);">
+    <div class="page-title dark-background" data-aos="fade"
+      style="background-image: url(assets/img/page-title-bg.webp);">
       <div class="container position-relative">
-        <h1>Welcome, <?php 
-                    echo htmlspecialchars($_SESSION['user']['firstName'] ?? 'Customer');
-                    ?>!</h1>
+        <h1>Welcome, <?php
+        echo htmlspecialchars($_SESSION['user']['firstName'] ?? 'Customer');
+        ?>!</h1>
         <p>Please enjoy</p>
         <nav class="breadcrumbs">
           <ol>
@@ -318,25 +338,34 @@ require_once __DIR__ . '/includes/ReservationData.php';
             </div>
 
             <h4>Enim qui eos rerum in delectus</h4>
-            <p>Nam voluptatem quasi numquam quas fugiat ex temporibus quo est. Quia aut quam quod facere ut non occaecati ut aut. Nesciunt mollitia illum tempore corrupti sed eum reiciendis. Maxime modi rerum.</p>
+            <p>Nam voluptatem quasi numquam quas fugiat ex temporibus quo est. Quia aut quam quod facere ut non
+              occaecati ut aut. Nesciunt mollitia illum tempore corrupti sed eum reiciendis. Maxime modi rerum.</p>
           </div>
 
           <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
             <img src="assets/img/services.jpg" alt="" class="img-fluid services-img">
             <h3>Temporibus et in vero dicta aut eius lidero plastis trand lined voluptas dolorem ut voluptas</h3>
             <p>
-              Blanditiis voluptate odit ex error ea sed officiis deserunt. Cupiditate non consequatur et doloremque consequuntur. Accusantium labore reprehenderit error temporibus saepe perferendis fuga doloribus vero. Qui omnis quo sit. Dolorem architecto eum et quos deleniti officia qui.
+              Blanditiis voluptate odit ex error ea sed officiis deserunt. Cupiditate non consequatur et doloremque
+              consequuntur. Accusantium labore reprehenderit error temporibus saepe perferendis fuga doloribus vero. Qui
+              omnis quo sit. Dolorem architecto eum et quos deleniti officia qui.
             </p>
             <ul>
               <li><i class="bi bi-check-circle"></i> <span>Aut eum totam accusantium voluptatem.</span></li>
-              <li><i class="bi bi-check-circle"></i> <span>Assumenda et porro nisi nihil nesciunt voluptatibus.</span></li>
+              <li><i class="bi bi-check-circle"></i> <span>Assumenda et porro nisi nihil nesciunt voluptatibus.</span>
+              </li>
               <li><i class="bi bi-check-circle"></i> <span>Ullamco laboris nisi ut aliquip ex ea</span></li>
             </ul>
             <p>
-              Est reprehenderit voluptatem necessitatibus asperiores neque sed ea illo. Deleniti quam sequi optio iste veniam repellat odit. Aut pariatur itaque nesciunt fuga.
+              Est reprehenderit voluptatem necessitatibus asperiores neque sed ea illo. Deleniti quam sequi optio iste
+              veniam repellat odit. Aut pariatur itaque nesciunt fuga.
             </p>
             <p>
-              Sunt rem odit accusantium omnis perspiciatis officia. Laboriosam aut consequuntur recusandae mollitia doloremque est architecto cupiditate ullam. Quia est ut occaecati fuga. Distinctio ex repellendus eveniet velit sint quia sapiente cumque. Et ipsa perferendis ut nihil. Laboriosam vel voluptates tenetur nostrum. Eaque iusto cupiditate et totam et quia dolorum in. Sunt molestiae ipsum at consequatur vero. Architecto ut pariatur autem ad non cumque nesciunt qui maxime. Sunt eum quia impedit dolore alias explicabo ea.
+              Sunt rem odit accusantium omnis perspiciatis officia. Laboriosam aut consequuntur recusandae mollitia
+              doloremque est architecto cupiditate ullam. Quia est ut occaecati fuga. Distinctio ex repellendus eveniet
+              velit sint quia sapiente cumque. Et ipsa perferendis ut nihil. Laboriosam vel voluptates tenetur nostrum.
+              Eaque iusto cupiditate et totam et quia dolorum in. Sunt molestiae ipsum at consequatur vero. Architecto
+              ut pariatur autem ad non cumque nesciunt qui maxime. Sunt eum quia impedit dolore alias explicabo ea.
             </p>
           </div>
 
@@ -413,14 +442,16 @@ require_once __DIR__ . '/includes/ReservationData.php';
         <!-- You can delete the links only if you've purchased the pro version. -->
         <!-- Licensing information: https://bootstrapmade.com/license/ -->
         <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> Distributed by <a href=“https://themewagon.com>ThemeWagon
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> Distributed by <a
+          href=“https://themewagon.com>ThemeWagon
       </div>
     </div>
 
   </footer>
 
   <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
   <!-- Preloader -->
   <div id="preloader"></div>
@@ -436,34 +467,34 @@ require_once __DIR__ . '/includes/ReservationData.php';
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
 
   <script>
-      // Pricing rules injected from server (service_pricings for Studio Rental)
-      window.studioPricings = <?php echo json_encode($studioPricings, JSON_HEX_TAG|JSON_HEX_AMP|JSON_HEX_APOS|JSON_HEX_QUOT); ?> || [];
-    </script>
-    <script>
-      // Show reservation confirmation modal when ?reserved=1 is present
-      (function(){
-        try {
-          const params = new URLSearchParams(window.location.search);
-          if (params.get('reserved') === '1') {
-                // show bootstrap modal success
-                var reservedModal = new bootstrap.Modal(document.getElementById('reservedModal'));
-                reservedModal.show();
-                params.delete('reserved');
-                const newUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
-                window.history.replaceState({}, document.title, newUrl);
-              } else if (params.get('reserved') === '0') {
-                var errModal = new bootstrap.Modal(document.getElementById('reservedErrorModal'));
-                errModal.show();
-                params.delete('reserved');
-                const newUrl2 = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
-                window.history.replaceState({}, document.title, newUrl2);
-              }
-        } catch (err) {
-          console.error(err);
+    // Pricing rules injected from server (service_pricings for Studio Rental)
+    window.studioPricings = <?php echo json_encode($studioPricings, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT); ?> || [];
+  </script>
+  <script>
+    // Show reservation confirmation modal when ?reserved=1 is present
+    (function () {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('reserved') === '1') {
+          // show bootstrap modal success
+          var reservedModal = new bootstrap.Modal(document.getElementById('reservedModal'));
+          reservedModal.show();
+          params.delete('reserved');
+          const newUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+          window.history.replaceState({}, document.title, newUrl);
+        } else if (params.get('reserved') === '0') {
+          var errModal = new bootstrap.Modal(document.getElementById('reservedErrorModal'));
+          errModal.show();
+          params.delete('reserved');
+          const newUrl2 = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+          window.history.replaceState({}, document.title, newUrl2);
         }
-      })();
-    </script>
-    <script src="assets/js/reservation.js"></script>
+      } catch (err) {
+        console.error(err);
+      }
+    })();
+  </script>
+  <script src="assets/js/reservation.js"></script>
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
 

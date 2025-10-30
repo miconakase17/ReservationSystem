@@ -14,43 +14,53 @@ class SignUpController {
         $this->userDetailsModel = new UserDetailsModel($this->db);
     }
 
-    public function signUp($lastname, $firstname, $middlename, $username, $phonenumber, $email, $password) {
-        session_start();
+    public function signUp(
+    $lastname,
+    $firstname,
+    $middlename,
+    $username,
+    $phonenumber,
+    $email,
+    $password,
+    $roleID = 2,             // default = Customer
+    $redirectToAdmin = false // optional
+) {
+    session_start();
 
-        // Hash password
-        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-        $roleID = 2;
-        $data = [
-            'username' => $username,
-            'password' => $hashedPassword,
-            'roleID'   => $roleID,
-            'createdAt' => date('Y-m-d H:i:s'),
-            'lastUpdate' => date('Y-m-d H:i:s'),
-        ];
-        // Step 1: Create the user
-        if ($this->userModel->createUsers($data)) {
-            // Step 2: Retrieve the new user ID
-            $user = $this->userModel->findUsersByUsername($username);
-            $userID = $user['userID'];
+    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-            // Step 3: Insert user details
-            $this->userDetailsModel->createDetails([
-                'userID'      => $userID,
-                'firstName'   => $firstname,
-                'lastName'    => $lastname,
-                'middleName'  => $middlename,
-                'phoneNumber' => $phonenumber,
-                'email'       => $email
-            ]);
+    $data = [
+        'username'   => $username,
+        'password'   => $hashedPassword,
+        'roleID'     => $roleID, 
+        'createdAt'  => date('Y-m-d H:i:s'),
+        'lastUpdate' => date('Y-m-d H:i:s'),
+    ];
 
-            // Step 4: Redirect
-            header("Location: http://localhost/ReservationSystem/login.html?signup=success");
-            exit();
+    if ($this->userModel->createUsers($data)) {
+        $userID = $this->userModel->findUsersByUsername($username)['userID'];
+
+        $this->userDetailsModel->createDetails([
+            'userID'     => $userID,
+            'firstName'  => $firstname,
+            'lastName'   => $lastname,
+            'middleName' => $middlename,
+            'phoneNumber'=> $phonenumber,
+            'email'      => $email
+        ]);
+
+        if ($redirectToAdmin) {
+            header("Location: http://localhost/ReservationSystem/admin-dashboard.html?signup=success");
         } else {
-            $_SESSION['popup_message'] = "Failed to create user account.";
-            header("Location: ../views/signup.php");
-            exit();
+            header("Location: http://localhost/ReservationSystem/login.php?signup=success");
         }
+        exit();
+    } else {
+        $_SESSION['popup_message'] = "Failed to create user account.";
+        header("Location: ../views/signup.php");
+        exit();
     }
+}
+
 }
 ?>
