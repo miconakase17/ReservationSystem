@@ -158,7 +158,7 @@ require_once __DIR__ . '/includes/ReservationData.php';
                           <input type="text" id="totalCost" name="totalCost" class="form-control mb-2" readonly>
 
                           <label class="form-label fw-bold">Down Payment (₱):</label>
-                          <input type="text" name="amountPaid" id="amountPaid" class="form-control" readonly>
+                          <input type="text" name="studioAmountPaid" id="amountPaid" class="form-control" readonly>
                         </div>
                       </div>
 
@@ -184,7 +184,7 @@ require_once __DIR__ . '/includes/ReservationData.php';
                           </p>
                         </div>
                         <label class="form-label fw-bold">Reference No.</label>
-                        <input type="text" name="referenceNumber" id="referenceNumber" class="form-control" required>
+                        <input type="text" name="studioReferenceNumber" id="referenceNumber" class="form-control" required>
                       </div>
 
 
@@ -253,7 +253,7 @@ require_once __DIR__ . '/includes/ReservationData.php';
                           <label class="form-label fw-bold">Down Payment (₱):</label>
                           <input type="text" name="recordingAmountPaid" id="recording-amountPaid" class="form-control mb-2" readonly>
                           <label class="form-label fw-bold">Reference No.</label>
-                        <input type="text" name="referenceNumber" id="referenceNumber" class="form-control" required>
+                        <input type="text" name="recordingReferenceNumber" id="referenceNumber" class="form-control" required>
                         </div>
                       </div>
 

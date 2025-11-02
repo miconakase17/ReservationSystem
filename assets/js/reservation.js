@@ -132,10 +132,12 @@ document.addEventListener('DOMContentLoaded', () => {
     totalAmount.value = `₱${total.toLocaleString()}`;
 
     // Automatically set down payment to half
+    // Studio total calculation
     if (downPaymentInput) {
-      const downPayment = Math.round(total / 2); // round to nearest peso
-      downPaymentInput.value = `₱${downPayment.toLocaleString()}`;
+      const downPayment = Math.round(total / 2);
+      downPaymentInput.value = downPayment; // ✅ numeric only
     }
+
 
   };
 
@@ -175,21 +177,22 @@ document.addEventListener('DOMContentLoaded', () => {
   const mixCheckbox = document.getElementById('mix');
 
   function calculateRecordingPrice() {
-  let total = 0;
+    let total = 0;
 
-  if (multitrackRadio.checked) total += 500;
-  if (livetrackRadio.checked) total += 800;
-  if (mixCheckbox.checked) total += 1500;
+    if (multitrackRadio.checked) total += 500;
+    if (livetrackRadio.checked) total += 800;
+    if (mixCheckbox.checked) total += 1500;
 
-  recordingTotal.value = `₱${total.toLocaleString()}`;
+    recordingTotal.value = total;
 
-  // Automatically set down payment to half
-  const recordingDownPaymentInput = document.getElementById('recording-amountPaid');
-  if (recordingDownPaymentInput) {
-    const downPayment = Math.round(total / 2); // half of total
-    recordingDownPaymentInput.value = `₱${downPayment.toLocaleString()}`;
+    // Automatically set down payment to half
+    const recordingDownPaymentInput = document.getElementById('recording-amountPaid');
+    if (recordingDownPaymentInput) {
+      const downPayment = Math.round(total / 2); // half of total
+      recordingDownPaymentInput.value = Math.round(total / 2); // ✅ no ₱ symbol
+
+    }
   }
-}
 
 
   // Attach event listeners

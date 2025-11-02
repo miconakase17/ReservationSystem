@@ -14,17 +14,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Base data
     $data = [
-        'userID' => (int)$userID, // ✅ always valid and from session
+        'userID' => (int) $userID, // ✅ always valid and from session
         'serviceID' => $_POST['serviceID'] ?? '',
         'bandName' => $_POST['bandName'] ?? '',
         'totalCost' => $_POST['totalCost'] ?? '',
         'recordingMode' => $_POST['recordingMode'] ?? null,
         'mix' => $_POST['mix'] ?? null,
         'additionals' => $_POST['additionals'] ?? [],
-        'amountPaid' => $_POST['amountPaid'] ?? null,
-        'referenceNumber' => $_POST['referenceNumber'] ?? '',
         'upload_type' => $_POST['upload_type'] ?? 'receipt'
     ];
+
+    // Handle payment fields depending on service type
+    switch ($_POST['serviceID']) {
+        case '1': // Studio Rental
+            $data['amountPaid'] = $_POST['studioAmountPaid'] ?? null;
+            $data['referenceNumber'] = $_POST['studioReferenceNumber'] ?? '';
+            break;
+
+        case '2': // Recording
+            $data['amountPaid'] = $_POST['recordingAmountPaid'] ?? null;
+            $data['referenceNumber'] = $_POST['recordingReferenceNumber'] ?? '';
+            break;
+
+        case '3': // Drum Lesson (no payment yet)
+            $data['amountPaid'] = null;
+            $data['referenceNumber'] = null;
+            break;
+    }
+
 
     // Handle date/time depending on selected service
     switch ($_POST['serviceID']) {
