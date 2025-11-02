@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentDate = new Date();
 
   function formatLocalDate(d) {
-    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   }
 
   async function renderWeek() {
@@ -42,7 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Time slots (00:00–23:00)
     const times = [];
     for (let hour = 9; hour <= 23; hour++) {
-      times.push(`${String(hour).padStart(2,'0')}:00:00`);
+      times.push(`${String(hour).padStart(2, '0')}:00:00`);
     }
 
     calendarBody.innerHTML = "";
@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const row = document.createElement("tr");
 
       const timeCell = document.createElement("th");
-      timeCell.textContent = time.slice(0,5); // display HH:MM
+      timeCell.textContent = time.slice(0, 5); // display HH:MM
       row.appendChild(timeCell);
 
       for (let i = 0; i < 7; i++) {
@@ -96,20 +96,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-                // Assign color based on status
-        switch(statusName.toLowerCase()) {
-            case "confirmed":
-                block.classList.add("bg-success", "text-white"); // green
-                break;
-            case "pending":
-                block.classList.add("bg-warning", "text-dark"); // yellow
-                break;
-            case "cancelled":
-                block.classList.add("bg-danger", "text-white"); // red
-                break;
-            default:
-                block.classList.add("bg-primary", "text-white"); // blue as default
-                break;
+        // Assign color based on status
+        switch (statusName.toLowerCase()) {
+          case "confirmed":
+            block.classList.add("bg-success", "text-white"); // green
+            break;
+          case "pending":
+            block.classList.add("bg-warning", "text-dark"); // yellow
+            break;
+          case "cancelled":
+            block.classList.add("bg-danger", "text-white"); // red
+            break;
+          default:
+            block.classList.add("bg-primary", "text-white"); // blue as default
+            break;
         }
 
 
@@ -125,7 +125,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const startHour = parseInt(startTime.split(":")[0], 10);
         for (let h = 1; h < duration; h++) {
-          const nextHour = `${String(startHour + h).padStart(2,'0')}:00:00`;
+          const nextHour = `${String(startHour + h).padStart(2, '0')}:00:00`;
           const nextCell = calendarBody.querySelector(
             `td[data-date='${date}'][data-time='${nextHour}']`
           );

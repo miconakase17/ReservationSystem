@@ -1,25 +1,37 @@
 <?php
 require_once __DIR__ . '/../config/Database.php';
 require_once __DIR__ . '/../models/AdditionalsModel.php';
+require_once __DIR__ . '/../models/RecordingPricesModel.php';
+require_once __DIR__ . '/../models/ServicePricingModel.php';
 
 $additionals = null;
 $studioPricings = [];
+$recordingPricings = [];
 $db = null;
+
 try {
+    // 1️⃣ Initialize DB
     $db = Database::getConnection();
+
+    // 2️⃣ Fetch additionals for Studio Rental
     $additionalsModel = new AdditionalsModel($db);
     $additionals = $additionalsModel->readAllAdditionals();
 
-    $pricingSql = "SELECT sp.weekdayFrom, sp.weekdayTo, sp.hourlyRate FROM service_pricings sp JOIN services s ON sp.serviceID = s.serviceID WHERE s.serviceName = 'Studio Rental'";
-    $pricingRes = $db->query($pricingSql);
-    if ($pricingRes) {
-        while ($r = $pricingRes->fetch_assoc()) {
-            $studioPricings[] = $r;
-        }
-    }
+    // 3️⃣ Fetch Studio Rental pricing via ServicePricingModel
+    $pricingModel = new ServicePricingModel($db);
+    $studioPricings = $pricingModel->getPricingByServiceID(1); // 1 = Studio Rental
+
+    // 4️⃣ Fetch Recording prices via RecordingPricesModel
+    $recordingModel = new RecordingPricesModel($db);
+    $recordingPricings = $recordingModel->getAllOptions();
+
 } catch (Exception $ex) {
-    // Fail gracefully: keep $additionals = null and $studioPricings empty
     $logDir = __DIR__ . '/../uploads/logs/';
     if (!is_dir($logDir)) mkdir($logDir, 0755, true);
-    file_put_contents($logDir . 'reservation_include_errors.log', '['.date('Y-m-d H:i:s').'] reservation-data include error: '.$ex->getMessage()."\n", FILE_APPEND);
+    file_put_contents(
+        $logDir . 'reservation_include_errors.log',
+        '[' . date('Y-m-d H:i:s') . '] reservation-data include error: ' . $ex->getMessage() . "\n",
+        FILE_APPEND
+    );
 }
+?>

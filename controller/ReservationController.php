@@ -9,7 +9,8 @@ require_once __DIR__ . '/../models/RecordingOptionsModel.php';
 require_once __DIR__ . '/../models/AdditionalsModel.php';
 require_once __DIR__ . '/../models/RecordingPricesModel.php';
 
-class ReservationController {
+class ReservationController
+{
     private $db;
     private $reservationModel;
     private $userDetailsModel;
@@ -19,7 +20,8 @@ class ReservationController {
     private $recordingOptionsModel;
     private $additionalsModel;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->db = Database::getConnection();
         $this->reservationModel = new ReservationsModel($this->db);
         $this->userDetailsModel = new UserDetailsModel($this->db);
@@ -30,33 +32,50 @@ class ReservationController {
         $this->additionalsModel = new AdditionalsModel($this->db);
     }
 
-    public function createReservation($data, $files = null) {
+    public function createReservation($data, $files = null)
+    {
         // 1️⃣ Create Main Reservation
         $this->reservationModel->userID = $data['userID'];
         $this->reservationModel->bandName = $data['bandName'] ?? '';
         $this->reservationModel->serviceID = $data['serviceID'];
-        $this->reservationModel->date = $data['date'];
-        $this->reservationModel->startTime = $data['startTime'];
-        $this->reservationModel->endTime = $data['endTime'];
         $this->reservationModel->statusID = 1; // Pending
-        $this->reservationModel->totalCost = floatval(
-            preg_replace('/[^\d.]/', '', $data['totalCost'])
-        );
+        if ($data['serviceID'] == 1) { // 🎵 Studio Rental
+            $this->reservationModel->date = $data['studioDate'] ?? '';
+            $this->reservationModel->startTime = $data['studioStartTime'] ?? '';
+            $this->reservationModel->endTime = $data['studioEndTime'] ?? '';
+            $this->reservationModel->totalCost = floatval(
+                preg_replace('/[^\d.]/', '', $data['studioTotalCost'] ?? '0')
+            );
+        } elseif ($data['serviceID'] == 2) { // 🎧 Recording
+            $this->reservationModel->date = $data['recordingDate'] ?? '';
+            $this->reservationModel->startTime = $data['recordingStartTime'] ?? '';
+            $this->reservationModel->endTime = $data['recordingEndTime'] ?? '';
+            $this->reservationModel->totalCost = floatval(
+                preg_replace('/[^\d.]/', '', $data['recordingTotalCost'] ?? '0')
+            );
+        } elseif ($data['serviceID'] == 3) { // 🥁 Drum Lesson
+            $this->reservationModel->date = $data['drumlessonDate'] ?? '';
+            $this->reservationModel->startTime = $data['drumlessonStartTime'] ?? '';
+            $this->reservationModel->endTime = $data['drumlessonEndTime'] ?? '';
+            $this->reservationModel->totalCost = floatval(
+                preg_replace('/[^\d.]/', '', $data['drumlessonTotalCost'] ?? '0')
+            );
+        }
 
         // 2️⃣ Calculate total cost
         if ($data['serviceID'] == 2) {
-        $pricesModel = new RecordingPricesModel($this->db);
-        
-        $modePrice = $pricesModel->getPriceByName($data['recordingMode']); // MultiTrack / LiveTrack
-        $mixPrice = isset($data['mix']) ? $pricesModel->getPriceByName('MixAndMaster') : 0;
+            $pricesModel = new RecordingPricesModel($this->db);
 
-        $start = new DateTime($data['startTime']);
-        $end = new DateTime($data['endTime']);
-        $hours = max(1, ($end->getTimestamp() - $start->getTimestamp()) / 3600);
+            $modePrice = $pricesModel->getPriceByName($data['recordingMode']); // MultiTrack / LiveTrack
+            $mixPrice = isset($data['mix']) ? $pricesModel->getPriceByName('MixAndMaster') : 0;
 
-        $this->reservationModel->totalCost = ($modePrice * $hours) + $mixPrice;
-} else {
-}
+            $start = new DateTime($data['startTime']);
+            $end = new DateTime($data['endTime']);
+            $hours = max(1, ($end->getTimestamp() - $start->getTimestamp()) / 3600);
+
+            $this->reservationModel->totalCost = ($modePrice * $hours) + $mixPrice;
+        } else {
+        }
 
         // ✅ createReservation() should return insert_id
         $reservationID = $this->reservationModel->createReservation();

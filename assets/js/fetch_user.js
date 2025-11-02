@@ -1,8 +1,8 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   fetch('process/FetchLatestUserProcess.php')
     .then(response => response.json())
     .then(res => {
-      if(res.status === 'success'){
+      if (res.status === 'success') {
         const container = document.getElementById('latestUsersList');
         container.innerHTML = res.data.map(user => {
           const firstName = user.firstName || 'N/A';
