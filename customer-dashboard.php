@@ -115,17 +115,17 @@ require_once __DIR__ . '/includes/ReservationData.php';
                   <div class="row gy-4">
                     <div class="col-sm-4">
                       <label for="date" class="form-label">Select Date:</label>
-                      <input type="date" id="studio-date" name="studioDate" class="form-control">
+                      <input type="date" id="studioDate" name="studioDate" class="form-control">
                     </div>
 
                     <div class="col-sm-4">
                       <label for="start-time" class="form-label">Start Time:</label>
-                      <input type="time" id="studio-start-time" name="studioStartTime" class="form-control">
+                      <input type="time" id="studioStartTime" name="studioStartTime" class="form-control">
                     </div>
 
                     <div class="col-sm-4">
                       <label for="end-time" class="form-label">End Time:</label>
-                      <input type="time" id="studio-end-time" name="studioEndTime" class="form-control">
+                      <input type="time" id="studioEndTime" name="studioEndTime" class="form-control">
                     </div>
                   </div>
 
@@ -155,17 +155,20 @@ require_once __DIR__ . '/includes/ReservationData.php';
                           <input type="text" id="totalHours" name="totalHours" class="form-control mb-2" readonly>
 
                           <label class="form-label fw-bold">Total Amount (₱):</label>
-                          <input type="text" id="totalCost" name="totalCost" class="form-control mb-2" readonly>
+                          <input type="text" id="studioTotalCost" name="studioTotalCost" class="form-control mb-2"
+                            readonly>
 
                           <label class="form-label fw-bold">Down Payment (₱):</label>
-                          <input type="text" name="studioAmountPaid" id="amountPaid" class="form-control" readonly>
+                          <input type="text" name="studioDownPayment" id="studioDownPayment" class="form-control"
+                            readonly>
                         </div>
                       </div>
 
                       <div class="col-md-6">
                         <label class="form-label fw-bold">Upload Receipt:</label>
                         <div class="mb-2">
-                          <input type="file" id="rentalImage" name="receipt" accept="image/*" class="form-control">
+                          <input type="file" id="studioReceipt" name="studioReceipt" accept="image/*"
+                            class="form-control">
                         </div>
                         <div class="mb-2">
                           <img id="rental-image-preview" src="" alt="Preview"
@@ -184,7 +187,8 @@ require_once __DIR__ . '/includes/ReservationData.php';
                           </p>
                         </div>
                         <label class="form-label fw-bold">Reference No.</label>
-                        <input type="text" name="studioReferenceNumber" id="referenceNumber" class="form-control" required>
+                        <input type="text" name="studioReferenceNumber" id="studioReferenceNumber" class="form-control"
+                          required>
                       </div>
 
 
@@ -219,17 +223,17 @@ require_once __DIR__ . '/includes/ReservationData.php';
                   <div class="row gy-4">
                     <div class="col-sm-4">
                       <label for="date" class="form-label">Select Date:</label>
-                      <input type="date" id="recording-date" name="recordingDate" class="form-control">
+                      <input type="date" id="recordingDate" name="recordingDate" class="form-control">
                     </div>
 
                     <div class="col-sm-4">
                       <label for="start-time" class="form-label">Start Time:</label>
-                      <input type="time" id="recording-start-time" name="recordingStartTime" class="form-control">
+                      <input type="time" id="recordingStartTime" name="recordingStartTime" class="form-control">
                     </div>
 
                     <div class="col-sm-4">
                       <label for="end-time" class="form-label">End Time:</label>
-                      <input type="time" id="recording-end-time" name="recordingEndTime" class="form-control">
+                      <input type="time" id="recordingEndTime" name="recordingEndTime" class="form-control">
                     </div>
                   </div>
                   <div class="col-12">
@@ -237,7 +241,7 @@ require_once __DIR__ . '/includes/ReservationData.php';
                       <div class="col-md-6">
                         <label class="form-label fw-bold">Upload Receipt (Recording):</label>
                         <div class="mb-2">
-                          <input type="file" id="recording-image" name="recording-image" accept="image/*"
+                          <input type="file" id="recordingReceipt" name="recordingReceipt" accept="image/*"
                             class="form-control">
                         </div>
                         <div class="mb-2">
@@ -247,13 +251,15 @@ require_once __DIR__ . '/includes/ReservationData.php';
                         <small class="text-muted">Upload payment receipt here.</small>
 
                         <div class="mt-3">
-                          <label class="form-label fw-bold">Total Price (₱):</label>
-                          <input type="text" id="recording-total-price" name="recording-total-price"
-                            class="form-control mb-2" readonly>
+                          <label class="form-label fw-bold">Total Amout (₱):</label>
+                          <input type="text" id="recordingTotalCost" name="recordingTotalCost" class="form-control mb-2"
+                            readonly>
                           <label class="form-label fw-bold">Down Payment (₱):</label>
-                          <input type="text" name="recordingAmountPaid" id="recording-amountPaid" class="form-control mb-2" readonly>
+                          <input type="text" name="recordingDownPayment" id="recordingDownPayment"
+                            class="form-control mb-2" readonly>
                           <label class="form-label fw-bold">Reference No.</label>
-                        <input type="text" name="recordingReferenceNumber" id="referenceNumber" class="form-control" required>
+                          <input type="text" name="recordingReferenceNumber" id="recordingReferenceNumber"
+                            class="form-control" required>
                         </div>
                       </div>
 
@@ -265,43 +271,99 @@ require_once __DIR__ . '/includes/ReservationData.php';
                         </div>
                         <p class="small text-muted">Scan this QR code with GCash to pay half of total payment.
                         </p>
-                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-
-                <div id="drumlesson-fields" class="row gy-4" style="display: none;">
-                  <div class="row gy-4">
-                    <div class="col-sm-4">
-                      <label for="drumlesson-date" class="form-label">Select Date:</label>
-                      <input type="date" id="drumlesson-date" name="drumlessonDate" class="form-control">
-                    </div>
-
-                    <div class="col-sm-4">
-                      <label for="drumlesson-start-time" class="form-label">Start Time:</label>
-                      <input type="time" id="drumlesson-start-time" name="drumlessonStartTime" class="form-control">
-                    </div>
-
-                    <div class="col-sm-4">
-                      <label for="drumlesson-end-time" class="form-label">End Time:</label>
-                      <input type="time" id="drumlesson-end-time" name="drumlessonEndTime" class="form-control"
-                        readonly>
-                    </div>
-                  </div>
-                </div>
-
-
-                <div class=" col-12 text-center">
-                  <button type="submit" class="btn btn-primary mt-3">Submit Reservation</button>
-                </div>
-
               </div>
-            </form>
+
+             <!-- DRUM LESSON FIELD -->
+<div id="drumlesson-fields" class="row gy-4" style="display: none;">
+  <div class="row gy-4">
+    <div class="col-sm-4">
+      <label for="drumlesson-date" class="form-label">Select Date:</label>
+      <input type="date" id="drumlessonDate" name="drumlessonDate" class="form-control">
+    </div>
+
+    <div class="col-sm-4">
+      <label for="drumlesson-start-time" class="form-label">Start Time:</label>
+      <input type="time" id="drumlessonStartTime" name="drumlessonStartTime" class="form-control">
+    </div>
+
+    <div class="col-sm-4">
+      <label for="drumlesson-end-time" class="form-label">End Time:</label>
+      <input type="time" id="drumlessonEndTime" name="drumlessonEndTime" class="form-control" readonly>
+    </div>
+
+    <!-- Weekly Sessions -->
+    <div class="row gy-2 mt-3">
+      <div class="col-12">
+        <label class="form-label fw-bold">Weekly Sessions (12 weeks):</label>
+        <div id="drumlesson-sessions" class="p-2"
+          style="background:#f8f9fa;border:1px solid #e6e6e6;border-radius:4px;">
+          <ul id="drumlesson-sessions-list" class="mb-0" style="list-style:none;padding-left:0;"></ul>
+          <div id="drumlesson-sessions-inputs"></div>
+        </div>
+        <small class="text-muted">
+          Selected date/time will repeat weekly on the same weekday and hour for 12 weeks. 
+          These sessions are added to the form on submit.
+        </small>
+      </div>
+    </div>
+  </div>
+
+  <hr class="my-4">
+
+  <!-- Payment Details -->
+  <div class="row gy-4 mt-2">
+    <div class="col-md-6">
+      <label class="form-label fw-bold">Upload Receipt (Drum Lesson):</label>
+      <div class="mb-2">
+        <input type="file" id="drumlessonReceipt" name="drumlessonReceipt" accept="image/*" class="form-control">
+      </div>
+      <div class="mb-2">
+        <img id="drumlesson-image-preview" src="" alt="Preview"
+          style="max-width:100%; height:auto; display:none; border:1px solid #ddd; padding:6px;" />
+      </div>
+
+      <div class="mt-3">
+        <label class="form-label fw-bold">Total Amount (₱):</label>
+        <input type="text" id="drumlessonTotalCost" name="drumlessonTotalCost" class="form-control mb-2" readonly>
+
+        <label class="form-label fw-bold">Down Payment (₱):</label>
+        <input type="text" name="drumlessonDownPayment" id="drumlessonDownPayment" class="form-control mb-2" readonly>
+
+        <label class="form-label fw-bold">Reference No.</label>
+        <input type="text" name="drumlessonReferenceNumber" id="drumlessonReferenceNumber" class="form-control" required>
+      </div>
+    </div>
+
+    <div class="col-md-6 text-center">
+      <label class="form-label fw-bold">GCash (Down Payment):</label>
+      <div class="mb-2">
+        <img src="assets/img/QR_Payment.png" alt="GCash QR"
+          style="max-width:200px; height:auto; border:1px solid #ddd; padding:6px;" />
+      </div>
+      <p class="small text-muted">
+        Scan this QR code with GCash to pay half of total payment.
+      </p>
+    </div>
+  </div>
+</div>
+
+
+
+
+          <div class=" col-12 text-center">
+            <button type="submit" class="btn btn-primary mt-3">Submit Reservation</button>
           </div>
 
         </div>
+        </form>
       </div>
+
+    </div>
+    </div>
     </div>
 
     <!-- Page Title -->
@@ -495,7 +557,7 @@ require_once __DIR__ . '/includes/ReservationData.php';
     })();
   </script>
   <script src="assets/js/reservation.js"></script>
-  <!-- Main JS File -->
+  <script src="assets/js/studio_rental.js"></script>
   <script src="assets/js/main.js"></script>
 
 </body>
