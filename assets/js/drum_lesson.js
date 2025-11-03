@@ -1,19 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
     const serviceSelect = document.getElementById('service');
-    const dateInput = document.getElementById('drumlesson-start-date');
-    const timeInput = document.getElementById('drumlesson-start-time');
+    const dateInput = document.getElementById('date');
+    const timeInput = document.getElementById('startTime');
     const sessionsList = document.getElementById('drumlesson-sessions-list');
     const sessionsInputs = document.getElementById('drumlesson-sessions-inputs');
     const totalCost = document.getElementById('totalCost');
     const downPayment = document.getElementById('downPayment');
 
     const drumFixedTotal = 7500; // total for 12 sessions
-    const sessionDurationHours = 2; // each session is 2 hours
+    const sessionDurationHours = 2; // 2 hours per session
     const totalSessions = 12;
 
     function generateDrumSessions() {
-        if (serviceSelect.value !== '3') {
-            // clear sessions and totals if not drum lesson
+        if (serviceSelect.value != '3') {
             sessionsList.innerHTML = '';
             sessionsInputs.innerHTML = '';
             totalCost.value = '';
@@ -21,7 +20,6 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Set the totals immediately (even if date/time not selected yet)
         totalCost.value = drumFixedTotal.toFixed(2);
         downPayment.value = (drumFixedTotal / 2).toFixed(2);
 
@@ -37,27 +35,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const startDate = new Date(startDateStr);
         startDate.setHours(hour, minute, 0, 0);
 
-        const endTimeInput = document.getElementById('endTime');
-        if (endTimeInput) {
-            const endDate = new Date(startDate);
-            endDate.setHours(endDate.getHours() + sessionDurationHours);
-            endTimeInput.value = `${String(endDate.getHours()).padStart(2, '0')}:${String(endDate.getMinutes()).padStart(2, '0')}`;
-        }
-
         for (let i = 0; i < totalSessions; i++) {
             const sessionStart = new Date(startDate);
             sessionStart.setDate(sessionStart.getDate() + i * 7);
             const sessionEnd = new Date(sessionStart);
             sessionEnd.setHours(sessionEnd.getHours() + sessionDurationHours);
 
-            // Display session
             const li = document.createElement('li');
-            li.textContent = sessionStart.toLocaleDateString('en-PH', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) +
-                ` ${sessionStart.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ` +
-                `${sessionEnd.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+            li.innerHTML = `<strong>Session ${i + 1}: </strong><span>${sessionStart.toLocaleDateString('en-PH')} ` +
+                `${sessionStart.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ` +
+                `${sessionEnd.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>`;
             sessionsList.appendChild(li);
 
-            // Hidden input for form submission
+
             const input = document.createElement('input');
             input.type = 'hidden';
             input.name = 'drumlessonSessions[]';
@@ -66,13 +56,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    
-
-    // Event listeners
     [serviceSelect, dateInput, timeInput].forEach(el => {
         if (el) el.addEventListener('change', generateDrumSessions);
     });
 
-    // Initialize on page load
     generateDrumSessions();
 });

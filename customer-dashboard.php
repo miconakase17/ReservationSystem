@@ -117,6 +117,9 @@ require_once __DIR__ . '/includes/ReservationData.php';
                     <div class="mb-3">
                       <label for="endTime" class="form-label fw-bold">End Time:</label>
                       <input type="time" id="endTime" name="endTime" class="form-control">
+                      <small id="endTimeNote" class="text-muted" style="display:none;">
+                        For Drum Lesson, the session must be 2 hours.
+                      </small>
                     </div>
 
                     <!-- Upload Receipt -->
@@ -232,12 +235,8 @@ require_once __DIR__ . '/includes/ReservationData.php';
                   <div class="row gy-2 mt-3">
                     <div class="col-12">
                       <label class="form-label fw-bold">Weekly Sessions (12 weeks):</label>
-                      <div id="drumlesson-sessions" class="p-2"
-                        style="background:#f8f9fa;border:1px solid #e6e6e6;border-radius:4px;">
-                        <ul id="drumlesson-sessions-list" class="mb-0" style="list-style:none;padding-left:0;">
-                        </ul>
-                        <div id="drumlesson-sessions-inputs"></div>
-                      </div>
+                      <ul id="drumlesson-sessions-list" style="list-style:none; padding-left:0;"></ul>
+                      <div id="drumlesson-sessions-inputs"></div>
                       <small class="text-muted">
                         Selected date/time will repeat weekly on the same weekday and hour for 12 weeks.
                         These sessions are added to the form on submit.
