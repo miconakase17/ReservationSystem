@@ -22,7 +22,7 @@ class UserDetailsModel {
         $stmt->bind_param("i", $userID);
         $stmt->execute();
         $result = $stmt->get_result();
-        return $result->fetch_assoc();
+        return $result->fetch_assoc() ?: null;
     }
 
     // Create or update details

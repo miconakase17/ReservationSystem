@@ -36,6 +36,7 @@ require_once __DIR__ . '/includes/ReservationData.php';
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
   <link href="assets/css/reservation.css" rel="stylesheet">
+  <link href="assets/css/calendar.css" rel="stylesheet">
 
 </head>
 
@@ -51,9 +52,10 @@ require_once __DIR__ . '/includes/ReservationData.php';
       <nav id="navmenu" class="navmenu">
         <ul>
           <li><a href="customer-dashboard.php">Home</a></li>
-          <li><a href="#about">View Reservation</a></li>
-          <li><a href="#services">Profile</a></li>
-          <li><a href="index.html">Log Out</a></li>
+          <li><a href="#view-reservation">View Reservation</a></li>
+          <li><a href="#" data-bs-target="#calendarModal" data-bs-toggle="modal">View Calendar</a></li>
+          <li><a href="#" data-bs-target="#profileModal" data-bs-toggle="modal">Profile</a></li>
+          <li><a href="#" id="logoutBtn">Log Out</a></li>
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
@@ -270,6 +272,90 @@ require_once __DIR__ . '/includes/ReservationData.php';
       </div>
     </div>
 
+    <!-- CALENDAR MODAL -->
+    <div class="modal fade" id="calendarModal" tabindex="-1" aria-labelledby="calendarModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <!-- Calendar Body -->
+        <div class="modal-body">
+          <div class="modal-content w-100 p-0 rounded bg-light">
+            <div class="calendar-container p-4">
+              <div class="calendar">
+
+                <!-- Header Row -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+
+                  <!-- Left side: month dropdown + year -->
+                  <div class="gap-2 ms-0">
+                    <select id="monthSelect" class="form-select form-select-sm w-auto" style="margin-left: 0;">
+                      <option value="0">January</option>
+                      <option value="1">February</option>
+                      <option value="2">March</option>
+                      <option value="3">April</option>
+                      <option value="4">May</option>
+                      <option value="5">June</option>
+                      <option value="6">July</option>
+                      <option value="7">August</option>
+                      <option value="8">September</option>
+                      <option value="9">October</option>
+                      <option value="10">November</option>
+                      <option value="11">December</option>
+                    </select>
+                  </div>
+
+                  <div class="d-flex align-items-center gap-2">
+                    <!-- Left arrow -->
+                    <span class="bi bi-chevron-left fs-5" id="prevYear" style="cursor:pointer;"></span>
+
+                    <!-- Dynamic year label -->
+                    <span class="year fw-bold fs-5 mb-0" id="yearLabel"></span>
+
+                    <!-- Right arrow -->
+                    <span class="bi bi-chevron-right fs-5" id="nextYear" style="cursor:pointer;"></span>
+                  </div>
+
+
+                  <!-- Right side: navigation arrows -->
+                  <div class="me-0">
+                    <span class="bi bi-chevron-left me-3" id="prev" style="cursor:pointer;"></span>
+                    <span class="bi bi-chevron-right" id="next" style="cursor:pointer;"></span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="table-responsive">
+                <table class="table text-center align-middle" id="week-calendar">
+                  <thead>
+                    <tr>
+                      <th style="width: 100px;">Time</th>
+                      <th>Sun</th>
+                      <th>Mon</th>
+                      <th>Tue</th>
+                      <th>Wed</th>
+                      <th>Thu</th>
+                      <th>Fri</th>
+                      <th>Sat</th>
+                    </tr>
+                    <tr id="weekDatesRow">
+                      <th></th>
+                      <td id="sun"></td>
+                      <td id="mon"></td>
+                      <td id="tue"></td>
+                      <td id="wed"></td>
+                      <td id="thu"></td>
+                      <td id="fri"></td>
+                      <td id="sat"></td>
+                    </tr>
+                  </thead>
+                  <tbody id="calendar-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End Calendar Modal -->
+
     <!-- Page Title -->
     <div class="page-title dark-background" data-aos="fade"
       style="background-image: url(assets/img/page-title-bg.webp);">
@@ -277,69 +363,108 @@ require_once __DIR__ . '/includes/ReservationData.php';
         <h1>Welcome, <?php
         echo htmlspecialchars($_SESSION['user']['firstName'] ?? 'Customer');
         ?>!</h1>
-        <p>Please enjoy</p>
+        <p>Kevin's Express Music Studio</p>
         <nav class="breadcrumbs">
           <ol>
-            <li><a href="index.html">Home</a></li>
-            <li class="current">Reserve Now</li>
+            <li class="current"><a>Home</a></li>
+            <li><a href="#" data-bs-target="#reservationForm" data-bs-toggle="modal">Reserve Now!</a></li>
           </ol>
         </nav>
       </div>
     </div><!-- End Page Title -->
 
-    <!-- Service Details Section -->
-    <section id="customer-dashboard" class="customer-dashboard section">
-
-      <div class="container">
+    <!-- View Reservation Section -->
+    <section id="view-reservation" class="customer-dashboard section">
+      <div class="container" data-aos="fade-up">
 
         <div class="row gy-4">
+          <!-- Main Content -->
+          <div class="col-lg-10 mx-auto" data-aos="fade-up" data-aos-delay="200">
+            <h3 class="mb-4"><i class="bi bi-calendar-event"></i> My Reservations</h3>
 
-          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
-            <div class="services-list">
-              <a href="#" class="active">Web Design</a>
-              <a href="#">Software Development</a>
-              <a href="#">Product Management</a>
-              <a href="#">Graphic Design</a>
-              <a href="#">Marketing</a>
+            <!-- Reservation List -->
+            <div class="table-responsive">
+              <table class="table table-striped table-hover align-middle text-center" id="user-reservations">
+                <thead class="table-dark">
+                  <tr>
+                    <th>Service</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Price (₱)</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td colspan="5">Loading your reservations...</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
 
-            <h4>Enim qui eos rerum in delectus</h4>
-            <p>Nam voluptatem quasi numquam quas fugiat ex temporibus quo est. Quia aut quam quod facere ut non
-              occaecati ut aut. Nesciunt mollitia illum tempore corrupti sed eum reiciendis. Maxime modi rerum.</p>
           </div>
-
-          <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
-            <img src="assets/img/services.jpg" alt="" class="img-fluid services-img">
-            <h3>Temporibus et in vero dicta aut eius lidero plastis trand lined voluptas dolorem ut voluptas</h3>
-            <p>
-              Blanditiis voluptate odit ex error ea sed officiis deserunt. Cupiditate non consequatur et doloremque
-              consequuntur. Accusantium labore reprehenderit error temporibus saepe perferendis fuga doloribus vero. Qui
-              omnis quo sit. Dolorem architecto eum et quos deleniti officia qui.
-            </p>
-            <ul>
-              <li><i class="bi bi-check-circle"></i> <span>Aut eum totam accusantium voluptatem.</span></li>
-              <li><i class="bi bi-check-circle"></i> <span>Assumenda et porro nisi nihil nesciunt voluptatibus.</span>
-              </li>
-              <li><i class="bi bi-check-circle"></i> <span>Ullamco laboris nisi ut aliquip ex ea</span></li>
-            </ul>
-            <p>
-              Est reprehenderit voluptatem necessitatibus asperiores neque sed ea illo. Deleniti quam sequi optio iste
-              veniam repellat odit. Aut pariatur itaque nesciunt fuga.
-            </p>
-            <p>
-              Sunt rem odit accusantium omnis perspiciatis officia. Laboriosam aut consequuntur recusandae mollitia
-              doloremque est architecto cupiditate ullam. Quia est ut occaecati fuga. Distinctio ex repellendus eveniet
-              velit sint quia sapiente cumque. Et ipsa perferendis ut nihil. Laboriosam vel voluptates tenetur nostrum.
-              Eaque iusto cupiditate et totam et quia dolorum in. Sunt molestiae ipsum at consequatur vero. Architecto
-              ut pariatur autem ad non cumque nesciunt qui maxime. Sunt eum quia impedit dolore alias explicabo ea.
-            </p>
-          </div>
-
         </div>
 
       </div>
+    </section>
+    <!-- End View Reservation Section -->
 
-    </section><!-- /Service Details Section -->
+    <!-- Profile Modal -->
+    <div class="modal fade" id="profileModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+          <!-- Header -->
+          <div class="modal-header">
+            <h5 class="modal-title"><i class="bi bi-person-circle"></i> My Profile</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <!-- Body -->
+          <div class="modal-body">
+            <form id="profileForm" action="process/UpdateProfileProcess.php" method="POST">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label fw-bold">Username</label>
+                  <input type="text" name="username" class="form-control"
+                    value="<?php echo htmlspecialchars($_SESSION['user']['username'] ?? ''); ?>" readonly>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-bold">Email</label>
+                  <input type="email" name="email" class="form-control"
+                    value="<?php echo htmlspecialchars($_SESSION['user']['email'] ?? ''); ?>" readonly>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-bold">First Name</label>
+                  <input type="text" name="firstName" class="form-control"
+                    value="<?php echo htmlspecialchars($_SESSION['user']['firstName'] ?? ''); ?>" readonly>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-bold">Last Name</label>
+                  <input type="text" name="lastName" class="form-control"
+                    value="<?php echo htmlspecialchars($_SESSION['user']['lastName'] ?? ''); ?>" readonly>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label fw-bold">Phone</label>
+                  <input type="text" name="phoneNumber" class="form-control"
+                    value="<?php echo htmlspecialchars($_SESSION['user']['phoneNumber'] ?? ''); ?>" readonly>
+                </div>
+              </div>
+
+              <!-- Buttons -->
+              <div class="mt-4 text-end">
+                <button type="button" id="editProfileBtn" class="btn btn-secondary">Edit Profile</button>
+                <button type="submit" id="saveProfileBtn" class="btn btn-primary d-none">Save Changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
   </main>
 
@@ -349,19 +474,18 @@ require_once __DIR__ . '/includes/ReservationData.php';
       <div class="row gy-4">
         <div class="col-lg-4 col-md-6 footer-about">
           <a href="index.html" class="logo d-flex align-items-center">
-            <span class="sitename">Dewi</span>
+            <span class="sitename">Kevin's Express Studio</span>
           </a>
           <div class="footer-contact pt-3">
-            <p>A108 Adam Street</p>
-            <p>New York, NY 535022</p>
-            <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-            <p><strong>Email:</strong> <span>info@example.com</span></p>
+            <p>89 A. Bonifacio St.,</p>
+            <p>Brgy. Canlalay, City of Biñan, Laguna, PH</p>
+            <p class="mt-3"><strong>Phone:</strong> <span>+63 926 937 8332</span></p>
+            <p><strong>Email:</strong> <span>alonte003@gmail.com</span></p>
           </div>
           <div class="social-links d-flex mt-4">
-            <a href=""><i class="bi bi-twitter-x"></i></a>
             <a href=""><i class="bi bi-facebook"></i></a>
+            <a href=""><i class="bi bi-youtube"></i></a>
             <a href=""><i class="bi bi-instagram"></i></a>
-            <a href=""><i class="bi bi-linkedin"></i></a>
           </div>
         </div>
 
@@ -371,50 +495,26 @@ require_once __DIR__ . '/includes/ReservationData.php';
             <li><i class="bi bi-chevron-right"></i> <a href="#">Home</a></li>
             <li><i class="bi bi-chevron-right"></i> <a href="#">About us</a></li>
             <li><i class="bi bi-chevron-right"></i> <a href="#">Services</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Terms of service</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Privacy policy</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#">Bands</a></li>
           </ul>
         </div>
 
         <div class="col-lg-2 col-md-3 footer-links">
           <h4>Our Services</h4>
           <ul>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Web Design</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Web Development</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Product Management</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Marketing</a></li>
-            <li><i class="bi bi-chevron-right"></i> <a href="#">Graphic Design</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#">Recording</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#">Studio Rental</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="#">Drum Lesson</a></li>
           </ul>
         </div>
-
-        <div class="col-lg-4 col-md-12 footer-newsletter">
-          <h4>Our Newsletter</h4>
-          <p>Subscribe to our newsletter and receive the latest news about our products and services!</p>
-          <form action="forms/newsletter.php" method="post" class="php-email-form">
-            <div class="newsletter-form"><input type="email" name="email"><input type="submit" value="Subscribe"></div>
-            <div class="loading">Loading</div>
-            <div class="error-message"></div>
-            <div class="sent-message">Your subscription request has been sent. Thank you!</div>
-          </form>
-        </div>
-
       </div>
     </div>
 
     <div class="container copyright text-center mt-4">
-      <p>© <span>Copyright</span> <strong class="px-1 sitename">Dewi</strong> <span>All Rights Reserved</span></p>
-      <div class="credits">
-        <!-- All the links in the footer should remain intact. -->
-        <!-- You can delete the links only if you've purchased the pro version. -->
-        <!-- Licensing information: https://bootstrapmade.com/license/ -->
-        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
-        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a> Distributed by <a
-          href=“https://themewagon.com>ThemeWagon
-      </div>
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">Kevin's Express Studio</strong> <span>All Rights
+          Reserved</span> <strong>2025</strong></p>
     </div>
-
   </footer>
-
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
       class="bi bi-arrow-up-short"></i></a>
@@ -469,7 +569,14 @@ require_once __DIR__ . '/includes/ReservationData.php';
   <script src="assets/js/studio_rental.js"></script>
   <script src="assets/js/recording.js"></script>
   <script src="assets/js/drum_lesson.js"></script>
+  <script src="assets/js/fetch_user_reservation.js"></script>
+  <script src="assets/js/calendar.js"></script>
+  <script src="assets/js/update_profile.js"></script>
+  <script src="assets/js/logout.js"></script>
   <script src="assets/js/main.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 </body>
 

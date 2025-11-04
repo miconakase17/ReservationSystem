@@ -51,6 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $controller = new ReservationController();
     $result = $controller->createReservation($data, $files);
 
+        // ✅ Return JSON instead of redirect
     echo json_encode($result);
 }
+
 ?>

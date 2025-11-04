@@ -133,3 +133,48 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initial calculation
   calculateTotal();
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  const reservationForm = document.querySelector('.reservation-form');
+
+  reservationForm.addEventListener('submit', (e) => {
+    e.preventDefault(); // Stop normal form submission
+
+    const formData = new FormData(reservationForm);
+
+    fetch(reservationForm.action, {
+      method: 'POST',
+      body: formData
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Reservation Confirmed!',
+            text: data.message || 'Your reservation has been submitted successfully!',
+            confirmButtonText: 'OK'
+          }).then(() => {
+            // Redirect after user clicks OK
+            window.location.href = 'customer-dashboard.php';
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Reservation Failed',
+            text: data.message || 'Something went wrong. Please try again.',
+            confirmButtonText: 'OK'
+          });
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Could not process reservation. Please try again.',
+          confirmButtonText: 'OK'
+        });
+      });
+  });
+});

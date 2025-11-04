@@ -45,20 +45,24 @@ class LoginController {
             exit();
         }
 
-        // Successful login
+        // ✅ Successful login
         $_SESSION['login_attempts'] = 0;
 
+        // 🟢 Fetch user details (name, email, phoneNumber)
         $details = $this->userDetailsModel->getUserDetailsByUserId($user['userID']);
 
+        // 🟢 Store everything in session for use in profile
         $_SESSION['user'] = [
-            'userID'    => $user['userID'],
-            'firstName' => $details['firstName'] ?? '',
-            'lastName'  => $details['lastName'] ?? '',
-            'username'  => $user['username'],
-            'roleID'    => $user['roleID'] ?? 2
+            'userID'      => $user['userID'],
+            'username'    => $user['username'],
+            'firstName'   => $details['firstName'] ?? '',
+            'lastName'    => $details['lastName'] ?? '',
+            'email'       => $details['email'] ?? '',
+            'phoneNumber' => $details['phoneNumber'] ?? '',
+            'roleID'      => $user['roleID'] ?? 2
         ];
 
-        // Redirect based on role
+        // 🟢 Redirect based on role
         if ($user['roleID'] == 1) {
             header("Location: http://localhost/ReservationSystem/admin-dashboard.html?login=success");
         } else {

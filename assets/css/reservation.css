@@ -171,3 +171,29 @@ small.text-muted {
         transform: translateY(0);
     }
 }
+
+#user-reservations th, 
+#user-reservations td {
+  vertical-align: middle;
+}
+
+#user-reservations .badge {
+  font-size: 0.9rem;
+  padding: 0.5em 1em;
+  border-radius: 1rem;
+}
+
+/* Base style for primary button */
+#saveProfileBtn, .btn-primary {
+  color: var(--contrast-color); 
+  background: var(--accent-color); 
+  border: 0;
+  padding: 10px 30px;
+  transition: 0.4s;
+  cursor: pointer;
+}
+
+/* Hover effect */
+#saveProfileBtn:hover, .btn-primary:hover {
+  background: color-mix(in srgb, var(--accent-color), transparent 20%);
+}

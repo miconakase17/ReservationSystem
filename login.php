@@ -3,8 +3,6 @@ session_start();
 $message = $_SESSION['popup_message'] ?? null;
 unset($_SESSION['popup_message']);
 ?>
-
-
 <!DOCTYPE html>
 <html lang="en">
 
