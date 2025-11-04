@@ -5,7 +5,7 @@ require_once __DIR__ . '/../config/Database.php';
 $conn = Database::getConnection();
 
 if (!isset($_SESSION['otp_verified']) || !$_SESSION['otp_verified'] || !isset($_SESSION['reset_userID'])) {
-    header('Location: ../forgot-password.php');
+    header('Location: ../forgot-password.html');
     exit;
 }
 

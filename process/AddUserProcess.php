@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $phonenumber,
         $email,
         $password,
-        1,      // roleID = Admin
-        true    // redirectToAdmin = true
+        1,      
+        true    
     );
 }

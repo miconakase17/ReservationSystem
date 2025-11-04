@@ -1,34 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const popup = document.getElementById("error-popup");
-  if (!popup) return;
+    const loginMessageElement = document.getElementById("loginMessage");
 
-  const closeBtn = popup.querySelector(".close-popup");
+    if (loginMessageElement) {
+        const message = loginMessageElement.dataset.message;
+        const type = loginMessageElement.dataset.type || "error"; // default to error
 
-  // Start from hidden state
-  popup.classList.remove("show", "hide");
-
-  // Force browser to compute the current style (reflow)
-  void popup.offsetHeight;
-
-  // Now safely trigger the transition
-  popup.classList.add("show");
-
-  // --- Close animation ---
-  function closePopup() {
-    popup.classList.remove("show");
-    popup.classList.add("hide");
-
-    popup.addEventListener(
-      "transitionend",
-      () => {
-        popup.style.display = "none";
-      },
-      { once: true }
-    );
-  }
-
-  if (closeBtn) closeBtn.addEventListener("click", closePopup);
-
-  // Auto-close after 4 seconds
-  setTimeout(closePopup, 4000);
+        if (message) {
+            Swal.fire({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 4000,
+                timerProgressBar: true,
+                icon: type, // 'success' or 'error'
+                title: message,
+                background: type === "success" ? "#f0fff0" : "#fce5ec",
+                color: type === "success" ? "#228B22" : "#333"
+            });
+        }
+    }
 });

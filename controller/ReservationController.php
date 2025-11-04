@@ -33,9 +33,43 @@ class ReservationController
         $this->reservationModel->endTime = $data['endTime'] ?? '';
         $this->reservationModel->totalCost = floatval(preg_replace('/[^\d.]/', '', $data['totalCost'] ?? '0'));
 
+
         // Validate date
         if (empty($this->reservationModel->date)) {
             return ['success' => false, 'message' => 'Reservation date is required.'];
+        }
+
+        // Check for double booking for single reservations
+        if ($data['serviceID'] != 3) { // Not Drum Lesson
+            if (
+                !$this->reservationModel->isTimeSlotAvailable(
+                    $data['serviceID'],
+                    $data['date'],
+                    $data['startTime'],
+                    $data['endTime']
+                )
+            ) {
+                return ['success' => false, 'message' => 'Selected time slot is already booked.'];
+            }
+        }
+
+        // Check for Drum Lesson weekly sessions
+        if ($data['serviceID'] == 3 && !empty($data['weeklySessions'])) {
+            foreach ($data['weeklySessions'] as $session) {
+                if (
+                    !$this->reservationModel->isTimeSlotAvailable(
+                        $data['serviceID'],
+                        $session['date'],
+                        $session['startTime'],
+                        $session['endTime']
+                    )
+                ) {
+                    return [
+                        'success' => false,
+                        'message' => 'One or more drum lesson sessions conflict with existing bookings.'
+                    ];
+                }
+            }
         }
 
         // 2️⃣ Create reservation record
@@ -43,7 +77,7 @@ class ReservationController
         if (!$reservationID) {
             return ['success' => false, 'message' => 'Failed to create reservation.'];
         }
-         // ✅ 3️⃣ Drum Lesson Weekly Sessions
+        // ✅ 3️⃣ Drum Lesson Weekly Sessions
         if ($data['serviceID'] == 3 && !empty($data['weeklySessions'])) {
             $this->drumLessonSessionsModel->createMultipleSessions($reservationID, $data['weeklySessions']);
         }

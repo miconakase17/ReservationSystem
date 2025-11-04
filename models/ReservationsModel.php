@@ -1,8 +1,9 @@
 <?php
-class ReservationsModel {
+class ReservationsModel
+{
     private $conn;
     private $table = "reservations";
-    
+
     public $reservationID;
     public $userID;
     public $bandName;
@@ -14,16 +15,18 @@ class ReservationsModel {
     public $statusID;
     public $createdAt;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->conn = $db;
     }
 
     // Create a new reservation
-    public function createReservation() {
+    public function createReservation()
+    {
         $sql = "INSERT INTO {$this->table} 
                   (userID, bandName, serviceID, date, startTime, endTime, totalCost, statusID, createdAt) 
                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())";
-        
+
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param(
             "isisssdi",
@@ -38,22 +41,24 @@ class ReservationsModel {
         );
 
         if ($stmt->execute()) {
-        // ✅ Return the inserted reservation ID
-        return $this->conn->insert_id;
-    }
+            // ✅ Return the inserted reservation ID
+            return $this->conn->insert_id;
+        }
 
-    return false;
+        return false;
 
     }
 
     // Get all reservations
-    public function readAllReservations() {
+    public function readAllReservations()
+    {
         $sql = "SELECT * FROM {$this->table} ORDER BY createdAt DESC";
         return $this->conn->query($sql);
     }
 
     // Get a single reservation by ID
-    public function readOne($id) {
+    public function readOne($id)
+    {
         $sql = "SELECT * FROM {$this->table} WHERE reservationID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $id);
@@ -62,7 +67,8 @@ class ReservationsModel {
     }
 
     // Update reservation
-    public function updateReservations() {
+    public function updateReservations()
+    {
         $sql = "UPDATE {$this->table}
                   SET serviceID = ?, date = ?, startTime = ?, endTime = ?, totalCost = ?, statusID = ?
                   WHERE reservationID = ?";
@@ -81,7 +87,8 @@ class ReservationsModel {
     }
 
     // Delete reservation
-    public function deleteReservations($id) {
+    public function deleteReservations($id)
+    {
         $sql = "DELETE FROM {$this->table} WHERE reservationID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $id);
@@ -89,7 +96,8 @@ class ReservationsModel {
     }
 
     // Get reservations by user ID
-    public function readReservationsByUserID($userID) {
+    public function readReservationsByUserID($userID)
+    {
         $sql = "SELECT * FROM {$this->table} WHERE userID = ? ORDER BY date DESC";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $userID);
@@ -97,30 +105,32 @@ class ReservationsModel {
         return $stmt->get_result();
     }
 
-    public function isTimeSlotAvailable($serviceID, $date, $startTime, $endTime) {
-    $sql = "SELECT COUNT(*) AS count
+    public function isTimeSlotAvailable($serviceID, $date, $startTime, $endTime)
+    {
+        // Convert to 24-hour format with seconds
+        $startTime = date('H:i:s', strtotime($startTime));
+        $endTime = date('H:i:s', strtotime($endTime));
+
+        $sql = "SELECT COUNT(*) AS count
             FROM {$this->table}
             WHERE serviceID = ?
               AND date = ?
-              AND (
-                  (startTime <= ? AND endTime > ?) OR
-                  (startTime < ? AND endTime >= ?) OR
-                  (startTime >= ? AND endTime <= ?)
-              )";
+              AND statusID IN (1,2)  -- Pending or Confirmed
+              AND startTime < ?      -- new endTime
+              AND endTime > ?";      // new startTime
 
-    $stmt = $this->conn->prepare($sql);
-    $stmt->bind_param(
-        "isssssss",
-        $serviceID,
-        $date,
-        $startTime, $startTime,
-        $endTime, $endTime,
-        $startTime, $endTime
-    );
-    $stmt->execute();
-    $result = $stmt->get_result()->fetch_assoc();
-    return $result['count'] == 0; // true if no conflict
-}
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param(
+            "isss",
+            $serviceID,
+            $date,
+            $endTime,   // bind new end time here
+            $startTime  // bind new start time here
+        );
 
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_assoc();
+        return $result['count'] == 0; // true if no conflict
+    }
 }
 ?>

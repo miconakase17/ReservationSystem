@@ -48,7 +48,7 @@ if ($enteredOTP != $otpData['otpCode']) {
 // Check if OTP expired
 if (strtotime($otpData['expiresAt']) < time()) {
     $_SESSION['popup_message'] = 'OTP has expired. Please request a new one.';
-    header('Location: ../forgot-password.php');
+    header('Location: ../forgot-password.html');
     exit;
 }
 
