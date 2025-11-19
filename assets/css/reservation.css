@@ -112,7 +112,8 @@
 }
 
 .reservation-section .reservation-form .btn-primary:hover {
-  background: color-mix(in srgb, var(--accent-color), transparent 20%);}
+  background: color-mix(in srgb, var(--accent-color), transparent 20%);
+}
 
 ::placeholder {
   font-size: 14px;
@@ -127,52 +128,62 @@ small.text-muted {
 
 /* Drum Lesson Sessions Styling */
 .session-cards {
-    list-style: none;
-    padding: 0;
-    margin: 10px 0;
+  list-style: none;
+  padding: 0;
+  margin: 10px 0;
 }
 
 .session-cards li {
-    background: #228B22; /* green background */
-    color: #fff;
-    margin-bottom: 8px;
-    padding: 12px 16px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-    font-weight: 500;
-    transition: transform 0.2s, background 0.2s;
+  background: #228B22;
+  /* green background */
+  color: #fff;
+  margin-bottom: 8px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  font-weight: 500;
+  transition: transform 0.2s, background 0.2s;
 }
 
 .session-cards li:hover {
-    transform: translateY(-2px);
-    background: #2FA72F; /* slightly brighter green on hover */
+  transform: translateY(-2px);
+  background: #2FA72F;
+  /* slightly brighter green on hover */
 }
 
 .session-cards li span {
-    display: block;
-    font-size: 0.95rem;
-    opacity: 0.9;
+  display: block;
+  font-size: 0.95rem;
+  opacity: 0.9;
 }
 
 .session-cards li {
-    opacity: 0;
-    transform: translateY(10px);
-    animation: slideIn 0.4s forwards;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: slideIn 0.4s forwards;
 }
 
-.session-cards li:nth-child(1) { animation-delay: 0.05s; }
-.session-cards li:nth-child(2) { animation-delay: 0.1s; }
+.session-cards li:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.session-cards li:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
 /* ...up to 12 sessions */
-.session-cards li:nth-child(12) { animation-delay: 0.6s; }
+.session-cards li:nth-child(12) {
+  animation-delay: 0.6s;
+}
 
 @keyframes slideIn {
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-#user-reservations th, 
+#user-reservations th,
 #user-reservations td {
   vertical-align: middle;
 }
@@ -184,9 +195,10 @@ small.text-muted {
 }
 
 /* Base style for primary button */
-#saveProfileBtn, .btn-primary {
-  color: var(--contrast-color); 
-  background: var(--accent-color); 
+#saveProfileBtn,
+.btn-primary {
+  color: var(--contrast-color);
+  background: var(--accent-color);
   border: 0;
   padding: 10px 30px;
   transition: 0.4s;
@@ -194,6 +206,7 @@ small.text-muted {
 }
 
 /* Hover effect */
-#saveProfileBtn:hover, .btn-primary:hover {
+#saveProfileBtn:hover,
+.btn-primary:hover {
   background: color-mix(in srgb, var(--accent-color), transparent 20%);
 }

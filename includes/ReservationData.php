@@ -27,7 +27,8 @@ try {
 
 } catch (Exception $ex) {
     $logDir = __DIR__ . '/../uploads/logs/';
-    if (!is_dir($logDir)) mkdir($logDir, 0755, true);
+    if (!is_dir($logDir))
+        mkdir($logDir, 0755, true);
     file_put_contents(
         $logDir . 'reservation_include_errors.log',
         '[' . date('Y-m-d H:i:s') . '] reservation-data include error: ' . $ex->getMessage() . "\n",

@@ -1,5 +1,6 @@
 <?php
-class UserDetailsModel {
+class UserDetailsModel
+{
     private $conn;
     private $table = "user_details";
 
@@ -11,12 +12,14 @@ class UserDetailsModel {
     public $email;
     public $lastUpdate;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->conn = $db;
     }
 
     // Get user details by userID
-    public function getUserDetailsByUserId($userID) {
+    public function getUserDetailsByUserId($userID)
+    {
         $query = "SELECT * FROM {$this->table} WHERE userID = ?";
         $stmt = $this->conn->prepare($query);
         $stmt->bind_param("i", $userID);
@@ -26,7 +29,8 @@ class UserDetailsModel {
     }
 
     // Create or update details
-    public function createDetails($data) {
+    public function createDetails($data)
+    {
         $existing = $this->getUserDetailsByUserId($data['userID']);
 
         if ($existing) {

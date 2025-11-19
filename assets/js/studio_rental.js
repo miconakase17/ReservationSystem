@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const endDate = new Date(startDate);
     endDate.setHours(endDate.getHours() + 2); // default 2 hours
 
-    endTime.value = `${String(endDate.getHours()).padStart(2,'0')}:${String(endDate.getMinutes()).padStart(2,'0')}`;
+    endTime.value = `${String(endDate.getHours()).padStart(2, '0')}:${String(endDate.getMinutes()).padStart(2, '0')}`;
     calculateTotal();
   });
 

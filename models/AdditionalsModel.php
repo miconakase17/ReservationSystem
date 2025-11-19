@@ -1,5 +1,6 @@
 <?php
-class AdditionalsModel {
+class AdditionalsModel
+{
     private $conn;
     private $table = "additionals";
 
@@ -7,12 +8,14 @@ class AdditionalsModel {
     public $addName;
     public $price;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->conn = $db;
     }
 
     // Create record
-    public function createAdditionals() {
+    public function createAdditionals()
+    {
         $sql = "INSERT INTO $this->table (addName, price) VALUES (?, ?)";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("si", $this->addName, $this->price);
@@ -20,13 +23,15 @@ class AdditionalsModel {
     }
 
     // Get all records
-    public function readAllAdditionals() {
+    public function readAllAdditionals()
+    {
         $sql = "SELECT * FROM $this->table ORDER BY addID ASC";
         return $this->conn->query($sql);
     }
 
     // Get single record by ID
-    public function readOneAdditional($id) {
+    public function readOneAdditional($id)
+    {
         $sql = "SELECT * FROM $this->table WHERE addID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $id);
@@ -35,7 +40,8 @@ class AdditionalsModel {
     }
 
     // Update record
-    public function updateAdditionals() {
+    public function updateAdditionals()
+    {
         $sql = "UPDATE $this->table SET addName = ?, price = ? WHERE addID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("sii", $this->addName, $this->price, $this->addID);
@@ -43,7 +49,8 @@ class AdditionalsModel {
     }
 
     // Delete record
-    public function deleteAdditionals($id) {
+    public function deleteAdditionals($id)
+    {
         $sql = "DELETE FROM $this->table WHERE addID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $id);
@@ -51,11 +58,12 @@ class AdditionalsModel {
     }
 
     // Link additionals to reservation
-    public function linkToReservation($reservationID, $addID) {
-    $sql = "INSERT INTO reservation_additionals (reservationID, addID) VALUES (?, ?)";
-    $stmt = $this->conn->prepare($sql);
-    $stmt->bind_param("ii", $reservationID, $addID);
-    return $stmt->execute();
-}
+    public function linkToReservation($reservationID, $addID)
+    {
+        $sql = "INSERT INTO reservation_additionals (reservationID, addID) VALUES (?, ?)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("ii", $reservationID, $addID);
+        return $stmt->execute();
+    }
 }
 ?>

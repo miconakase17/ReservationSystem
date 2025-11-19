@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('DOMContentLoaded', () => {
   const profileForm = document.getElementById('profileForm');
 
-  profileForm.addEventListener('submit', function(e) {
+  profileForm.addEventListener('submit', function (e) {
     e.preventDefault();
 
     const formData = new FormData(profileForm);
@@ -39,34 +39,34 @@ document.addEventListener('DOMContentLoaded', () => {
       method: 'POST',
       body: formData
     })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        // Show success notification
-        Swal.fire({
-          icon: 'success',
-          title: 'Profile Updated',
-          text: 'Your profile has been updated successfully!',
-          showConfirmButton: true,
-          confirmButtonText: 'OK'
-        }).then(() => {
-          // Redirect after user clicks OK
-          window.location.href = 'customer-dashboard.php';
-        });
-      } else {
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          // Show success notification
+          Swal.fire({
+            icon: 'success',
+            title: 'Profile Updated',
+            text: 'Your profile has been updated successfully!',
+            showConfirmButton: true,
+            confirmButtonText: 'OK'
+          }).then(() => {
+            // Redirect after user clicks OK
+            window.location.href = 'customer-dashboard.php';
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Update Failed',
+            text: data.message || 'Something went wrong',
+          });
+        }
+      })
+      .catch(err => {
         Swal.fire({
           icon: 'error',
-          title: 'Update Failed',
-          text: data.message || 'Something went wrong',
+          title: 'Error',
+          text: 'Could not update profile',
         });
-      }
-    })
-    .catch(err => {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Could not update profile',
       });
-    });
   });
 });

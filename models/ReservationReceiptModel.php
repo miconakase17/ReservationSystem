@@ -1,5 +1,6 @@
 <?php
-class ReservationReceiptModel {
+class ReservationReceiptModel
+{
     private $conn;
     private $table = "reservation_receipts";
 
@@ -8,12 +9,14 @@ class ReservationReceiptModel {
     public $uploadType;
     public $fileName;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->conn = $db;
     }
 
     // ✅ Upload new receipt record
-    public function createReceipt($data = []) {
+    public function createReceipt($data = [])
+    {
         $sql = "INSERT INTO {$this->table} (reservationID, uploadType, fileName, uploadedAt)
                 VALUES (?, ?, ?, NOW())";
         $stmt = $this->conn->prepare($sql);
@@ -22,7 +25,8 @@ class ReservationReceiptModel {
     }
 
     // ✅ Get all receipts for a reservation
-    public function getReceiptByReservationId($reservationID) {
+    public function getReceiptByReservationId($reservationID)
+    {
         $sql = "SELECT * FROM {$this->table} WHERE reservationID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $reservationID);
@@ -32,7 +36,8 @@ class ReservationReceiptModel {
     }
 
     // ✅ Delete a specific uploaded file record
-    public function deleteReceipt($receiptID) {
+    public function deleteReceipt($receiptID)
+    {
         $sql = "DELETE FROM {$this->table} WHERE receiptID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $receiptID);

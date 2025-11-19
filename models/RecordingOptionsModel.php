@@ -1,5 +1,6 @@
 <?php
-class RecordingOptionsModel {
+class RecordingOptionsModel
+{
     private $conn;
     private $table = "recording_options";
 
@@ -9,22 +10,25 @@ class RecordingOptionsModel {
     public $mixAndMaster;
     public $createdAt;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->conn = $db;
     }
 
     // ✅ Create recording option
-   public function createRecordingOptions() {
-    $sql = "INSERT INTO {$this->table} (reservationID, mode, mixAndMaster)
+    public function createRecordingOptions()
+    {
+        $sql = "INSERT INTO {$this->table} (reservationID, mode, mixAndMaster)
             VALUES (?, ?, ?)";
-    $stmt = $this->conn->prepare($sql);
-    $stmt->bind_param("isi", $this->reservationID, $this->mode, $this->mixAndMaster);
-    return $stmt->execute();
-}
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("isi", $this->reservationID, $this->mode, $this->mixAndMaster);
+        return $stmt->execute();
+    }
 
 
     // ✅ Get recording options by reservation
-    public function getRecordingOptionsByReservationId($reservationID) {
+    public function getRecordingOptionsByReservationId($reservationID)
+    {
         $sql = "SELECT * FROM {$this->table} WHERE reservationID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $reservationID);
@@ -34,7 +38,8 @@ class RecordingOptionsModel {
     }
 
     // ✅ Update recording options
-    public function updateRecordingOptions($data) {
+    public function updateRecordingOptions($data)
+    {
         $sql = "UPDATE {$this->table}
                 SET mode = ?, mixAndMaster = ?
                 WHERE reservationID = ?";
@@ -44,7 +49,8 @@ class RecordingOptionsModel {
     }
 
     // ✅ Delete recording option (if needed)
-    public function deleteRecordingOptions($reservationID) {
+    public function deleteRecordingOptions($reservationID)
+    {
         $sql = "DELETE FROM {$this->table} WHERE reservationID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $reservationID);

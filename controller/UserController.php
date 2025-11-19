@@ -1,15 +1,18 @@
 <?php
 require_once __DIR__ . '/../models/UserModel.php';
 
-class UserController {
+class UserController
+{
     private $userModel;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->userModel = new UserModel($db);
     }
 
     // Method to fetch latest users
-    public function fetchLatestUsers($limit = 5) {
+    public function fetchLatestUsers($limit = 5)
+    {
         try {
             $latestUsers = $this->userModel->getLatestUsers($limit);
 

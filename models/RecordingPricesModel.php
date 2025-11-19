@@ -1,14 +1,17 @@
 <?php
-class RecordingPricesModel {
+class RecordingPricesModel
+{
     private $conn;
     private $table = "recording_options_prices";
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->conn = $db;
     }
 
     // Get all recording options with prices
-    public function getAllOptions() {
+    public function getAllOptions()
+    {
         $sql = "SELECT * FROM {$this->table}";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute();
@@ -17,7 +20,8 @@ class RecordingPricesModel {
     }
 
     // Get price by option name
-    public function getPriceByName($name) {
+    public function getPriceByName($name)
+    {
         $sql = "SELECT price FROM {$this->table} WHERE name = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("s", $name);

@@ -1,5 +1,6 @@
 <?php
-class DrumLessonSessionsModel {
+class DrumLessonSessionsModel
+{
     private $conn;
     private $table = "drumlesson_sessions";
 
@@ -9,12 +10,14 @@ class DrumLessonSessionsModel {
     public $startTime;
     public $endTime;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->conn = $db;
     }
 
     // ✅ Insert a single drum lesson session
-    public function createSession() {
+    public function createSession()
+    {
         $sql = "INSERT INTO {$this->table} (reservationID, date, startTime, endTime) VALUES (?, ?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("isss", $this->reservationID, $this->date, $this->startTime, $this->endTime);
@@ -22,7 +25,8 @@ class DrumLessonSessionsModel {
     }
 
     // ✅ Insert multiple weekly sessions
-    public function createMultipleSessions($reservationID, $sessions) {
+    public function createMultipleSessions($reservationID, $sessions)
+    {
         $sql = "INSERT INTO {$this->table} (reservationID, date, startTime, endTime) VALUES (?, ?, ?, ?)";
         $stmt = $this->conn->prepare($sql);
 
@@ -38,7 +42,8 @@ class DrumLessonSessionsModel {
     }
 
     // ✅ Fetch all sessions for a reservation
-    public function getSessionsByReservation($reservationID) {
+    public function getSessionsByReservation($reservationID)
+    {
         $sql = "SELECT * FROM {$this->table} WHERE reservationID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $reservationID);
@@ -47,7 +52,8 @@ class DrumLessonSessionsModel {
     }
 
     // ✅ Delete all sessions for a reservation
-    public function deleteSessionsByReservation($reservationID) {
+    public function deleteSessionsByReservation($reservationID)
+    {
         $sql = "DELETE FROM {$this->table} WHERE reservationID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $reservationID);

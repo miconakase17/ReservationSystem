@@ -43,10 +43,12 @@
                         </div>
                         <div class="row gy-4">
                             <div class="col-12">
-                                <input class="form-control" type="password" name="password" placeholder="New Password" required>
+                                <input class="form-control" type="password" name="password" placeholder="New Password"
+                                    required>
                             </div>
                             <div class="col-12">
-                                <input class="form-control" type="password" name="confirm_password" placeholder="Confirm Password" required>
+                                <input class="form-control" type="password" name="confirm_password"
+                                    placeholder="Confirm Password" required>
                             </div>
                             <div class="col-12 text-center">
                                 <button type="submit" class="btn btn-primary">Reset Password</button>

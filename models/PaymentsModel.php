@@ -1,5 +1,6 @@
 <?php
-class PaymentsModel {
+class PaymentsModel
+{
     private $conn;
     private $table = "payments";
 
@@ -14,32 +15,35 @@ class PaymentsModel {
     public $createdAt;
     public $lastUpdate;
 
-    public function __construct($db) {
+    public function __construct($db)
+    {
         $this->conn = $db;
     }
 
     // ✅ Create a new payment record
-    public function createPayments() {
-    $sql = "INSERT INTO {$this->table} 
+    public function createPayments()
+    {
+        $sql = "INSERT INTO {$this->table} 
             (userID, reservationID, amount, paymentDate, paymentMethod, paymentStatus, transactionReference)
             VALUES (?, ?, ?, ?, ?, ?, ?)";
-    $stmt = $this->conn->prepare($sql);
-    $stmt->bind_param(
-        "iisssss",
-        $this->userID,
-        $this->reservationID,
-        $this->amount,
-        $this->paymentDate,
-        $this->paymentMethod,
-        $this->paymentStatus,
-        $this->transactionReference
-    );
-    return $stmt->execute();
-}
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param(
+            "iisssss",
+            $this->userID,
+            $this->reservationID,
+            $this->amount,
+            $this->paymentDate,
+            $this->paymentMethod,
+            $this->paymentStatus,
+            $this->transactionReference
+        );
+        return $stmt->execute();
+    }
 
 
     // ✅ Get all payments by user
-    public function getPaymentsByUserId($userID) {
+    public function getPaymentsByUserId($userID)
+    {
         $sql = "SELECT * FROM {$this->table} WHERE userID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $userID);
@@ -49,7 +53,8 @@ class PaymentsModel {
     }
 
     // ✅ Get payments by reservation
-    public function getPaymentsByReservationId($reservationID) {
+    public function getPaymentsByReservationId($reservationID)
+    {
         $sql = "SELECT * FROM {$this->table} WHERE reservationID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $reservationID);
@@ -59,7 +64,8 @@ class PaymentsModel {
     }
 
     // ✅ Update payment status (e.g. from "Pending" → "Completed")
-    public function updatePaymentStatus($paymentID, $status) {
+    public function updatePaymentStatus($paymentID, $status)
+    {
         $sql = "UPDATE {$this->table} SET paymentStatus = ?, lastUpdate = NOW() WHERE paymentID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("si", $status, $paymentID);
@@ -67,7 +73,8 @@ class PaymentsModel {
     }
 
     // ✅ Delete a payment record (if needed)
-    public function deletePayments($paymentID) {
+    public function deletePayments($paymentID)
+    {
         $sql = "DELETE FROM {$this->table} WHERE paymentID = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $paymentID);

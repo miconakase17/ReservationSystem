@@ -3,64 +3,66 @@ require_once __DIR__ . '/../config/Database.php';
 require_once __DIR__ . '/../models/UserModel.php';
 require_once __DIR__ . '/../models/UserDetailsModel.php';
 
-class SignUpController {
+class SignUpController
+{
     private $db;
     private $userModel;
     private $userDetailsModel;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->db = Database::getConnection();
         $this->userModel = new UserModel($this->db);
         $this->userDetailsModel = new UserDetailsModel($this->db);
     }
 
     public function signUp(
-    $lastname,
-    $firstname,
-    $middlename,
-    $username,
-    $phonenumber,
-    $email,
-    $password,
-    $roleID = 2,             // default = Customer
-    $redirectToAdmin = false // optional
-) {
-    session_start();
+        $lastname,
+        $firstname,
+        $middlename,
+        $username,
+        $phonenumber,
+        $email,
+        $password,
+        $roleID = 2,             // default = Customer
+        $redirectToAdmin = false // optional
+    ) {
+        session_start();
 
-    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-    $data = [
-        'username'   => $username,
-        'password'   => $hashedPassword,
-        'roleID'     => $roleID, 
-        'createdAt'  => date('Y-m-d H:i:s'),
-        'lastUpdate' => date('Y-m-d H:i:s'),
-    ];
+        $data = [
+            'username' => $username,
+            'password' => $hashedPassword,
+            'roleID' => $roleID,
+            'createdAt' => date('Y-m-d H:i:s'),
+            'lastUpdate' => date('Y-m-d H:i:s'),
+        ];
 
-    if ($this->userModel->createUsers($data)) {
-        $userID = $this->userModel->findUsersByUsername($username)['userID'];
+        if ($this->userModel->createUsers($data)) {
+            $userID = $this->userModel->findUsersByUsername($username)['userID'];
 
-        $this->userDetailsModel->createDetails([
-            'userID'     => $userID,
-            'firstName'  => $firstname,
-            'lastName'   => $lastname,
-            'middleName' => $middlename,
-            'phoneNumber'=> $phonenumber,
-            'email'      => $email
-        ]);
+            $this->userDetailsModel->createDetails([
+                'userID' => $userID,
+                'firstName' => $firstname,
+                'lastName' => $lastname,
+                'middleName' => $middlename,
+                'phoneNumber' => $phonenumber,
+                'email' => $email
+            ]);
 
-        if ($redirectToAdmin) {
-            header("Location: http://localhost/ReservationSystem/admin-dashboard.html?signup=success");
+            if ($redirectToAdmin) {
+                header("Location: http://localhost/ReservationSystem/admin-dashboard.html?signup=success");
+            } else {
+                header("Location: http://localhost/ReservationSystem/login.php?signup=success");
+            }
+            exit();
         } else {
-            header("Location: http://localhost/ReservationSystem/login.php?signup=success");
+            $_SESSION['popup_message'] = "Failed to create user account.";
+            header("Location: ../views/signup.php");
+            exit();
         }
-        exit();
-    } else {
-        $_SESSION['popup_message'] = "Failed to create user account.";
-        header("Location: ../views/signup.php");
-        exit();
     }
-}
 
 }
 ?>
