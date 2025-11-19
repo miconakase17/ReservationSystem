@@ -41,6 +41,36 @@ INSERT INTO `additionals` VALUES (1,'Electric Guitar',20),(2,'Bass Guitar',20),(
 UNLOCK TABLES;
 
 --
+-- Table structure for table `drumlesson_sessions`
+--
+
+DROP TABLE IF EXISTS `drumlesson_sessions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `drumlesson_sessions` (
+  `sessionID` int NOT NULL AUTO_INCREMENT,
+  `reservationID` int NOT NULL,
+  `date` date NOT NULL,
+  `startTime` time NOT NULL,
+  `endTime` time NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`sessionID`),
+  KEY `reservationID` (`reservationID`),
+  CONSTRAINT `drumlesson_sessions_ibfk_1` FOREIGN KEY (`reservationID`) REFERENCES `reservations` (`reservationID`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `drumlesson_sessions`
+--
+
+LOCK TABLES `drumlesson_sessions` WRITE;
+/*!40000 ALTER TABLE `drumlesson_sessions` DISABLE KEYS */;
+INSERT INTO `drumlesson_sessions` VALUES (1,5,'2025-11-17','12:00:00','14:00:00','2025-11-05 04:07:54'),(2,5,'2025-11-24','12:00:00','14:00:00','2025-11-05 04:07:54'),(3,5,'2025-12-01','12:00:00','14:00:00','2025-11-05 04:07:54'),(4,5,'2025-12-08','12:00:00','14:00:00','2025-11-05 04:07:54'),(5,5,'2025-12-15','12:00:00','14:00:00','2025-11-05 04:07:54'),(6,5,'2025-12-22','12:00:00','14:00:00','2025-11-05 04:07:54'),(7,5,'2025-12-29','12:00:00','14:00:00','2025-11-05 04:07:54'),(8,5,'2026-01-05','12:00:00','14:00:00','2025-11-05 04:07:54'),(9,5,'2026-01-12','12:00:00','14:00:00','2025-11-05 04:07:54'),(10,5,'2026-01-19','12:00:00','14:00:00','2025-11-05 04:07:54'),(11,5,'2026-01-26','12:00:00','14:00:00','2025-11-05 04:07:54'),(12,5,'2026-02-02','12:00:00','14:00:00','2025-11-05 04:07:54'),(13,9,'2025-11-20','15:00:00','17:00:00','2025-11-05 04:34:42'),(14,9,'2025-11-27','15:00:00','17:00:00','2025-11-05 04:34:42'),(15,9,'2025-12-04','15:00:00','17:00:00','2025-11-05 04:34:42'),(16,9,'2025-12-11','15:00:00','17:00:00','2025-11-05 04:34:42'),(17,9,'2025-12-18','15:00:00','17:00:00','2025-11-05 04:34:42'),(18,9,'2025-12-25','15:00:00','17:00:00','2025-11-05 04:34:42'),(19,9,'2026-01-01','15:00:00','17:00:00','2025-11-05 04:34:42'),(20,9,'2026-01-08','15:00:00','17:00:00','2025-11-05 04:34:42'),(21,9,'2026-01-15','15:00:00','17:00:00','2025-11-05 04:34:42'),(22,9,'2026-01-22','15:00:00','17:00:00','2025-11-05 04:34:42'),(23,9,'2026-01-29','15:00:00','17:00:00','2025-11-05 04:34:42'),(24,9,'2026-02-05','15:00:00','17:00:00','2025-11-05 04:34:42'),(25,14,'2025-11-26','17:00:00','22:00:00','2025-11-06 05:56:08'),(26,14,'2025-12-03','17:00:00','22:00:00','2025-11-06 05:56:08'),(27,14,'2025-12-10','17:00:00','22:00:00','2025-11-06 05:56:08'),(28,14,'2025-12-17','17:00:00','22:00:00','2025-11-06 05:56:08'),(29,14,'2025-12-24','17:00:00','22:00:00','2025-11-06 05:56:08'),(30,14,'2025-12-31','17:00:00','22:00:00','2025-11-06 05:56:08'),(31,14,'2026-01-07','17:00:00','22:00:00','2025-11-06 05:56:08'),(32,14,'2026-01-14','17:00:00','22:00:00','2025-11-06 05:56:08'),(33,14,'2026-01-21','17:00:00','22:00:00','2025-11-06 05:56:08'),(34,14,'2026-01-28','17:00:00','22:00:00','2025-11-06 05:56:08'),(35,14,'2026-02-04','17:00:00','22:00:00','2025-11-06 05:56:08'),(36,14,'2026-02-11','17:00:00','22:00:00','2025-11-06 05:56:08');
+/*!40000 ALTER TABLE `drumlesson_sessions` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `messages`
 --
 
@@ -68,6 +98,36 @@ INSERT INTO `messages` VALUES (1,'Mhyca Varona','mhycavarona@yahoo.com','Hi beb'
 UNLOCK TABLES;
 
 --
+-- Table structure for table `otp_requests`
+--
+
+DROP TABLE IF EXISTS `otp_requests`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `otp_requests` (
+  `otpID` int NOT NULL AUTO_INCREMENT,
+  `userID` int NOT NULL,
+  `otpCode` varchar(10) NOT NULL,
+  `expiresAt` datetime NOT NULL,
+  `isUsed` tinyint(1) DEFAULT '0',
+  `createdAt` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`otpID`),
+  KEY `userID` (`userID`),
+  CONSTRAINT `otp_requests_ibfk_1` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `otp_requests`
+--
+
+LOCK TABLES `otp_requests` WRITE;
+/*!40000 ALTER TABLE `otp_requests` DISABLE KEYS */;
+INSERT INTO `otp_requests` VALUES (1,38,'114188','2025-11-04 11:14:18',0,'2025-11-04 10:04:18'),(2,38,'848579','2025-11-04 11:14:30',0,'2025-11-04 10:04:30'),(3,41,'546305','2025-11-04 11:15:49',0,'2025-11-04 10:05:49'),(4,41,'965949','2025-11-04 11:16:17',0,'2025-11-04 10:06:17'),(5,41,'731448','2025-11-04 11:16:35',0,'2025-11-04 10:06:35'),(6,41,'742658','2025-11-04 11:16:52',0,'2025-11-04 10:06:52'),(7,41,'419755','2025-11-04 11:16:54',0,'2025-11-04 10:06:54'),(8,41,'495995','2025-11-04 11:18:37',0,'2025-11-04 10:08:37'),(9,41,'790685','2025-11-04 11:20:27',0,'2025-11-04 10:10:27'),(10,41,'603004','2025-11-04 11:23:55',0,'2025-11-04 10:13:55'),(11,41,'651519','2025-11-04 11:46:16',1,'2025-11-04 10:36:16'),(12,41,'458800','2025-11-04 11:47:55',0,'2025-11-04 10:37:55'),(13,41,'108216','2025-11-04 11:50:07',0,'2025-11-04 10:40:07'),(14,1,'254155','2025-11-04 15:04:03',0,'2025-11-04 13:54:03'),(15,1,'949794','2025-11-04 15:05:55',0,'2025-11-04 13:55:55'),(16,1,'608585','2025-11-04 15:06:25',0,'2025-11-04 13:56:25'),(17,1,'665316','2025-11-04 15:06:55',0,'2025-11-04 13:56:55'),(18,1,'107092','2025-11-04 22:50:02',0,'2025-11-04 21:40:02'),(19,1,'385575','2025-11-04 23:12:22',1,'2025-11-04 22:02:22'),(20,1,'267081','2025-11-04 23:14:54',1,'2025-11-04 22:04:54'),(21,1,'389587','2025-11-05 05:00:15',1,'2025-11-05 03:50:15'),(22,3,'541207','2025-11-05 05:14:20',1,'2025-11-05 04:04:20'),(23,4,'886012','2025-11-05 05:57:18',1,'2025-11-05 04:47:18'),(24,5,'963290','2025-11-05 06:08:49',0,'2025-11-05 04:58:49'),(25,1,'117861','2025-11-05 16:36:51',1,'2025-11-05 15:26:51'),(26,6,'715778','2025-11-06 06:53:11',0,'2025-11-06 05:43:11'),(27,6,'636665','2025-11-06 06:53:19',0,'2025-11-06 05:43:19'),(28,9,'737985','2025-11-08 10:23:33',0,'2025-11-08 09:13:33'),(29,9,'724749','2025-11-08 10:23:41',0,'2025-11-08 09:13:41'),(30,9,'212481','2025-11-08 10:23:46',1,'2025-11-08 09:13:46'),(31,10,'382402','2025-11-08 10:43:15',1,'2025-11-08 09:33:15'),(32,11,'690777','2025-11-10 10:23:38',0,'2025-11-10 09:13:38'),(33,12,'874975','2025-11-10 10:26:12',0,'2025-11-10 09:16:12'),(34,12,'521605','2025-11-10 10:26:50',1,'2025-11-10 09:16:50');
+/*!40000 ALTER TABLE `otp_requests` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `payments`
 --
 
@@ -90,7 +150,7 @@ CREATE TABLE `payments` (
   KEY `reservationID` (`reservationID`),
   CONSTRAINT `fk_payments_reservations` FOREIGN KEY (`reservationID`) REFERENCES `reservations` (`reservationID`),
   CONSTRAINT `fk_payments_users` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -99,7 +159,7 @@ CREATE TABLE `payments` (
 
 LOCK TABLES `payments` WRITE;
 /*!40000 ALTER TABLE `payments` DISABLE KEYS */;
-INSERT INTO `payments` VALUES (3,28,21,360.00,'2025-10-29 08:09:37','GCash','Pending','123123123123123','2025-10-29 15:09:37','2025-10-29 15:09:37'),(4,28,22,1000.00,'2025-10-29 14:09:32','GCash','Pending','123123123123123','2025-10-29 21:09:32','2025-10-29 21:09:32'),(5,28,23,600.00,'2025-10-29 14:18:29','GCash','Pending','123123123123123','2025-10-29 21:18:29','2025-10-29 21:18:29'),(6,28,30,0.00,'2025-11-01 13:28:26','GCash','Pending','','2025-11-01 20:28:26','2025-11-01 20:28:26'),(7,28,31,0.00,'2025-11-01 13:32:59','GCash','Pending','','2025-11-01 20:32:59','2025-11-01 20:32:59'),(8,28,32,0.00,'2025-11-01 13:51:35','GCash','Pending','','2025-11-01 20:51:35','2025-11-01 20:51:35');
+INSERT INTO `payments` VALUES (1,1,1,150.00,'2025-11-04 14:19:31','GCash','Pending','23123123123','2025-11-04 21:19:31','2025-11-04 21:19:31'),(2,1,2,285.00,'2025-11-04 14:20:12','GCash','Pending','13123123','2025-11-04 21:20:12','2025-11-04 21:20:12'),(3,1,3,135.00,'2025-11-04 14:24:59','GCash','Pending','12313','2025-11-04 21:24:59','2025-11-04 21:24:59'),(4,3,5,3750.00,'2025-11-05 05:07:54','GCash','Pending','123123123123','2025-11-05 12:07:54','2025-11-05 12:07:54'),(5,3,6,420.00,'2025-11-05 05:11:59','GCash','Pending','123123123123123','2025-11-05 12:11:59','2025-11-05 12:11:59'),(6,3,7,2250.00,'2025-11-05 05:13:59','GCash','Pending','123123123123123','2025-11-05 12:13:59','2025-11-05 12:13:59'),(7,4,8,160.00,'2025-11-05 05:33:25','GCash','Pending','234234234234','2025-11-05 12:33:25','2025-11-05 12:33:25'),(8,4,9,3750.00,'2025-11-05 05:34:42','GCash','Pending','1212','2025-11-05 12:34:42','2025-11-05 12:34:42'),(9,5,10,135.00,'2025-11-05 05:57:59','GCash','Pending','123123123123123','2025-11-05 12:57:59','2025-11-05 12:57:59'),(10,4,11,800.00,'2025-11-05 13:28:56','GCash','Pending','98798798','2025-11-05 20:28:56','2025-11-05 20:28:56'),(11,6,12,685.00,'2025-11-06 06:42:05','GCash','Pending','213243256767676','2025-11-06 13:42:05','2025-11-06 13:42:05'),(12,7,13,170.00,'2025-11-06 06:49:13','GCash','Pending','123123123123','2025-11-06 13:49:13','2025-11-06 13:49:13'),(13,8,14,3750.00,'2025-11-06 06:56:08','GCash','Pending','123123123','2025-11-06 13:56:08','2025-11-06 13:56:08'),(14,9,15,335.00,'2025-11-08 10:09:40','GCash','Pending','123123123123123','2025-11-08 17:09:40','2025-11-08 17:09:40'),(15,10,16,275.00,'2025-11-08 10:32:17','GCash','Pending','123123','2025-11-08 17:32:17','2025-11-08 17:32:17'),(16,11,17,260.00,'2025-11-10 10:12:15','GCash','Pending','123123123123','2025-11-10 17:12:15','2025-11-10 17:12:15'),(17,12,19,325.00,'2025-11-10 10:21:44','GCash','Pending','123123123123123','2025-11-10 17:21:44','2025-11-10 17:21:44'),(18,1,20,270.00,'2025-11-13 23:31:12','GCash','Pending','123123123123','2025-11-14 06:31:12','2025-11-14 06:31:12'),(19,13,21,335.00,'2025-11-14 05:15:28','GCash','Pending','13123123','2025-11-14 12:15:28','2025-11-14 12:15:28');
 /*!40000 ALTER TABLE `payments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -119,7 +179,7 @@ CREATE TABLE `recording_options` (
   PRIMARY KEY (`recordingID`),
   KEY `reservationID` (`reservationID`),
   CONSTRAINT `recording_options_ibfk_1` FOREIGN KEY (`reservationID`) REFERENCES `reservations` (`reservationID`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -128,7 +188,7 @@ CREATE TABLE `recording_options` (
 
 LOCK TABLES `recording_options` WRITE;
 /*!40000 ALTER TABLE `recording_options` DISABLE KEYS */;
-INSERT INTO `recording_options` VALUES (1,18,'MultiTrack',1,'2025-10-23 02:33:55'),(2,19,'MultiTrack',1,'2025-10-23 02:35:36'),(3,20,'MultiTrack',1,'2025-10-23 02:43:00'),(4,24,'MultiTrack',1,'2025-10-30 00:39:52'),(5,25,'MultiTrack',1,'2025-10-30 00:48:11'),(6,26,'MultiTrack',0,'2025-10-30 02:55:10'),(7,28,'LiveTrack',1,'2025-10-30 06:30:49'),(8,29,'LiveTrack',1,'2025-11-01 12:21:43'),(9,30,'LiveTrack',1,'2025-11-01 12:28:26');
+INSERT INTO `recording_options` VALUES (1,7,'MultiTrack',1,'2025-11-05 04:13:59'),(2,11,'LiveTrack',0,'2025-11-05 12:28:55');
 /*!40000 ALTER TABLE `recording_options` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -173,7 +233,7 @@ CREATE TABLE `reservation_additionals` (
   KEY `addID` (`addID`),
   CONSTRAINT `reservation_additionals_ibfk_1` FOREIGN KEY (`reservationID`) REFERENCES `reservations` (`reservationID`) ON DELETE CASCADE,
   CONSTRAINT `reservation_additionals_ibfk_2` FOREIGN KEY (`addID`) REFERENCES `additionals` (`addID`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -182,7 +242,7 @@ CREATE TABLE `reservation_additionals` (
 
 LOCK TABLES `reservation_additionals` WRITE;
 /*!40000 ALTER TABLE `reservation_additionals` DISABLE KEYS */;
-INSERT INTO `reservation_additionals` VALUES (1,5,1),(2,5,2),(3,5,3),(4,5,4),(5,5,5),(6,5,6),(7,6,1),(8,6,2),(9,6,3),(10,6,4),(11,6,5),(12,6,6),(13,7,1),(14,7,2),(15,7,3),(16,7,4),(17,7,5),(18,7,6),(19,8,1),(20,8,2),(21,8,3),(22,8,4),(23,8,5),(24,8,6),(25,9,1),(26,9,2),(27,9,3),(28,9,4),(29,9,5),(30,9,6),(31,10,1),(32,10,2),(33,10,3),(34,10,4),(35,10,5),(36,10,6),(37,11,1),(38,11,2),(39,11,3),(40,11,4),(41,11,5),(42,11,6),(43,12,1),(44,12,2),(45,12,3),(46,12,4),(47,12,5),(48,12,6),(49,13,1),(50,13,2),(51,13,3),(52,13,4),(53,13,5),(54,13,6),(55,14,1),(56,14,2),(57,14,3),(58,14,4),(59,14,5),(60,14,6),(61,15,1),(62,15,2),(63,15,3),(64,15,4),(65,15,5),(66,15,6),(67,16,1),(68,16,2),(69,16,3),(70,16,4),(71,16,5),(72,16,6),(73,17,1),(74,17,2),(75,17,3),(76,17,4),(77,17,5),(78,17,6),(79,21,1),(80,21,2),(81,21,3),(82,21,4),(83,21,5),(84,21,6),(85,22,1),(86,22,2),(87,22,3),(88,22,4),(89,22,5),(90,22,6),(91,23,1),(92,23,2),(93,23,3),(94,23,4),(95,23,5),(96,23,6),(97,27,1),(98,31,1),(99,31,4),(100,32,1),(101,32,4),(102,34,3),(103,35,1);
+INSERT INTO `reservation_additionals` VALUES (1,1,1),(2,1,3),(3,1,5),(4,3,1),(5,4,1),(6,4,3),(7,4,5),(8,1,1),(9,1,3),(10,2,1),(11,2,3),(12,2,5),(13,3,1),(14,4,1),(15,6,1),(16,6,2),(17,6,3),(18,6,5),(19,8,1),(20,10,1),(21,12,1),(22,12,2),(23,12,3),(24,12,4),(25,12,5),(26,12,6),(27,13,1),(28,13,2),(29,13,3),(30,13,6),(31,15,1),(32,15,3),(33,15,5),(34,16,4),(35,16,5),(36,16,6),(37,17,1),(38,18,5),(39,19,3),(40,19,5),(41,20,1),(42,20,5),(43,21,1),(44,21,3),(45,21,5);
 /*!40000 ALTER TABLE `reservation_additionals` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -202,7 +262,7 @@ CREATE TABLE `reservation_receipts` (
   PRIMARY KEY (`receiptID`),
   KEY `reservationID` (`reservationID`),
   CONSTRAINT `reservation_receipts_ibfk_1` FOREIGN KEY (`reservationID`) REFERENCES `reservations` (`reservationID`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -211,7 +271,7 @@ CREATE TABLE `reservation_receipts` (
 
 LOCK TABLES `reservation_receipts` WRITE;
 /*!40000 ALTER TABLE `reservation_receipts` DISABLE KEYS */;
-INSERT INTO `reservation_receipts` VALUES (1,14,'receipt','1761152242_About Page.png','2025-10-22 16:57:22'),(2,15,'receipt','1761152435_About Page.png','2025-10-22 17:00:35'),(3,16,'receipt','1761152716_About Page.png','2025-10-22 17:05:16'),(4,17,'receipt','1761186637_About Page.png','2025-10-23 02:30:37'),(5,21,'receipt','1761721777_Screenshot 2025-10-28 160436.png','2025-10-29 07:09:37'),(6,22,'receipt','1761743372_images (8).png','2025-10-29 13:09:32'),(7,23,'receipt','1761743909_Screenshot 2025-10-28 160436.png','2025-10-29 13:18:29'),(8,27,'receipt','1761800521_calendar.png','2025-10-30 05:02:01'),(9,31,'receipt','1762000379_images (8).png','2025-11-01 12:32:59'),(10,32,'receipt','1762001495_images (8).png','2025-11-01 12:51:35');
+INSERT INTO `reservation_receipts` VALUES (1,1,'receipt','1762262371_Screenshot 2025-10-28 160436.png','2025-11-04 13:19:31'),(2,2,'receipt','1762262412_20251025_194224_0000.png','2025-11-04 13:20:12'),(3,3,'receipt','1762262699_Screenshot 2025-10-28 160436.png','2025-11-04 13:24:59'),(4,4,'receipt','1762315397_Picsart_25-10-25_20-28-12-386.png','2025-11-05 04:03:17'),(5,5,'receipt','1762315674_Picsart_25-10-25_20-28-12-386.png','2025-11-05 04:07:54'),(6,6,'receipt','1762315919_Picsart_25-10-25_20-28-12-386.png','2025-11-05 04:11:59'),(7,7,'receipt','1762316039_Picsart_25-10-25_20-28-12-386.png','2025-11-05 04:13:59'),(8,8,'receipt','1762317205_Picsart_25-10-25_20-28-12-386.png','2025-11-05 04:33:25'),(9,9,'receipt','1762317282_Picsart_25-10-25_20-28-12-386.png','2025-11-05 04:34:42'),(10,10,'receipt','1762318679_Contacts.png','2025-11-05 04:57:59'),(11,11,'receipt','1762345736_Screenshot 2025-10-28 160436.png','2025-11-05 12:28:56'),(12,12,'receipt','1762407725_Screenshot 2025-10-28 160436.png','2025-11-06 05:42:05'),(13,13,'receipt','1762408153_LogIn.png','2025-11-06 05:49:13'),(14,14,'receipt','1762408568_LogIn.png','2025-11-06 05:56:08'),(15,15,'receipt','1762592979_Screenshot 2025-10-28 160436.png','2025-11-08 09:09:39'),(16,16,'receipt','1762594337_Picsart_25-10-25_20-28-12-386.png','2025-11-08 09:32:17'),(17,17,'receipt','1762765935_Screenshot 2025-10-28 160436.png','2025-11-10 09:12:15'),(18,18,'receipt','1762766369_Picsart_25-10-25_20-28-12-386.png','2025-11-10 09:19:29'),(19,19,'receipt','1762766504_LogIn.png','2025-11-10 09:21:44'),(20,20,'receipt','1763073072_Picsart_25-11-07_19-21-59-545.png','2025-11-13 22:31:12'),(21,21,'receipt','1763093728_Picsart_25-11-07_19-21-59-545.png','2025-11-14 04:15:28');
 /*!40000 ALTER TABLE `reservation_receipts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -240,7 +300,7 @@ CREATE TABLE `reservations` (
   CONSTRAINT `fk_reservations_roles` FOREIGN KEY (`serviceID`) REFERENCES `services` (`serviceID`),
   CONSTRAINT `fk_reservations_status` FOREIGN KEY (`statusID`) REFERENCES `status` (`statusID`),
   CONSTRAINT `fk_reservations_users` FOREIGN KEY (`userID`) REFERENCES `users` (`userID`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -249,7 +309,7 @@ CREATE TABLE `reservations` (
 
 LOCK TABLES `reservations` WRITE;
 /*!40000 ALTER TABLE `reservations` DISABLE KEYS */;
-INSERT INTO `reservations` VALUES (21,28,'Customer1',1,'2025-10-31','17:00:00','19:00:00',720.00,1,'2025-10-29 15:09:36'),(22,28,'Customer2',1,'2025-11-01','15:00:00','20:00:00',1620.00,4,'2025-10-29 21:09:32'),(23,28,'Customer3',1,'2025-10-30','15:00:00','20:00:00',1370.00,4,'2025-10-29 21:18:29'),(24,28,'',2,'2025-11-02','10:00:00','12:00:00',2500.00,2,'2025-10-30 08:39:52'),(25,28,'',2,'2025-11-03','13:00:00','15:00:00',2500.00,4,'2025-10-30 08:48:11'),(26,28,'',2,'2025-10-31','15:00:00','17:00:00',1000.00,2,'2025-10-30 10:55:10'),(27,28,'asdasd',1,'2025-11-04','14:00:00','15:00:00',270.00,1,'2025-10-30 13:02:01'),(28,28,'',2,'2025-11-08','10:00:00','12:00:00',3100.00,1,'2025-10-30 14:30:49'),(29,28,'',2,'2025-12-05','17:00:00','18:00:00',2300.00,1,'2025-11-01 20:21:43'),(30,28,'',2,'2025-11-07','20:00:00','22:00:00',3100.00,1,'2025-11-01 20:28:26'),(31,28,'Dclass6',1,'2025-11-15','22:00:00','23:00:00',330.00,1,'2025-11-01 20:32:59'),(32,28,'Dclass6',1,'2025-11-21','22:00:00','23:00:00',330.00,1,'2025-11-01 20:51:35'),(33,28,'Dclass6',1,'2025-11-21','10:00:00','00:00:00',0.00,1,'2025-11-02 22:13:51'),(34,28,'Dclass6',1,'2025-11-21','10:00:00','12:00:00',0.00,1,'2025-11-02 22:14:32'),(35,28,'hahaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',1,'2025-11-20','09:00:00','10:00:00',0.00,1,'2025-11-02 22:15:46');
+INSERT INTO `reservations` VALUES (1,1,'asdasd',1,'2025-11-05','09:00:00','10:00:00',300.00,1,'2025-11-04 21:19:31'),(2,1,'asdasd',1,'2025-11-05','10:00:00','12:00:00',570.00,1,'2025-11-04 21:20:12'),(3,1,'qweqwe',1,'2025-11-04','21:00:00','22:00:00',270.00,1,'2025-11-04 21:24:59'),(4,3,'REMM Band',1,'2025-11-05','12:00:00','14:00:00',300.00,2,'2025-11-05 12:03:17'),(5,3,'',3,'2025-11-17','12:00:00','14:00:00',7500.00,1,'2025-11-05 12:07:54'),(6,3,'REMM Band',1,'2025-11-06','21:00:00','00:00:00',840.00,1,'2025-11-05 12:11:59'),(7,3,'',2,'2025-11-07','09:00:00','15:00:00',4500.00,1,'2025-11-05 12:13:59'),(8,4,'asdasda',1,'2025-11-07','09:00:00','10:00:00',320.00,1,'2025-11-05 12:33:25'),(9,4,'',3,'2025-11-20','15:00:00','17:00:00',7500.00,2,'2025-11-05 12:34:42'),(10,5,'n/a',1,'2025-11-13','22:00:00','23:00:00',270.00,1,'2025-11-05 12:57:59'),(11,4,'',2,'2025-11-17','12:00:00','14:00:00',1600.00,1,'2025-11-05 20:28:55'),(12,6,'Shabu shabu',1,'2025-11-11','13:00:00','18:00:00',1370.00,1,'2025-11-06 13:42:05'),(13,7,'Banda Dito',1,'2025-12-04','13:00:00','14:00:00',340.00,1,'2025-11-06 13:49:13'),(14,8,'',3,'2025-11-26','17:00:00','22:00:00',7500.00,1,'2025-11-06 13:56:08'),(15,9,'syntax error',1,'2025-11-14','10:00:00','12:00:00',670.00,2,'2025-11-08 17:09:39'),(16,10,'tomtom',1,'2025-11-27','12:00:00','14:00:00',550.00,1,'2025-11-08 17:32:17'),(17,11,'Andrei',1,'2025-11-19','10:00:00','12:00:00',520.00,1,'2025-11-10 17:12:15'),(18,12,'asdasd',1,'2025-11-15','10:00:00','12:00:00',0.00,1,'2025-11-10 17:19:29'),(19,12,'Dclass6',1,'2025-11-16','10:00:00','12:00:00',650.00,1,'2025-11-10 17:21:44'),(20,1,'Dclass6',1,'2025-11-18','10:00:00','12:00:00',540.00,2,'2025-11-14 06:31:12'),(21,13,'Dclass6',1,'2025-11-16','13:00:00','15:00:00',670.00,2,'2025-11-14 12:15:28');
 /*!40000 ALTER TABLE `reservations` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -381,7 +441,7 @@ CREATE TABLE `user_details` (
 
 LOCK TABLES `user_details` WRITE;
 /*!40000 ALTER TABLE `user_details` DISABLE KEYS */;
-INSERT INTO `user_details` VALUES (28,'Doe','John','','09999999999','customer1@gmail.com','2025-10-28 21:45:39'),(29,'Dela','Juan','Cruz','09999999999','admin1@gmail.com','2025-10-29 18:09:09'),(30,'Alonte','Anton','','09877787765','ashketchum@yahoo.com','2025-10-30 11:50:09'),(31,'Carpio','Julie Ann','Bonguit','09877787765','julieanncarpio55@gmail.com','2025-10-30 11:59:48'),(32,'Nakase','Mico','Libunao','admin2','miconakaseyt@gmail.com','2025-10-30 12:16:40'),(33,'Gavino','John Rey','','09877787765','miconakaseyt@gmail.com','2025-10-30 12:24:30'),(34,'Libunao','Lexter','Bisoy','09877787765','ashketchum@yahoo.com','2025-10-30 12:32:23'),(35,'Sena','Mark','','09877787765','miconakaseyt@gmail.com','2025-10-30 12:35:45'),(36,'Esteban','Mac','','09877787765','miconakaseyt@gmail.com','2025-10-30 12:44:21'),(37,'Varona','Mhyca','','09877787765','admin7@gmail.com','2025-11-03 11:01:04'),(38,'Batumbakal','Snowie','','09877787765','meow@gmail.com','2025-11-03 00:55:46'),(40,'Bantug','Eriz','','09877787765','miconakaseyt@gmail.com','2025-11-03 11:28:36'),(41,'Compuesto','Jenny Rose','','09665270518','truchorus.official@gmail.com','2025-11-03 14:31:56');
+INSERT INTO `user_details` VALUES (1,'Nakase','Mico','','09665270518','miconakaseyt@gmail.com','2025-11-14 06:28:58'),(2,'One','Admin','','09911111111','admin1@gmail.com','2025-11-04 20:59:32'),(3,'Kismundo','Mhyca','','09519614271','varonamhics@gmail.com','2025-11-05 12:06:06'),(4,'Esteban','Mac','','00000000','sfics.resteban@gmail.com','2025-11-05 12:28:25'),(5,'Pandaan','Sally','Borres','09454971983','pandaansally05@gmail.com','2025-11-05 12:55:56'),(6,'Tompong','Marc Francis','','09564162369','marcfrancis0119@gmail.com','2025-11-06 13:42:49'),(7,'Azucena','Robert Jasper','','09677839672','zakrider520@gmail.com','2025-11-06 13:47:52'),(8,'fuellas','joyce','Bangayan','09361858852','fuellasjoyce@gmail.com','2025-11-06 13:54:16'),(9,'Ragas','Chabs','','09993036971','ragasbella@gmail.com','2025-11-08 17:12:34'),(10,'Bangayan','Vanessa','Celaje','09897654345','vanessabangayan0105@gmail.com','2025-11-08 17:30:49'),(11,'Doe','Kaiden','','09877787765','alejandro1@gmail.com','2025-11-10 17:13:01'),(12,'Libunao','Alejandro','','09877787765','alejandrolibunao1@gmail.com','2025-11-10 17:16:36'),(13,'Buniel','Jennina Mae','Camacho','09877787765','jenninamaecb@gmail.com','2025-11-14 12:13:27'),(14,'Azucena','RJ','','09877787765','admin69@gmail.com','2025-11-18 19:18:54');
 /*!40000 ALTER TABLE `user_details` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -401,7 +461,7 @@ CREATE TABLE `users` (
   `isActive` tinyint NOT NULL DEFAULT '1',
   PRIMARY KEY (`userID`),
   KEY `fk_user_roles` (`roleID`)
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -410,7 +470,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (28,'customer1','$2y$10$DGyLY14Ju71kBUdrTIznK.Vpgano/VYR7mSEuH0LNVUoVEcKlaMBO',2,'2025-10-28 14:45:39',1),(29,'admin1','$2y$10$sn05a01nsyrGcT0dVZqWCexnSSa.JXkDgdZkkSk52KYc./ute1eNu',1,'2025-10-29 11:09:09',1),(30,'customer2','$2y$10$idYB5eyKjzjDyAqU/ds6hOQaIBkHPUrx26KPpGssy5Dc1m.jQEWZi',2,'2025-10-30 04:50:09',1),(31,'customer3','$2y$10$eCKc4l7NcMU2kR7K/xBfeuDWcbEa5r33IsP9BQdha/LWSlyTqbu0i',2,'2025-10-30 04:59:48',1),(32,'admin2','$2y$10$lRkHkTdGWvNJf08dJfuS2eJjF9RLTESCvQdM/usWuY1P7kzjDHh5e',2,'2025-10-30 05:16:40',1),(33,'admin3','$2y$10$qWyRt3pE2940paDlM8YMzeUTRxS3lJdGlgHE5r5Aj3sqaUsw1maS.',1,'2025-10-30 05:24:30',1),(34,'admin4','$2y$10$ogvMBaULFO48ktBOTSPYQeRzVz9Fyl7tpBRBBwWTb/L8FchXw8Fp6',1,'2025-10-30 05:32:23',1),(35,'admin5','$2y$10$tMsHQavvYAclmj.AU12qSuPNCaN8XdqOvtyTk4Gj42l734bNnk8rq',1,'2025-10-30 05:35:45',1),(36,'admin6','$2y$10$2luZvexT7QBe6CMVjbm0BObfzbA5JrxG/OT6MtxytPWyw1amJ2H6.',1,'2025-10-30 05:44:21',1),(37,'admin7','$2y$10$.iobBotCQ56z.xJ10pQ0uOiEPipqYB/sYH11xgK4Jg77oP.JA9VKS',1,'2025-11-02 17:54:51',1),(38,'customer4','$2y$10$/Gz.Ao8Er65MN4Y.YJvhxODJ/gab3Ti.XMD8C8FVCas04nWvOtfPe',2,'2025-11-02 17:55:46',1),(39,'admin7','$2y$10$g/cE7bjyD5tmaqQQgvnDDes4EpcfgePUszzg1flF0cil1xVJMFDrW',1,'2025-11-03 04:01:04',1),(40,'asdsad','$2y$10$FGPjKmujO7KCekfRqYalBeCfDZ8/iRKymCvj/KAi236lFJSonj8Bi',1,'2025-11-03 04:28:36',1),(41,'jinjinmasarap','$2y$10$vXIooBHcnw3ozVWyy6mnYOW97EtUftNzmHALVykGfXBHDCeJJLRo.',2,'2025-11-03 07:31:56',1);
+INSERT INTO `users` VALUES (1,'miconakase17','$2y$10$pyGqsdxWsKTk4tAhb4X7.uy71TfWmnktx/XXo6mRBinj0qhIj4doC',2,'2025-11-04 13:58:06',1),(2,'admin1','$2y$10$cvaPOrBKBwj8V318Ep7Dq.X1bmhpmKBFzGYJjVsKu.tf4HKe9kF6C',1,'2025-11-04 13:59:32',1),(3,'Mhics','$2y$10$.6GLQ6hLy633cuzJYiDxyOO.Z.YlA71swyHpb65R0qaa0osQ.cyGu',2,'2025-11-05 05:00:59',1),(4,'macesteban','$2y$10$7rxn5g41sYYR0iFhw625Ze4x05ePzmVmAt9jpU8CBxdCkMZ/QKG/6',2,'2025-11-05 05:28:25',1),(5,'lly05','$2y$10$8Z7fEJLl21kVS7tznhTgUeCqFJ3m/Oqz4sR.ep3AF31c4k4Tf4JbC',2,'2025-11-05 05:55:56',1),(6,'marcfrancis05','$2y$10$7bTMje6PyQVoA0wMGsLATemzCj/xHd70pRrdpfhixZpSe8oOTgXv2',2,'2025-11-06 06:40:56',1),(7,'rj_azucena','$2y$10$FHZHV/OBJg5U7ipRFZryiONEeryrRQPE80p1IBSHxQIjszDY4yqGu',2,'2025-11-06 06:46:58',1),(8,'jayxxxiii','$2y$10$g7w1Ny8dAwIh8.jAMFFf3OgRRr9oef7JzxXxHOf.2ms5pRyDeuXwq',2,'2025-11-06 06:54:16',1),(9,'itsmechargs','$2y$10$eNILT.xxzxSZS3Yu2Fe94.oTQ0orDT7Iq8yC4ZBdvKHCf6MnnBxri',2,'2025-11-08 10:05:49',1),(10,'vanessatomtom10','$2y$10$NIw9PylNSTDj6EEnQ0SkqOn/7qAFftXC.PsCbbMm3qGijbsfB0wqO',2,'2025-11-08 10:30:49',1),(11,'mrbeast','$2y$10$Zy5iFNxUpqOFjIYCUgqFLOKO1edB4S/4yhIYpnHrhhlGMJcBBCfmi',2,'2025-11-10 10:10:46',1),(12,'andrei','$2y$10$2ZL.wm9b3nzvyMqEnJh.g.o//xvv7jItrEmVGZvPyQCTyQZ6JXkny',2,'2025-11-10 10:15:33',1),(13,'jennina123','$2y$10$5b9mFvSCHNd.CEtBwY8De.RQcKqjz1vmetCxNnZxcqDL/Ud2JH9zi',2,'2025-11-14 05:13:27',1),(14,'rjmabangis','$2y$10$84fp52rO.UEzzjGHB0SXwuyog/JkL0br2XUNhM5iXFOV5QShyNo1C',1,'2025-11-18 12:18:54',1);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -423,4 +483,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-11-03 14:38:45
+-- Dump completed on 2025-11-19 14:35:53
