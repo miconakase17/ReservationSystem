@@ -52,7 +52,7 @@ class SignUpController
             ]);
 
             if ($redirectToAdmin) {
-                header("Location: http://localhost/ReservationSystem/admin-dashboard.html?signup=success");
+                header("Location: http://localhost/ReservationSystem/admin-dashboard.php?signup=success");
             } else {
                 header("Location: http://localhost/ReservationSystem/login.php?signup=success");
             }

@@ -69,60 +69,40 @@ class ReservationController
         // ---------------------------------------------------------------
 // DRUM LESSON HANDLING (12 WEEKLY RESERVATIONS IN reservations TABLE)
 // ---------------------------------------------------------------
+        // ---------------------------------------------------------------
+// DRUM LESSON HANDLING (12 WEEKLY RESERVATIONS)
+// ---------------------------------------------------------------
         if ($data['serviceID'] == 3) {
-            $startTime = $data['startTime'] ?? null;
-            $endTime = $data['endTime'] ?? null;
-            $reservationDate = $data['date'] ?? null;
-
-            if (!$startTime || !$endTime || !$reservationDate) {
-                return ['success' => false, 'message' => 'Start time, end time, and date are required for drum lessons.'];
-            }
-
-            // 1️⃣ Create main reservation
-            $this->reservationModel->userID = $data['userID'];
-            $this->reservationModel->serviceID = 3;
-            $this->reservationModel->bandName = $data['bandName'] ?? '';
-            $this->reservationModel->date = $reservationDate;
-            $this->reservationModel->startTime = $startTime;
-            $this->reservationModel->endTime = $endTime;
-            $this->reservationModel->statusID = 1;
-            $this->reservationModel->totalCost = floatval($data['totalCost'] ?? 0);
-
             $reservationID = $this->reservationModel->createReservation();
             if (!$reservationID) {
                 return ['success' => false, 'message' => 'Failed to create drum lesson reservation.'];
             }
 
-            // 2️⃣ Generate 12 weekly sessions
-            $sessions = [];
-            $startDate = new DateTime($reservationDate);
-            for ($i = 0; $i < 12; $i++) {
-                $sessionDate = clone $startDate;
-                $sessionDate->modify("+$i week");
-                $sessions[] = [
-                    'date' => $sessionDate->format('Y-m-d'),
-                    'startTime' => $startTime,
-                    'endTime' => $endTime
-                ];
-            }
+            // Use weeklySessions from $data or generate
+            $sessions = $data['weeklySessions'] ?? [];
+            if (empty($sessions)) {
+                $startDate = new DateTime($data['date']);
+                $startTime = $data['startTime'];
+                $endTime = $data['endTime'];
 
-            // 3️⃣ Insert sessions with error checking
-            foreach ($sessions as $session) {
-                $this->drumLessonSessionsModel->reservationID = $reservationID;
-                $this->drumLessonSessionsModel->date = $session['date'];
-                $this->drumLessonSessionsModel->startTime = $session['startTime'];
-                $this->drumLessonSessionsModel->endTime = $session['endTime'];
-
-                if (!$this->drumLessonSessionsModel->createSession()) {
-                    return ['success' => false, 'message' => "Failed to create session on {$session['date']}"];
+                for ($i = 0; $i < 12; $i++) {
+                    $sessionDate = clone $startDate;
+                    $sessionDate->modify("+$i week");
+                    $sessions[] = [
+                        'date' => $sessionDate->format('Y-m-d'),
+                        'startTime' => $startTime,
+                        'endTime' => $endTime
+                    ];
                 }
             }
 
-            return ['success' => true, 'message' => 'Drum lesson reservation and all sessions created successfully.'];
+            // Insert all sessions in one go
+            if (!$this->drumLessonSessionsModel->createMultipleSessions($reservationID, $sessions)) {
+                return ['success' => false, 'message' => 'Failed to create drum lesson sessions.'];
+            }
+
+            return ['success' => true, 'message' => 'Drum lesson reservation and all sessions created successfully.', 'reservationID' => $reservationID];
         }
-
-
-
 
 
         // 2️⃣ Create reservation record

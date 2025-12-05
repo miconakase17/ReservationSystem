@@ -13,12 +13,20 @@ $userID = intval($_SESSION['user']['userID']); // logged in customer
 
 $conn = Database::getConnection();
 
+// Optional: check that reservation exists and belongs to user
+$sqlCheck = "SELECT serviceID FROM reservations WHERE reservationID = ? AND userID = ?";
+$stmtCheck = $conn->prepare($sqlCheck);
+$stmtCheck->bind_param("ii", $reservationID, $userID);
+$stmtCheck->execute();
+$reservation = $stmtCheck->get_result()->fetch_assoc();
 
-// Make sure the user owns the reservation
-$sql = "UPDATE reservations 
-        SET statusID = 3 
-        WHERE reservationID = ? AND userID = ?";
+if (!$reservation) {
+    echo json_encode(["success" => false, "message" => "Reservation not found."]);
+    exit;
+}
 
+// Cancel the main reservation (this automatically cancels all linked sessions)
+$sql = "UPDATE reservations SET statusID = 3 WHERE reservationID = ? AND userID = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("ii", $reservationID, $userID);
 
@@ -33,4 +41,3 @@ if ($stmt->execute() && $stmt->affected_rows > 0) {
         "message" => "Unable to cancel reservation."
     ]);
 }
-?>
