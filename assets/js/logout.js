@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 // First, destroy the session via AJAX or redirect
-                fetch('process/logout.php')
+                fetch('process/LogoutProcess.php')
                     .then(() => {
                         // Show success message
                         Swal.fire({

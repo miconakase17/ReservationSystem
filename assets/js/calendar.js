@@ -77,6 +77,11 @@ document.addEventListener("DOMContentLoaded", function () {
       reservations.forEach(res => {
         const { date, startTime, endTime, serviceName, statusName } = res;
 
+        // 🛑 DO NOT DISPLAY CANCELLED RESERVATIONS
+        if (statusName.toLowerCase() === "cancelled" || statusName.toLowerCase() === "cancelled by customer") {
+          return; // skip
+        }
+
         const start = new Date(`${date}T${startTime}`);
         const end = new Date(`${date}T${endTime}`);
         const duration = Math.ceil((end - start) / (1000 * 60 * 60));

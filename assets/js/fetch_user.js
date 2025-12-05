@@ -23,12 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 ${user.roleID == 1 ? 'Admin' : 'Customer'}
               </div>
             </div>
-            <button class="btn btn-icon btn-link op-8 me-1">
-              <i class="far fa-envelope"></i>
-            </button>
-            <button class="btn btn-icon btn-link btn-danger op-8">
-              <i class="fas fa-ban"></i>
-            </button>
           </div>
           `;
         }).join('');

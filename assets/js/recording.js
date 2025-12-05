@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     downPayment.value = (total / 2).toFixed(2);
   }
 
+
   // 🧠 Watch for changes
   [multitrack, livetrack, mix, serviceSelect, startTime, endTime].forEach(el => {
     if (el) {

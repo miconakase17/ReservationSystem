@@ -67,7 +67,7 @@ class LoginController
 
         // 🟢 Redirect based on role
         if ($user['roleID'] == 1) {
-            header("Location: http://localhost/ReservationSystem/admin-dashboard.html?login=success");
+            header("Location: http://localhost/ReservationSystem/admin-dashboard.php?login=success");
         } else {
             header("Location: http://localhost/ReservationSystem/customer-dashboard.php?login=success");
         }

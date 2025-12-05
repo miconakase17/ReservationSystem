@@ -86,14 +86,47 @@ class ReservationsModel
         return $stmt->execute();
     }
 
-    // Delete reservation
-    public function deleteReservations($id)
-    {
-        $sql = "DELETE FROM {$this->table} WHERE reservationID = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $id);
-        return $stmt->execute();
+    public function getUpcomingReservations()
+{
+    $now = date("Y-m-d H:i:s");
+
+    // Fetch single reservations
+    $sql = "SELECT r.*, CONCAT(ud.firstname,' ',ud.lastname) AS userFullName
+            FROM reservations r
+            JOIN user_details ud ON r.userID = ud.userID
+            WHERE CONCAT(r.date,' ',r.startTime) > ?
+              AND r.statusID = 1";
+
+    $stmt = $this->conn->prepare($sql);
+    $stmt->bind_param("s", $now);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    $reservations = [];
+    while ($row = $result->fetch_assoc()) {
+        $reservations[] = $row;
     }
+
+    // Fetch drum lesson weekly sessions
+    $sql2 = "SELECT d.*, CONCAT(ud.firstname,' ',ud.lastname) AS userFullName
+             FROM drum_lesson_sessions d
+             JOIN reservations r ON d.reservationID = r.reservationID
+             JOIN user_details ud ON r.userID = ud.userID
+             WHERE CONCAT(d.date,' ',d.startTime) > ?
+               AND r.statusID = 1";
+
+    $stmt2 = $this->conn->prepare($sql2);
+    $stmt2->bind_param("s", $now);
+    $stmt2->execute();
+    $result2 = $stmt2->get_result();
+    while ($row2 = $result2->fetch_assoc()) {
+        $reservations[] = $row2;
+    }
+
+    return $reservations;
+}
+
+
 
     // Get reservations by user ID
     public function readReservationsByUserID($userID)
@@ -105,7 +138,7 @@ class ReservationsModel
         return $stmt->get_result();
     }
 
-    public function isTimeSlotAvailable($serviceID, $date, $startTime, $endTime)
+    public function isTimeSlotAvailable($date, $startTime, $endTime, $excludeReservationID = null)
     {
         // Convert to 24-hour format with seconds
         $startTime = date('H:i:s', strtotime($startTime));
@@ -113,24 +146,27 @@ class ReservationsModel
 
         $sql = "SELECT COUNT(*) AS count
             FROM {$this->table}
-            WHERE serviceID = ?
-              AND date = ?
+            WHERE date = ?
               AND statusID IN (1,2)  -- Pending or Confirmed
-              AND startTime < ?      -- new endTime
-              AND endTime > ?";      // new startTime
+              AND startTime < ?
+              AND endTime > ?";
+
+        if ($excludeReservationID) {
+            $sql .= " AND reservationID != ?";
+        }
 
         $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param(
-            "isss",
-            $serviceID,
-            $date,
-            $endTime,   // bind new end time here
-            $startTime  // bind new start time here
-        );
+
+        if ($excludeReservationID) {
+            $stmt->bind_param("sssi", $date, $endTime, $startTime, $excludeReservationID);
+        } else {
+            $stmt->bind_param("sss", $date, $endTime, $startTime);
+        }
 
         $stmt->execute();
         $result = $stmt->get_result()->fetch_assoc();
         return $result['count'] == 0; // true if no conflict
     }
+
 }
 ?>

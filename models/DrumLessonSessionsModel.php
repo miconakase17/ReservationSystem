@@ -59,5 +59,14 @@ class DrumLessonSessionsModel
         $stmt->bind_param("i", $reservationID);
         return $stmt->execute();
     }
+
+    public function cancelSessionsByReservation($reservationID)
+    {
+        $sql = "UPDATE {$this->table} SET statusID = 3 WHERE reservationID = ?";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("i", $reservationID);
+        return $stmt->execute();
+    }
+
 }
 ?>

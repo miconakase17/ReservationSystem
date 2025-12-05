@@ -33,6 +33,19 @@ class ReservationController
         $this->reservationModel->endTime = $data['endTime'] ?? '';
         $this->reservationModel->totalCost = floatval(preg_replace('/[^\d.]/', '', $data['totalCost'] ?? '0'));
 
+        // Validate Operating Hours (9 AM - 12 NN)
+        $start = $data['startTime'];
+        $end = $data['endTime'];
+
+        if ($data['serviceID'] != 3) { // not Drum Lesson
+            if ($start < "09:00" || $end > "23:59" || $start >= $end) {
+                return [
+                    'success' => false,
+                    'message' => 'Operating hours are 9:00 AM to 12:00 Midnight only.'
+                ];
+            }
+        }
+
 
         // Validate date
         if (empty($this->reservationModel->date)) {
@@ -43,34 +56,74 @@ class ReservationController
         if ($data['serviceID'] != 3) { // Not Drum Lesson
             if (
                 !$this->reservationModel->isTimeSlotAvailable(
-                    $data['serviceID'],
                     $data['date'],
                     $data['startTime'],
                     $data['endTime']
                 )
             ) {
-                return ['success' => false, 'message' => 'Selected time slot is already booked.'];
+                return ['success' => false, 'message' => 'Selected time slot conflicts with another reservation.'];
             }
         }
 
-        // Check for Drum Lesson weekly sessions
-        if ($data['serviceID'] == 3 && !empty($data['weeklySessions'])) {
-            foreach ($data['weeklySessions'] as $session) {
-                if (
-                    !$this->reservationModel->isTimeSlotAvailable(
-                        $data['serviceID'],
-                        $session['date'],
-                        $session['startTime'],
-                        $session['endTime']
-                    )
-                ) {
-                    return [
-                        'success' => false,
-                        'message' => 'One or more drum lesson sessions conflict with existing bookings.'
-                    ];
+
+        // ---------------------------------------------------------------
+// DRUM LESSON HANDLING (12 WEEKLY RESERVATIONS IN reservations TABLE)
+// ---------------------------------------------------------------
+        if ($data['serviceID'] == 3) {
+            $startTime = $data['startTime'] ?? null;
+            $endTime = $data['endTime'] ?? null;
+            $reservationDate = $data['date'] ?? null;
+
+            if (!$startTime || !$endTime || !$reservationDate) {
+                return ['success' => false, 'message' => 'Start time, end time, and date are required for drum lessons.'];
+            }
+
+            // 1️⃣ Create main reservation
+            $this->reservationModel->userID = $data['userID'];
+            $this->reservationModel->serviceID = 3;
+            $this->reservationModel->bandName = $data['bandName'] ?? '';
+            $this->reservationModel->date = $reservationDate;
+            $this->reservationModel->startTime = $startTime;
+            $this->reservationModel->endTime = $endTime;
+            $this->reservationModel->statusID = 1;
+            $this->reservationModel->totalCost = floatval($data['totalCost'] ?? 0);
+
+            $reservationID = $this->reservationModel->createReservation();
+            if (!$reservationID) {
+                return ['success' => false, 'message' => 'Failed to create drum lesson reservation.'];
+            }
+
+            // 2️⃣ Generate 12 weekly sessions
+            $sessions = [];
+            $startDate = new DateTime($reservationDate);
+            for ($i = 0; $i < 12; $i++) {
+                $sessionDate = clone $startDate;
+                $sessionDate->modify("+$i week");
+                $sessions[] = [
+                    'date' => $sessionDate->format('Y-m-d'),
+                    'startTime' => $startTime,
+                    'endTime' => $endTime
+                ];
+            }
+
+            // 3️⃣ Insert sessions with error checking
+            foreach ($sessions as $session) {
+                $this->drumLessonSessionsModel->reservationID = $reservationID;
+                $this->drumLessonSessionsModel->date = $session['date'];
+                $this->drumLessonSessionsModel->startTime = $session['startTime'];
+                $this->drumLessonSessionsModel->endTime = $session['endTime'];
+
+                if (!$this->drumLessonSessionsModel->createSession()) {
+                    return ['success' => false, 'message' => "Failed to create session on {$session['date']}"];
                 }
             }
+
+            return ['success' => true, 'message' => 'Drum lesson reservation and all sessions created successfully.'];
         }
+
+
+
+
 
         // 2️⃣ Create reservation record
         $reservationID = $this->reservationModel->createReservation();
@@ -127,5 +180,11 @@ class ReservationController
 
         return ['success' => true, 'message' => 'Reservation created successfully.'];
     }
+
+    public function getUpcomingReservations()
+    {
+        return $this->reservationModel->getUpcomingReservations();
+    }
+
 }
 ?>

@@ -139,8 +139,10 @@ require_once __DIR__ . '/includes/ReservationData.php';
                   <div class="col-md-6 text-center">
                     <label class="form-label fw-bold mb-2">GCash (Down Payment):</label>
                     <div class="mb-2">
-                      <img src="assets/img/QR_Payment.png" alt="GCash QR"
+                      <img src="assets/img/QR.jpg" alt="GCash QR"
                         style="max-width:220px; height:auto; border:1px solid #ddd; padding:6px;" />
+                      <br /><strong>0951-961-4271</strong>
+                      <br /><strong>MH**A V.</strong>
                     </div>
                     <p class="small text-muted mb-3">
                       Scan this QR code with GCash to pay half of the total payment.
@@ -392,11 +394,13 @@ require_once __DIR__ . '/includes/ReservationData.php';
                     <th>Time</th>
                     <th>Price (₱)</th>
                     <th>Status</th>
+                    <th>Action</th>
+
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td colspan="5">Loading your reservations...</td>
+                    <td colspan="6">Loading your reservations...</td>
                   </tr>
                 </tbody>
               </table>

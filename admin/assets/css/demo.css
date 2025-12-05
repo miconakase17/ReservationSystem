@@ -43,7 +43,8 @@
     position: absolute;
     width: 45px;
     height: 45px;
-    background: #5867dd;
+     background: #2e8b57; /* changed from #5867dd */
+    color: #ffffff;
     top: 50%;
     left: -45px;
     transform: translateY(-50%);
@@ -65,10 +66,11 @@
     text-align: left;
     font-size: 16px;
     font-weight: 600;
+
     color: #ffffff;
     border-top-left-radius: 5px;
     border-bottom: 1px solid #ebedf2;
-    background: #5867dd; }
+    background: #2e8b57; }
   .custom-template .custom-content {
     padding: 20px 15px;
     max-height: calc(100vh - 90px);
@@ -118,7 +120,7 @@
       border-radius: 5px;
       border: 2px solid transparent; }
     .custom-template .img-pick:hover img, .custom-template .img-pick.active img {
-      border-color: #177dff; }
+       border-color: #2e8b57;  }
 
 .demo .btn, .demo .progress {
   margin-bottom: 15px !important; }

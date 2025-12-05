@@ -17,12 +17,13 @@ class UserModel
     }
 
     // ✅ Get all users
-    public function getAllUsers()
-    {
-        $sql = "SELECT * FROM {$this->table}";
-        $result = $this->conn->query($sql);
-        return $result->fetch_all(MYSQLI_ASSOC);
-    }
+public function getAllUsers()
+{
+    $sql = "SELECT * FROM {$this->table} WHERE isActive = 1";
+    $result = $this->conn->query($sql);
+    return $result->fetch_all(MYSQLI_ASSOC);
+}
+
 
     // ✅ Get single user by ID
     public function getUsersById($id)
