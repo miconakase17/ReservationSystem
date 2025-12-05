@@ -8,9 +8,9 @@ require_once __DIR__ . '/includes/ReservationData.php';
 
 <head>
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Kevin's Express Studio | Admin Dashboard</title>
+  <title>Admin Dashboard | Kevin's Express Studio</title>
   <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
-  <link rel="icon" href="admin/assets/img/kaiadmin/favicon.ico" type="image/x-icon" />
+  <link href="assets/img/headlogo.png" rel="icon">
 
   <!-- Fonts and icons -->
   <script src="admin/assets/js/plugin/webfont/webfont.min.js"></script>
@@ -47,6 +47,7 @@ require_once __DIR__ . '/includes/ReservationData.php';
   <link rel="stylesheet" href="admin/assets/css/plugins.min.css" />
   <link rel="stylesheet" href="admin/assets/css/kaiadmin.min.css" />
   <link rel="stylesheet" href="assets/css/calendar.css">
+  <link rel="stylesheet" href="assets/css/table.css">
 
 
 </head>

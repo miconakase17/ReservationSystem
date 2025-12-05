@@ -109,11 +109,14 @@ document.addEventListener("DOMContentLoaded", function () {
           case "pending":
             block.classList.add("bg-warning", "text-dark"); // yellow
             break;
+          case "completed":
+            block.classList.add("btn-complete", "text-white"); // blue
+            break;
           case "cancelled":
             block.classList.add("bg-danger", "text-white"); // red
             break;
           default:
-            block.classList.add("bg-primary", "text-white"); // blue as default
+            block.classList.add("bg-secondary", "text-white"); // fallback color
             break;
         }
 

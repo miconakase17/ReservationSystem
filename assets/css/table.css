@@ -1,0 +1,11 @@
+/* assets/css/table.css or kaiadmin custom CSS */
+.btn-complete {
+    background-color: #007bff; /* blue */
+    color: white;
+    border: none;
+}
+
+.btn-complete:hover {
+    background-color: #0056b3; /* darker blue */
+    color: white;
+}

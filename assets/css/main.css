@@ -1916,3 +1916,14 @@ section,
   opacity: 1;
   visibility: visible;
 }
+
+  .btn-complete {
+    background-color: #007bff; /* Bootstrap blue */
+    color: white;
+    border: none;
+  }
+
+.btn-complete:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+    color: white;
+  }

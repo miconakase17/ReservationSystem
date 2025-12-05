@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once __DIR__ . '/process/FetchAllReservationsProcess.php';
 ?>
 
@@ -7,8 +8,10 @@ require_once __DIR__ . '/process/FetchAllReservationsProcess.php';
 
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Manage Reservations - Admin</title>
+    <title>Manage Reservations - Admin | Kevin's Express Studio</title>
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+
+    <link href="assets/img/headlogo.png" rel="icon">
 
     <!-- Fonts and icons -->
     <script src="admin/assets/js/plugin/webfont/webfont.min.js"></script>
@@ -43,6 +46,27 @@ require_once __DIR__ . '/process/FetchAllReservationsProcess.php';
 </head>
 
 <body>
+
+    <?php
+    if (isset($_SESSION['email_status'])):
+        $status = $_SESSION['email_status'];
+        ?>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            Swal.fire({
+                icon: '<?= $status['success'] ? 'success' : 'error' ?>',
+                title: '<?= addslashes($status['message']) ?>',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+        <?php
+        unset($_SESSION['email_status']);
+    endif;
+    ?>
+
+
+
     <!-- Edit Reservation Modal -->
     <div class="modal fade" id="editReservationModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
@@ -102,13 +126,44 @@ require_once __DIR__ . '/process/FetchAllReservationsProcess.php';
         </div>
     </div>
 
+    <div class="modal fade" id="sendEmailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="sendEmailForm" action="process/SendEmailProcess.php" method="POST">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Send Email</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="recipientEmail" name="email">
+                        <div class="mb-3">
+                            <label class="form-label">To</label>
+                            <input type="text" class="form-control" id="recipientEmailDisplay" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Message</label>
+                            <textarea class="form-control" id="emailMessage" name="message" rows="5"
+                                required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">Send Email</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
     <div class="wrapper">
         <!-- Sidebar -->
         <div class="sidebar" data-background-color="dark">
             <div class="sidebar-logo">
                 <div class="logo-header" data-background-color="dark">
                     <a href="admin-dashboard.php" class="logo">
-                         <img src="assets/img/logo.png" alt="navbar brand" class="navbar-brand" height="55" />
+                        <img src="assets/img/logo.png" alt="navbar brand" class="navbar-brand" height="55" />
                     </a>
                 </div>
             </div>
@@ -194,6 +249,7 @@ require_once __DIR__ . '/process/FetchAllReservationsProcess.php';
                                         <th>Receipt</th>
                                         <th>Status</th>
                                         <th>Action</th>
+                                        <th>Email</th>
                                     </tr>
                                 </thead>
 
@@ -232,15 +288,29 @@ require_once __DIR__ . '/process/FetchAllReservationsProcess.php';
                                                         data-id="<?= $r['id'] ?>">
                                                         Approve
                                                     </button>
-                                                <?php endif; ?>
-
-                                                <?php if ($r['status'] !== 'Cancelled'): ?>
+                                                    <button class="btn btn-danger btn-sm cancel-reservation"
+                                                        data-id="<?= $r['id'] ?>">
+                                                        Cancel
+                                                    </button>
+                                                <?php elseif ($r['status'] === 'Confirmed'): ?>
+                                                    <button class="btn btn-complete btn-sm complete-reservation"
+                                                        data-id="<?= $r['id'] ?>">
+                                                        Complete
+                                                    </button>
                                                     <button class="btn btn-danger btn-sm cancel-reservation"
                                                         data-id="<?= $r['id'] ?>">
                                                         Cancel
                                                     </button>
                                                 <?php endif; ?>
                                             </td>
+                                            <td>
+                                                <button class="btn btn-info btn-sm send-email-btn"
+                                                    data-email="<?= htmlspecialchars($r['email']) ?>"
+                                                    data-customer="<?= htmlspecialchars($r['customer']) ?>">
+                                                    <i class="fas fa-envelope"></i>
+                                                </button>
+                                            </td>
+
                                         </tr>
                                     <?php endforeach; ?>
                                 </tbody>

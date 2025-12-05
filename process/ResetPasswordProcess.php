@@ -39,5 +39,6 @@ unset($_SESSION['reset_email']);
 unset($_SESSION['reset_userID']);
 
 $_SESSION['popup_message'] = 'Password reset successful. You can now log in.';
+$_SESSION['popup_type'] = 'success';
 header('Location: ../login.php');
 exit;

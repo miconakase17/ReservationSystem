@@ -3,6 +3,20 @@ require_once __DIR__ . '/../config/database.php';
 
 $conn = Database::getConnection();
 
+// ⭐ AUTO-COMPLETE PAST RESERVATIONS ⭐
+$now = date('Y-m-d H:i:s');
+
+$autoCompleteSql = "
+    UPDATE reservations 
+    SET statusID = 4
+    WHERE CONCAT(date, ' ', endTime) < ?
+    AND statusID = 2
+";
+
+$stmt = $conn->prepare($autoCompleteSql);
+$stmt->bind_param("s", $now);
+$stmt->execute();
+
 // Load receipt model
 require_once __DIR__ . '/../models/ReservationReceiptModel.php';
 $receiptModel = new ReservationReceiptModel($conn);
@@ -19,6 +33,7 @@ $sql = "
     SELECT 
         r.reservationID AS id,
         CONCAT(ud.firstName, ' ', ud.lastName) AS customer,
+        ud.email,
         r.bandName,
         s.serviceName AS serviceType,
         r.date,
@@ -41,7 +56,7 @@ $result = $conn->query($sql);
 
 if ($result) {
     while ($row = $result->fetch_assoc()) {
-        $row['isSession'] = 0; // normal reservation
+        $row['isSession'] = 0;
         $reservations[] = $row;
     }
 }
@@ -56,6 +71,7 @@ $sqlWeekly = "
     SELECT 
         d.sessionID AS id,
         CONCAT(ud.firstName, ' ', ud.lastName) AS customer,
+        ud.email,
         r.bandName,
         s.serviceName AS serviceType,
         d.date,
@@ -74,11 +90,12 @@ $sqlWeekly = "
     ORDER BY d.date DESC, d.startTime ASC
 ";
 
+
 $resultWeekly = $conn->query($sqlWeekly);
 
 if ($resultWeekly) {
     while ($row = $resultWeekly->fetch_assoc()) {
-        $row['isSession'] = 1; // drum lesson session
+        $row['isSession'] = 1;
         $reservations[] = $row;
     }
 }
@@ -91,12 +108,10 @@ if ($resultWeekly) {
 
 foreach ($reservations as $index => $row) {
 
-    $reservationID = $row['id']; // both normal & session use 'id'
+    $reservationID = $row['id'];
 
-    // Fetch associated receipts
     $receipts = $receiptModel->getReceiptByReservationId($reservationID);
 
-    // Attach receipts
     $reservations[$index]['receipts'] = $receipts;
 }
 

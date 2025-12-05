@@ -7,9 +7,10 @@ require_once __DIR__ . '/process/FetchAllUsersProcess.php';
 
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <title>Datatables - Kaiadmin Bootstrap 5 Admin Dashboard</title>
+    <title>Manage User - Admin | Kevin's Express Studio</title>
     <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
-    <link rel="icon" href="../assets/img/kaiadmin/favicon.ico" type="image/x-icon" />
+    
+    <link href="assets/img/headlogo.png" rel="icon">
 
     <!-- Fonts and icons -->
     <script src="admin/assets/js/plugin/webfont/webfont.min.js"></script>
@@ -85,7 +86,7 @@ require_once __DIR__ . '/process/FetchAllUsersProcess.php';
                 <!-- Logo Header -->
                 <div class="logo-header" data-background-color="dark">
                     <a href="index.html" class="logo">
-                         <img src="assets/img/logo.png" alt="navbar brand" class="navbar-brand" height="55" />
+                        <img src="assets/img/logo.png" alt="navbar brand" class="navbar-brand" height="55" />
                     </a>
                     <div class="nav-toggle">
                         <button class="btn btn-toggle toggle-sidebar">

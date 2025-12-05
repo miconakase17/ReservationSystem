@@ -1,9 +1,10 @@
 $(document).ready(function () {
 
-    // APPROVE RESERVATION
+    /* ---------------------------------------------------------
+       APPROVE RESERVATION
+    --------------------------------------------------------- */
     $(document).on("click", ".approve-reservation", function () {
         const id = $(this).data("id");
-
         Swal.fire({
             title: "Approve this reservation?",
             text: "The customer will see this as approved.",
@@ -26,10 +27,11 @@ $(document).ready(function () {
         });
     });
 
-    // CANCEL RESERVATION
+    /* ---------------------------------------------------------
+       CANCEL RESERVATION
+    --------------------------------------------------------- */
     $(document).on("click", ".cancel-reservation", function () {
         const id = $(this).data("id");
-
         Swal.fire({
             title: "Cancel this reservation?",
             text: "This action cannot be undone.",
@@ -50,6 +52,45 @@ $(document).ready(function () {
                 }, "json");
             }
         });
+    });
+
+    /* ---------------------------------------------------------
+       COMPLETE RESERVATION (Manual Completion)
+    --------------------------------------------------------- */
+    $(document).on("click", ".complete-reservation", function () {
+        const id = $(this).data("id");
+        Swal.fire({
+            title: "Mark as Completed?",
+            text: "This reservation will be marked as completed.",
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#6c757d",
+            confirmButtonText: "Yes, complete it!"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.post("process/CompleteReservationProcess.php", { id: id }, function (response) {
+                    if (response.success) {
+                        Swal.fire("Completed!", response.message, "success")
+                            .then(() => location.reload());
+                    } else {
+                        Swal.fire("Error", response.message, "error");
+                    }
+                }, "json");
+            }
+        });
+    });
+
+    /* ---------------------------------------------------------
+       OPEN SEND EMAIL MODAL
+    --------------------------------------------------------- */
+    $('.send-email-btn').on('click', function () {
+        const email = $(this).data('email');
+        const customer = $(this).data('customer');
+        $('#recipientEmail').val(email);
+        $('#recipientEmailDisplay').val(`${customer} <${email}>`);
+        $('#emailMessage').val('');
+        $('#sendEmailModal').modal('show');
     });
 
 });
