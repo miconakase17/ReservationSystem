@@ -77,14 +77,18 @@
                             </div>
 
                             <div class="col-12">
-                                <input type="password" name="password" class="form-control" placeholder="Password*"
-                                    required>
+                                <input type="password" name="password" id="password" class="form-control"
+                                    placeholder="Password*" required>
                             </div>
 
                             <div class="col-12">
-                                <input type="password" name="confirm_password" class="form-control"
-                                    placeholder="Confirm Password*" required>
+                                <input type="password" name="confirm_password" id="confirm_password"
+                                    class="form-control" placeholder="Confirm Password*" required>
                             </div>
+                            <div class="col-12">
+                                <div id="passwordWarning" class="password-warning">Passwords do not match</div>
+                            </div>
+
 
                             <div class="col-12 text-center">
                                 <button type="submit" class="btn btn-primary">Sign Up</button>
@@ -112,6 +116,24 @@
 
     <!-- Main JS File -->
     <script src="assets/js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.querySelector('.signup-form');
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirm_password');
+            const warning = document.getElementById('passwordWarning');
+
+            form.addEventListener('submit', (e) => {
+                if (password.value !== confirmPassword.value) {
+                    e.preventDefault(); // stop submission
+                    warning.style.display = 'block';
+                } else {
+                    warning.style.display = 'none';
+                }
+            });
+        });
+    </script>
 
 
 </body>

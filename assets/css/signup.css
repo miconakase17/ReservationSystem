@@ -120,3 +120,10 @@
   color: var(--accent-color);
   transform: scale(1.15);
 }
+
+.password-warning {
+    color: #ff4d4d;
+    font-size: 0.9rem;
+    margin-top: 5px;
+    display: none;
+}

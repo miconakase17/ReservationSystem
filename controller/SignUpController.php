@@ -24,10 +24,18 @@ class SignUpController
         $phonenumber,
         $email,
         $password,
-        $roleID = 2,             // default = Customer
-        $redirectToAdmin = false // optional
+        $confirmPassword,     
+        $roleID = 2,
+        $redirectToAdmin = false
     ) {
         session_start();
+
+        // Password Match Check
+        if ($password !== $confirmPassword) {
+            $_SESSION['popup_message'] = "Passwords do not match.";
+            header("Location: ../signup.html");
+            exit();
+        }
 
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
@@ -40,6 +48,7 @@ class SignUpController
         ];
 
         if ($this->userModel->createUsers($data)) {
+
             $userID = $this->userModel->findUsersByUsername($username)['userID'];
 
             $this->userDetailsModel->createDetails([
@@ -56,6 +65,7 @@ class SignUpController
             } else {
                 header("Location: http://localhost/ReservationSystem/login.php?signup=success");
             }
+
             exit();
         } else {
             $_SESSION['popup_message'] = "Failed to create user account.";
