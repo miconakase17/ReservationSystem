@@ -122,8 +122,42 @@
 }
 
 .password-warning {
-    color: #ff4d4d;
+  color: #ff4d4d;
+  font-size: 0.9rem;
+  margin-top: 5px;
+  display: none;
+}
+
+/* Password Warning Message */
+#passwordWarning {
+  display: none;
+  /* Hidden by default */
+  color: #ff4d4f;
+  /* Red color for warning */
+  font-size: 14px;
+  margin-top: 5px;
+  background-color: rgba(255, 77, 79, 0.1);
+  padding: 5px 10px;
+  border-left: 3px solid #ff4d4f;
+  border-radius: 4px;
+}
+
+.password-rules {
     font-size: 0.9rem;
-    margin-top: 5px;
-    display: none;
+    line-height: 1.3rem;
+}
+
+.password-rules .rule.valid {
+    color: #28a745; /* green when valid */
+}
+
+.password-rules .rule::before {
+    content: '❌';
+    display: inline-block;
+    width: 1.2rem;
+    margin-right: 5px;
+}
+
+.password-rules .rule.valid::before {
+    content: '✔';
 }

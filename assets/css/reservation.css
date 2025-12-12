@@ -210,3 +210,21 @@ small.text-muted {
 .btn-primary:hover {
   background: color-mix(in srgb, var(--accent-color), transparent 20%);
 }
+
+/* --- STACKED MODAL SUPPORT (Bootstrap override) --- */
+
+/* When a modal is already open, add this class from JS */
+.modal.modal-stacked {
+    z-index: 1050 !important; /* lower than the top modal */
+}
+
+/* The QR modal needs higher z-index to sit above reservation modal */
+#qrModal {
+    z-index: 1060 !important;
+}
+
+/* Make the second backdrop visible but lighter */
+.modal-backdrop.show:nth-of-type(2) {
+    opacity: 0.45 !important;
+    z-index: 1055 !important;
+}

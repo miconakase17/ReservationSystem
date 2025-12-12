@@ -68,13 +68,13 @@ require_once __DIR__ . '/includes/ReservationData.php';
     <!-- Modal -->
     <div class="modal fade" id="reservationForm" tabindex="-1" aria-labelledby="reservationFormTitle"
       aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+      <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
 
           <!-- Header -->
-          <div class="modal-header">
-            <h5 class="modal-title" id="reservationFormTitle">Kevin's Express Music Studio</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="modal-header text-white">
+            <h5 class="modal-title" id="reservationFormTitle">New Reservation - Kevin's Express Music Studio</h5>
+            <button type="button" class="btn-close btn-close-black" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
 
           <!-- Body -->
@@ -82,134 +82,87 @@ require_once __DIR__ . '/includes/ReservationData.php';
             <form action="process/ReservationProcess.php" method="post" class="reservation-form"
               enctype="multipart/form-data">
 
-              <div class="container section-title text-center">
-                <h3>New Reservation</h3>
-              </div>
-
-              <div class="row gy-4">
-
-                <div class="col-6">
+              <!-- 1. First Name / Last Name -->
+              <div class="mb-4 row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">First Name</label>
                   <input type="text" name="firstname" class="form-control"
                     value="<?php echo htmlspecialchars($_SESSION['user']['firstName'] ?? ''); ?>" readonly>
                 </div>
-
-                <div class="col-6">
+                <div class="col-md-6">
+                  <label class="form-label">Last Name</label>
                   <input type="text" name="lastname" class="form-control"
                     value="<?php echo htmlspecialchars($_SESSION['user']['lastName'] ?? ''); ?>" readonly>
                 </div>
+              </div>
 
-                <div class="row gy-4 align-items-start">
-                  <!-- LEFT SIDE -->
+              <!-- 2. Date, Start Time, End Time -->
+              <div class="mb-4 row g-3">
+                <div class="col-md-4">
+                  <label class="form-label">Select Date</label>
+                  <input type="date" id="date" name="date" class="form-control" required>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">Start Time</label>
+                  <input type="time" id="startTime" name="startTime" class="form-control" required>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label">End Time</label>
+                  <input type="time" id="endTime" name="endTime" class="form-control" required>
+                  <small class="text-muted d-block mt-1" id="endTimeNote" style="display:none;">For Drum Lesson, the
+                    session must be 2 hours.</small>
+                </div>
+              </div>
+
+              <!-- 3. Select Service -->
+              <div class="mb-4">
+                <label class="form-label">Select Service</label>
+                <select name="serviceID" id="service" class="form-select" required>
+                  <option value="" disabled selected>Select Service</option>
+                  <option value="1">Studio Rental</option>
+                  <option value="2">Recording</option>
+                  <option value="3">Drum Lesson</option>
+                </select>
+              </div>
+
+              <!-- 4. Service Fields -->
+              <div id="studio-fields" class="mb-4 p-3 bg-light rounded" style="display:none;">
+                <h6 class="fw-bold">Studio Rental Details</h6>
+                <div class="row g-3">
                   <div class="col-md-6">
-                    <!-- Date -->
-                    <div class="mb-3">
-                      <label for="date" class="form-label fw-bold">Select Date:</label>
-                      <input type="date" id="date" name="date" class="form-control">
-                    </div>
-
-                    <!-- Start Time -->
-                    <div class="mb-3">
-                      <label for="startTime" class="form-label fw-bold">Start Time:</label>
-                      <input type="time" id="startTime" name="startTime" class="form-control">
-                    </div>
-
-                    <!-- End Time -->
-                    <div class="mb-3">
-                      <label for="endTime" class="form-label fw-bold">End Time:</label>
-                      <input type="time" id="endTime" name="endTime" class="form-control">
-                      <small id="endTimeNote" class="text-muted" style="display:none;">
-                        For Drum Lesson, the session must be 2 hours.
-                      </small>
-                    </div>
-
-                    <!-- Upload Receipt -->
-                    <div class="mb-3">
-                      <label class="form-label fw-bold">Upload Receipt:</label>
-                      <input type="file" id="receipt" name="receipt" accept="image/*" class="form-control">
-                    </div>
-                    <div class="mb-3">
-                      <img id="rental-image-preview" src="" alt="Preview"
-                        style="max-width:100%; height:auto; display:none; border:1px solid #ddd; padding:6px;" />
-                    </div>
+                    <label class="form-label">Band Name</label>
+                    <input type="text" name="bandName" class="form-control">
+                    <label class="form-label mt-2">Total Hours</label>
+                    <input type="text" id="totalHours" name="totalHours" class="form-control" readonly>
                   </div>
-
-                  <!-- RIGHT SIDE -->
-                  <div class="col-md-6 text-center">
-                    <label class="form-label fw-bold mb-2">GCash (Down Payment):</label>
-                    <div class="mb-2">
-                      <img src="assets/img/QR.jpg" alt="GCash QR"
-                        style="max-width:220px; height:auto; border:1px solid #ddd; padding:6px;" />
-                      <br /><strong>0951-961-4271</strong>
-                      <br /><strong>MH**A V.</strong>
-                    </div>
-                    <p class="small text-muted mb-3">
-                      Scan this QR code with GCash to pay half of the total payment.
-                    </p>
-
-                    <!-- Reference No -->
-                    <div class="mt-3">
-                      <label class="form-label fw-bold">Reference No.</label>
-                      <input type="text" name="referenceNumber" id="referenceNumber" class="form-control w-75 mx-auto"
-                        required>
+                  <div class="col-md-6">
+                    <label class="form-label">Additionals</label>
+                    <div class="d-flex flex-wrap">
+                      <?php if ($additionals && $additionals->num_rows > 0): ?>
+                        <?php while ($row = $additionals->fetch_assoc()): ?>
+                          <div class="form-check me-3 mb-2">
+                            <input class="form-check-input additional-checkbox" type="checkbox"
+                              id="additional-<?php echo $row['addID']; ?>" name="additionals[]"
+                              value="<?php echo $row['addID']; ?>" data-price="<?php echo $row['price']; ?>">
+                            <label class="form-check-label" for="additional-<?php echo $row['addID']; ?>">
+                              <?php echo htmlspecialchars($row['addName']); ?>
+                              (₱<?php echo number_format($row['price'], 2); ?>)
+                            </label>
+                          </div>
+                        <?php endwhile; ?>
+                      <?php else: ?>
+                        <p class="text-muted mb-0">No additional services available.</p>
+                      <?php endif; ?>
                     </div>
                   </div>
                 </div>
+              </div>
 
-
-
-                <div class="col-6">
-                  <select name="serviceID" id="service" class="form-select" required>
-                    <option value="" disabled selected>Select Service</option>
-                    <option value="1">Studio Rental</option>
-                    <option value="2">Recording</option>
-                    <option value="3">Drum Lesson</option>
-                  </select>
-                </div>
-
-                <!-- Studio Rental Fields -->
-                <div id="studio-fields" class="row gy-4" style="display: none;">
-                  <div class="col-12">
-                    <div class="row gy-3 align-items-start">
-
-                      <!-- Band Name and Total Hours (Left Side) -->
-                      <div class="col-md-6">
-                        <label class="form-label fw-bold">Band Name:</label>
-                        <input type="text" name="bandName" class="form-control mb-3" placeholder="Enter Band Name">
-
-                        <label class="form-label fw-bold">Total Hours:</label>
-                        <input type="text" id="totalHours" name="totalHours" class="form-control" readonly>
-                      </div>
-
-                      <!-- Additionals (Right Side) -->
-                      <div class="col-md-6">
-                        <label class="form-label fw-bold">Additionals:</label>
-                        <div class="d-flex flex-wrap">
-                          <?php if ($additionals && $additionals->num_rows > 0): ?>
-                            <?php while ($row = $additionals->fetch_assoc()): ?>
-                              <div class="form-check me-3 mb-2">
-                                <input class="form-check-input additional-checkbox" type="checkbox"
-                                  id="additional-<?php echo $row['addID']; ?>" name="additionals[]"
-                                  value="<?php echo $row['addID']; ?>" data-price="<?php echo $row['price']; ?>">
-                                <label class="form-check-label" for="additional-<?php echo $row['addID']; ?>">
-                                  <?php echo htmlspecialchars($row['addName']); ?>
-                                  (₱<?php echo number_format($row['price'], 2); ?>)
-                                </label>
-                              </div>
-                            <?php endwhile; ?>
-                          <?php else: ?>
-                            <p class="text-muted mb-0">No additionals available.</p>
-                          <?php endif; ?>
-                        </div>
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Recording Fields -->
-                <div id="recording-fields" class="row gy-4" style="display: none;">
-                  <div class="col-12">
-                    <label class="form-label fw-bold">Recording Mode:</label><br>
+              <div id="recording-fields" class="mb-4 p-3 bg-light rounded" style="display:none;">
+                <h6 class="fw-bold">Recording Details</h6>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label">Recording Mode</label><br>
                     <div class="form-check form-check-inline">
                       <input class="form-check-input" type="radio" name="recordingMode" id="multitrack"
                         value="MultiTrack" required>
@@ -221,56 +174,120 @@ require_once __DIR__ . '/includes/ReservationData.php';
                       <label class="form-check-label" for="livetrack">Live Track</label>
                     </div>
                   </div>
-
-                  <div class="col-12">
-                    <label class="form-label fw-bold">Option:</label><br>
+                  <div class="col-md-6">
+                    <label class="form-label">Option</label><br>
                     <div class="form-check form-check-inline">
                       <input class="form-check-input" type="checkbox" name="mix" id="mix" value="Mix">
                       <label class="form-check-label" for="mix">Mix and Master</label>
                     </div>
                   </div>
                 </div>
-
-                <!-- DRUM LESSON FIELD -->
-                <div id="drumlesson-fields" class="row gy-4" style="display: none;">
-                  <!-- Weekly Sessions -->
-                  <div class="row gy-2 mt-3">
-                    <div class="col-12">
-                      <label class="form-label fw-bold">Weekly Sessions (12 weeks):</label>
-                      <ul id="drumlesson-sessions-list" style="list-style:none; padding-left:0;"></ul>
-                      <div id="drumlesson-sessions-inputs"></div>
-                      <small class="text-muted">
-                        Selected date/time will repeat weekly on the same weekday and hour for 12 weeks.
-                        These sessions are added to the form on submit.
-                      </small>
-                    </div>
-                  </div>
-                </div>
-                <div class="row gy-3">
-
-                  <div class="col-sm-6">
-                    <label class="form-label fw-bold">Total Amount (₱):</label>
-                    <input type="text" id="totalCost" name="totalCost" class="form-control mb-2" readonly>
-                  </div>
-
-                  <div class="col-sm-6">
-                    <label class="form-label fw-bold">Down Payment (₱):</label>
-                    <input type="text" name="downPayment" id="downPayment" class="form-control" readonly>
-                  </div>
-                </div>
-
-
-                <div class=" col-12 text-center">
-                  <button type="submit" class="btn btn-primary mt-3">Submit Reservation</button>
-                </div>
-
               </div>
+
+              <div id="drumlesson-fields" class="mb-4 p-3 bg-light rounded" style="display:none;">
+                <h6 class="fw-bold">Drum Lesson Schedule (12 weeks)</h6>
+                <ul id="drumlesson-sessions-list" style="list-style:none; padding-left:0;"></ul>
+                <div id="drumlesson-sessions-inputs"></div>
+                <small class="text-muted">Selected date/time repeats weekly on the same day for 12 weeks.</small>
+              </div>
+
+              <!-- 5. Total Amount / Down Payment -->
+              <div class="mb-4 row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Total Amount (₱)</label>
+                  <input type="text" id="totalCost" name="totalCost" class="form-control" readonly>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Down Payment (₱)</label>
+                  <input type="text" id="downPayment" name="downPayment" class="form-control" readonly>
+                </div>
+              </div>
+
+              <!-- 6. View GCash QR / Upload Receipt -->
+              <div class="mb-4 row g-3">
+                <div class="col-md-6 ">
+                  <label class="form-label">QR Code</label>
+                  <button type="button" class="btn btn-outline-primary w-100" data-bs-toggle="modal"
+                    data-bs-target="#qrModal">
+                    View GCash QR
+                  </button>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Upload Receipt</label>
+                  <input type="file" id="receipt" name="receipt" accept="image/*" class="form-control">
+                  <img id="rental-image-preview" src="" alt="Preview"
+                    style="max-width:100%; height:auto; display:none; border:1px solid #ddd; padding:6px; margin-top:10px;" />
+                </div>
+              </div>
+
+              <!-- 7. Payment Method / Reference No. -->
+              <div class="mb-4 row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Payment Method</label>
+                  <select name="paymentMethod" id="paymentMethod" class="form-select" required>
+                    <option value="" disabled selected>Select Payment Method</option>
+                    <option value="Gcash">Gcash</option>
+                    <option value="PayMaya">PayMaya</option>
+                    <option value="BDO">BDO</option>
+                    <option value="BPI">BPI</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Reference No.</label>
+                  <input type="text" name="referenceNumber" id="referenceNumber" class="form-control" required>
+                </div>
+              </div>
+
+              <!-- 8. Submit Button -->
+              <div class="text-center mt-4">
+                <button type="submit" class="btn btn-success btn-lg">Submit Reservation</button>
+              </div>
+
             </form>
           </div>
 
         </div>
       </div>
     </div>
+
+
+    <!-- QR CODE MODAL -->
+    <div class="modal fade" id="qrModal" tabindex="-1" aria-labelledby="qrModalLabel" aria-hidden="true"
+      data-bs-backdrop="static" data-bs-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <h5 class="modal-title" id="qrModalLabel">GCash QR Code - 50% Down Payment</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+
+          <div class="modal-body text-center">
+            <img src="assets/img/QR.jpg" alt="GCash QR"
+              style="max-width:250px; height:auto; border:1px solid #ddd; padding:6px;" />
+
+            <div class="mt-3">
+              <strong>0951-961-4271</strong><br>
+              <strong>MH**A V.</strong>
+            </div>
+
+            <p class="small text-muted mt-2">
+              Scan this InstaPay QR code to pay <strong>50% of the total amount</strong> as down payment.
+            </p>
+
+            <!-- Back to Reservation Form Button -->
+            <button type="button" class="btn btn-primary mt-3" data-bs-dismiss="modal" data-bs-toggle="modal"
+              data-bs-target="#reservationForm">
+              Back to Reservation Form
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+
 
     <!-- CALENDAR MODAL -->
     <div class="modal fade" id="calendarModal" tabindex="-1" aria-labelledby="calendarModalLabel" aria-hidden="true">
@@ -567,6 +584,17 @@ require_once __DIR__ . '/includes/ReservationData.php';
       }
     })();
   </script>
+  <script>
+    // Allow multiple modals open together
+    document.addEventListener('show.bs.modal', function (event) {
+      const opened = document.querySelectorAll('.modal.show');
+
+      if (opened.length > 0) {
+        opened.forEach(m => m.classList.add('modal-stacked'));
+      }
+    });
+  </script>
+
   <script src="assets/js/reservation.js"></script>
   <script src="assets/js/studio_rental.js"></script>
   <script src="assets/js/recording.js"></script>
@@ -576,6 +604,7 @@ require_once __DIR__ . '/includes/ReservationData.php';
   <script src="assets/js/update_profile.js"></script>
   <script src="assets/js/logout.js"></script>
   <script src="assets/js/main.js"></script>
+  <script src="assets/js/reference_number.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 

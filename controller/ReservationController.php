@@ -151,7 +151,7 @@ class ReservationController
             $paymentModel->userID = $data['userID'];
             $paymentModel->reservationID = $reservationID;
             $paymentModel->amount = floatval($data['amountPaid']);
-            $paymentModel->paymentMethod = 'GCash';
+            $paymentModel->paymentMethod = $data['paymentMethod'] ?? 'GCash'; // default to GCash if not set
             $paymentModel->paymentStatus = 'Pending';
             $paymentModel->paymentDate = date('Y-m-d H:i:s');
             $paymentModel->transactionReference = $data['referenceNumber'] ?? '';

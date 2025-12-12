@@ -79,6 +79,12 @@
                             <div class="col-12">
                                 <input type="password" name="password" id="password" class="form-control"
                                     placeholder="Password*" required>
+                                <div id="passwordRules" class="password-rules mt-2">
+                                    <p class="rule" id="ruleLength">At least 8 characters</p>
+                                    <p class="rule" id="ruleUpper">At least 1 uppercase letter</p>
+                                    <p class="rule" id="ruleNumber">At least 1 number</p>
+                                    <p class="rule" id="ruleSymbol">At least 1 symbol/special character</p>
+                                </div>
                             </div>
 
                             <div class="col-12">
@@ -116,6 +122,7 @@
 
     <!-- Main JS File -->
     <script src="assets/js/main.js"></script>
+    <script src="assets/js/signup.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {

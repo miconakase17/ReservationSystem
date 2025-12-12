@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'totalCost' => $_POST['totalCost'] ?? '',
         'amountPaid' => $_POST['downPayment'] ?? null,
         'referenceNumber' => $_POST['referenceNumber'] ?? '',
+        'paymentMethod' => $_POST['paymentMethod'] ?? '',
         'recordingMode' => $_POST['recordingMode'] ?? null,
         'mix' => $_POST['mix'] ?? null,
         'additionals' => $_POST['additionals'] ?? [],
