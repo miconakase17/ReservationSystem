@@ -33,7 +33,7 @@ $result = $stmt->get_result();
 
 if ($result->num_rows === 0) {
     $_SESSION['popup_message'] = 'Invalid or expired temporary password. Please request a new one.';
-    header('Location: ../forgot-password.php');
+    header('Location: ../forgot-password.html');
     exit;
 }
 
@@ -50,7 +50,7 @@ if (strtotime($expiresAt) < time()) {
     $del->execute();
 
     $_SESSION['popup_message'] = 'Temporary password has expired. Please request a new one.';
-    header('Location: ../forgot-password.php');
+    header('Location: ../forgot-password.html');
     exit;
 }
 

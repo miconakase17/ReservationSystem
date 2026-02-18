@@ -47,7 +47,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $data['weeklySessions'] = $weeklySessions;
     }
 
+      // ✅ Validate file upload (image only)
     $files = $_FILES ?? null;
+    if (!empty($files['receipt']['name'])) {
+        $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp'];
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+
+        $fileType = $files['receipt']['type'];
+        $fileExt = strtolower(pathinfo($files['receipt']['name'], PATHINFO_EXTENSION));
+
+        if (!in_array($fileType, $allowedMimeTypes) || !in_array($fileExt, $allowedExtensions)) {
+            echo json_encode([
+                'success' => false,
+                'message' => 'Invalid file type. Only JPG, PNG or WEBP images are allowed.'
+            ]);
+            exit;
+        }
+    }
 
     $controller = new ReservationController();
     $result = $controller->createReservation($data, $files);

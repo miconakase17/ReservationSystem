@@ -138,63 +138,6 @@ require_once __DIR__ . '/includes/ReservationData.php';
   </div>
   <!--END CALENDAR MODAL-->
 
-  <!--NEW USER MODAL-->
-  <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <form action="process/AddUserProcess.php" method="post" class="row g-3 p-3">
-          <!-- First Name -->
-          <div class="col-sm-4">
-            <input type="text" name="firstname" class="form-control" placeholder="First Name*" required>
-          </div>
-          <!-- Last Name -->
-          <div class="col-sm-4">
-            <input type="text" name="lastname" class="form-control" placeholder="Last Name*" required>
-          </div>
-          <!-- Middle Name -->
-          <div class="col-sm-4">
-            <input type="text" name="middlename" class="form-control" placeholder="Middle Name">
-          </div>
-          <!-- Username -->
-          <div class="col-12">
-            <input type="text" name="username" class="form-control" placeholder="Username*" required>
-          </div>
-          <!-- Phone Number -->
-          <div class="col-12">
-            <input type="text" name="phonenumber" class="form-control" placeholder="Phone Number*" required>
-          </div>
-          <!-- Email -->
-          <div class="col-12">
-            <input type="email" name="email" class="form-control" placeholder="Email*" required>
-          </div>
-          <!-- Password -->
-          <div class="col-12">
-            <input type="password" name="password" class="form-control" placeholder="Password*" required>
-          </div>
-          <!-- Confirm Password -->
-          <div class="col-12">
-            <input type="password" name="confirm_password" class="form-control" placeholder="Confirm Password*"
-              required>
-          </div>
-          <!-- Role Selection -->
-          <div class="col-12">
-            <select name="roleID" class="form-select" required>
-              <option value="1">Admin</option>
-            </select>
-          </div>
-          <!-- Submit Button -->
-          <div class="col-12 text-center mt-3">
-            <button type="submit" class="btn btn-primary">Add User</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-  <!--END NEW USER MODAL-->
 
   <div class="wrapper">
     <!-- Sidebar -->
@@ -278,8 +221,6 @@ require_once __DIR__ . '/includes/ReservationData.php';
             <div class="ms-md-auto py-2 py-md-0">
               <a class="btn btn-primary btn-view-calendar btn-round me-2" data-bs-target="#calendarModal"
                 data-bs-toggle="modal">View Calendar</a>
-              <a href="#" class="btn btn-primary btn-round" data-bs-toggle="modal" data-bs-target="#addUserModal">Add
-                User</a>
             </div>
           </div>
           <div class="row">
